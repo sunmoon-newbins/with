@@ -1,4 +1,4 @@
-package com.newbins.with_backend;
+package com.newbins;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
