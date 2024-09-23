@@ -1,7 +1,7 @@
 import React from "react";
 import { View, StyleSheet, Image } from "react-native";
-import LongButton from "../components/LongButton";
-import useStore from "../components/user/store"; // zustand 스토어 가져오기
+import LongButton from "../../components/common/LongButton";
+import useStore from "../../components/user/store"; // zustand 스토어 가져오기
 
 function StartScreen({ navigation }) {
   const { isLoggedIn } = useStore();

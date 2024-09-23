@@ -6,10 +6,10 @@ import {
   Text,
   ScrollView,
 } from "react-native";
-import WelcomeMessage from "../components/LoginScreen/WelcomeMessage";
-import LoginForm from "../components/LoginScreen/LoginForm";
-import LanguageButtons from "../components/LoginScreen/LanguageButtons";
-import Style from "../configs/Style.json";
+import WelcomeMessage from "../../components/loginScreen/WelcomeMessage";
+import LoginForm from "../../components/loginScreen/LoginForm";
+import LanguageButtons from "../../components/loginScreen/LanguageButtons";
+import Style from "../../configs/Style.json";
 
 const LoginScreen = () => {
   return (

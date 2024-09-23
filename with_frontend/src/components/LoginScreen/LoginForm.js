@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { View, TouchableOpacity, StyleSheet, Text } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import useStore from "../user/store"; // zustand 스토어 가져오기
-import InputTextField from "../InputTextField"; // InputTextField 컴포넌트 경로를 적절히 설정하세요.
+import InputTextField from "../common/InputTextField"; // InputTextField 컴포넌트 경로를 적절히 설정하세요.
 
 const LoginScreen = ({ navigation }) => {
   // zustand 스토어에서 상태와 업데이트 함수를 가져옴
