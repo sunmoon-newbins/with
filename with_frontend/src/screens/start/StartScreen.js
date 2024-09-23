@@ -11,7 +11,7 @@ function StartScreen({ navigation }) {
       {/* 이미지를 감싸는 둥근 컨테이너 */}
       <View style={styles.imageContainer}>
         <Image
-          source={require("../../assets/wydSeoul2027_logo.png")}
+          source={require("../../../assets/wydSeoul2027_logo.png")}
           style={styles.logo}
           resizeMode="contain"
         />

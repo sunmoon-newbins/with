@@ -9,7 +9,6 @@ import {
 import WelcomeMessage from "../../components/loginScreen/WelcomeMessage";
 import LoginForm from "../../components/loginScreen/LoginForm";
 import LanguageButtons from "../../components/loginScreen/LanguageButtons";
-import Style from "../../configs/Style.json";
 
 const LoginScreen = () => {
   return (
@@ -17,7 +16,7 @@ const LoginScreen = () => {
       <View style={styles.headerContainer}>
         <ImageBackground
           resizeMode="contain"
-          source={require("../../assets/back.png")}
+          source={require("../../../assets/back.png")}
           style={styles.headerImage}
         >
           <Text style={styles.headerText}>로그인</Text>

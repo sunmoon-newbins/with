@@ -3,7 +3,7 @@
 
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"; // 네비게이터 쓰는거
-// import { MaterialCommunityIcons } from "@expo/vector-icons"; 이거 아이콘인데 안쓸 듯
+import { MaterialCommunityIcons } from "@expo/vector-icons"; //이거 아이콘인데 안쓸 듯
 
 // 화면 컴포넌트 임포트
 
@@ -37,7 +37,7 @@ const BottomTabNavigator = () => {
         }}
       />
       <BTab.Screen
-        name="친구찾기"
+        name="HeartNavigator"
         component={HeartNavigator}
         options={{
           tabBarIcon: ({ size, color }) => (
@@ -50,7 +50,7 @@ const BottomTabNavigator = () => {
         }}
       />
       <BTab.Screen
-        name="택시잡기"
+        name="RouteCreateNavigator"
         component={RouteCreateNavigator}
         options={{
           tabBarIcon: ({ size, color }) => (
@@ -59,7 +59,7 @@ const BottomTabNavigator = () => {
         }}
       />
       <BTab.Screen
-        name="채팅"
+        name="ChatNavigator"
         component={ChatNavigator}
         options={{
           tabBarIcon: ({ size, color }) => (
@@ -69,7 +69,7 @@ const BottomTabNavigator = () => {
       />
       {/* //스택네비게이터가 둥지틀 장소  */}
       <BTab.Screen
-        name="내정보"
+        name="MyInfoNavigator"
         component={MyInfoNavigator}
         options={{
           tabBarIcon: ({ size, color }) => (
