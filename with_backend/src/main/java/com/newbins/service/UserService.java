@@ -1,7 +1,8 @@
 package com.newbins.service;
 
-import org.springframework.stereotype.Service;
+import com.newbins.dto.request.UserRequestDTO;
+import com.newbins.dto.response.UserResponseDTO;
 
-@Service
 public interface UserService {
+    UserResponseDTO login(UserRequestDTO userRequest);
 }
