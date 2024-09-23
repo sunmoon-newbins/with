@@ -1,4 +1,4 @@
-package com.newbins.with_backend;
+package com.newbins;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
