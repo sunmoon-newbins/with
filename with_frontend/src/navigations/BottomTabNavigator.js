@@ -1,12 +1,10 @@
-// BottomTabNavigator.js
-// 여기를 이제 각각 붙여야함.
-
 import React from "react";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"; // 네비게이터 쓰는거
-import { MaterialCommunityIcons } from "@expo/vector-icons"; //이거 아이콘인데 안쓸 듯
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { Image, View, Text } from "react-native"; // Image와 View, Text 컴포넌트 임포트
+
+import Style from "../configs/Style.json"; // 파일명 from 풀경로
 
 // 화면 컴포넌트 임포트
-
 import HomeNavigator from "../navigations/BottomStackNavigations/HomeNavigator";
 import HeartNavigator from "../navigations/BottomStackNavigations/HeartNavigator";
 import RouteCreateNavigator from "../navigations/BottomStackNavigations/RouteCreateNavigator";
@@ -15,67 +13,93 @@ import MyInfoNavigator from "../navigations/BottomStackNavigations/MyInfoNavigat
 
 const BTab = createBottomTabNavigator();
 
+const TabBarIcon = ({ source, size, color }) => {
+  return (
+    <Image
+      source={source}
+      style={{ width: size, height: size, tintColor: color }}
+      resizeMode="contain"
+    />
+  );
+};
+
 const BottomTabNavigator = () => {
   return (
     <BTab.Navigator
       initialRouteName="HomeNavigator"
-      tabBarOptions={{ activeTintColor: "black", inactiveTintColor: "gray" }}
-      screenOptions={{ headerShown: false }}
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, size, color }) => {
+          let iconSource;
+
+          switch (route.name) {
+            case "Home":
+              iconSource = require("../../assets/BottomHome.png");
+              size = 40;
+              break;
+            case "Heart":
+              iconSource = require("../../assets/BottomHeart.png");
+              size = 40;
+              break;
+            case "Add":
+              iconSource = require("../../assets/BottomAdd.png");
+              size = 45;
+              break;
+            case "Chat":
+              iconSource = require("../../assets/BottomChat.png");
+              size = 40;
+              break;
+            case "User":
+              iconSource = require("../../assets/BottomUser.png");
+              size = 40;
+              break;
+          }
+
+          return (
+            <TabBarIcon
+              source={iconSource}
+              size={size}
+              color={focused ? "#5775CD" : "#8F95B7"}
+            />
+          );
+        },
+        tabBarShowLabel: false, // 라벨 숨기기
+        tabBarStyle: {
+          backgroundColor: "#ffffff",
+          borderTopWidth: 0,
+          elevation: 0,
+          height: 55, // 탭바 크기 근데 반응형으로 다른 스마트폰이면 어떡하죠??
+        },
+        tabBarItemStyle: ({ focused }) => ({
+          backgroundColor: focused ? "#F4F8FB" : "#ffffff",
+          justifyContent: "center",
+          alignItems: "center",
+        }),
+      })}
     >
-      {/* MaterialCommunityIcons 중에서 두가지 고르고, 크기와 색깔은 부모 컴포넌트(BTab.Navigator)에 따라서 적용 */}
       <BTab.Screen
-        name="홈(게시글목록)"
+        name="Home"
         component={HomeNavigator}
-        options={{
-          tabBarIcon: ({ size, color }) => (
-            <MaterialCommunityIcons
-              name="account-group"
-              size={size}
-              color={color}
-            />
-          ),
-        }}
+        options={{ headerShown: false }}
       />
       <BTab.Screen
-        name="HeartNavigator"
+        name="Heart"
         component={HeartNavigator}
-        options={{
-          tabBarIcon: ({ size, color }) => (
-            <MaterialCommunityIcons
-              name="account-search"
-              size={size}
-              color={color}
-            />
-          ),
-        }}
+        options={{ headerShown: false }}
       />
       <BTab.Screen
-        name="RouteCreateNavigator"
+        name="Add"
         component={RouteCreateNavigator}
-        options={{
-          tabBarIcon: ({ size, color }) => (
-            <MaterialCommunityIcons name="car" size={size} color={color} />
-          ),
-        }}
+        options={{ headerShown: false }}
       />
       <BTab.Screen
-        name="ChatNavigator"
+        name="Chat"
         component={ChatNavigator}
-        options={{
-          tabBarIcon: ({ size, color }) => (
-            <MaterialCommunityIcons name="chat" size={size} color={color} />
-          ),
-        }}
+        options={{ headerShown: false }}
       />
-      {/* //스택네비게이터가 둥지틀 장소  */}
       <BTab.Screen
-        name="MyInfoNavigator"
+        name="User"
         component={MyInfoNavigator}
-        options={{
-          tabBarIcon: ({ size, color }) => (
-            <MaterialCommunityIcons name="account" size={size} color={color} />
-          ),
-        }}
+        options={{ headerShown: false }}
       />
     </BTab.Navigator>
   );

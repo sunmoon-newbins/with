@@ -1,4 +1,6 @@
 import React from "react";
+import "react-native-gesture-handler";
+
 import { NavigationContainer } from "@react-navigation/native";
 import MainStackNavigator from "./src/navigations/MainStackNavigator"; // 경로에 맞게 import
 
