@@ -1,24 +1,35 @@
-# Compiled class file
-*.class
+# React Native 관련 파일 및 폴더
+node_modules/
+.buckconfig
+.flowconfig
+.watchmanconfig
 
-# Log file
-*.log
 
-# BlueJ files
-*.ctxt
+# iOS 관련 파일 및 폴더
+ios/
+*.xcodeproj/
+*.xcworkspace/
+*.xcuserdata/
 
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
+# Android 관련 파일 및 폴더
+android/
+*.gradle/
+*.keystore
 
-# Package Files #
-*.jar
-*.war
-*.nar
-*.ear
-*.zip
-*.tar.gz
-*.rar
+# Expo 관련 파일 및 폴더
+.expo/
+.expo-shared/
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
-replay_pid*
+# OS 관련 파일
+.DS_Store
+Thumbs.db
+
+# 환경설정 파일
+.env
+.env.local
+.env.*.local
+
+# 로그 파일 및 캐시
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
