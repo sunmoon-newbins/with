@@ -1,7 +1,7 @@
 import React from "react";
 import { View, StyleSheet, Image } from "react-native";
-import LongButton from "../components/LongButton";
-import useStore from "../components/user/store"; // zustand 스토어 가져오기
+import LongButton from "../../components/common/LongButton";
+import useStore from "../../components/user/store"; // zustand 스토어 가져오기
 
 function StartScreen({ navigation }) {
   const { isLoggedIn } = useStore();
@@ -11,7 +11,7 @@ function StartScreen({ navigation }) {
       {/* 이미지를 감싸는 둥근 컨테이너 */}
       <View style={styles.imageContainer}>
         <Image
-          source={require("../../assets/wydSeoul2027_logo.png")}
+          source={require("../../../assets/wydSeoul2027_logo.png")}
           style={styles.logo}
           resizeMode="contain"
         />

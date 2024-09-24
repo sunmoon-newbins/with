@@ -1,14 +1,14 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import StartScreen from "../screens/StartScreen";
-import HomeScreen from "../screens/HomeScreen";
-import LoginScreen from "../screens/LoginScreen";
+import StartScreen from "../screens/start/StartScreen";
+import HomeScreen from "../screens/home/HomeScreen";
+import LoginScreen from "../screens/start/LoginScreen";
 
 const Stack = createStackNavigator();
 
 const MainStackNavigator = () => {
   return (
-    <Stack.Navigator initialRouteName="StartScreen">
+    <Stack.Navigator initialRouteName="HomeScreen">
       <Stack.Screen
         name="StartScreen"
         component={StartScreen}
@@ -18,13 +18,13 @@ const MainStackNavigator = () => {
       <Stack.Screen
         name="LoginScreen"
         component={LoginScreen}
-        options={{ title: "LoginScreen" }} // 헤더 제목 설정
+        options={{ headerShown: false }}
       />
 
       <Stack.Screen
         name="HomeScreen"
         component={HomeScreen}
-        options={{ title: "HomeScreen" }} // 헤더 제목 설정
+        options={{ title: "게시글" }} // 헤더 제목 설정
       />
     </Stack.Navigator>
   );

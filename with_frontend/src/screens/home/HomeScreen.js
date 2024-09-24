@@ -3,7 +3,7 @@ import { View, Text } from "react-native";
 function HomeScreen() {
   return (
     <View>
-      <Text>헬로</Text>
+      <Text>홈 게시글 목록</Text>
     </View>
   );
 }

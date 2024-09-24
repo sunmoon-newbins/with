@@ -6,10 +6,9 @@ import {
   Text,
   ScrollView,
 } from "react-native";
-import WelcomeMessage from "../components/LoginScreen/WelcomeMessage";
-import LoginForm from "../components/LoginScreen/LoginForm";
-import LanguageButtons from "../components/LoginScreen/LanguageButtons";
-import Style from "../configs/Style.json";
+import WelcomeMessage from "../../components/loginScreen/WelcomeMessage";
+import LoginForm from "../../components/loginScreen/LoginForm";
+import LanguageButtons from "../../components/loginScreen/LanguageButtons";
 
 const LoginScreen = () => {
   return (
@@ -17,7 +16,7 @@ const LoginScreen = () => {
       <View style={styles.headerContainer}>
         <ImageBackground
           resizeMode="contain"
-          source={require("../../assets/back.png")}
+          source={require("../../../assets/back.png")}
           style={styles.headerImage}
         >
           <Text style={styles.headerText}>로그인</Text>
