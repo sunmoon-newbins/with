@@ -1,5 +1,6 @@
 package com.newbins.service.impl;
 
+import com.newbins.dto.User;
 import com.newbins.dto.request.UserRequestDTO;
 import com.newbins.dto.response.UserResponseDTO;
 import com.newbins.mapper.UserMapper;
@@ -28,5 +29,17 @@ public class UserServiceImpl implements UserService {
             return userMapper.getUserByIdPassword(userRequest);
         }
         return null;
+    }
+
+    @Override
+    public boolean signup(User user) {
+        log.info("[signup] : user = {}", user.toString());
+        if(userMapper.findById(user.getId()) != null){
+            return false;
+        } else {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            userMapper.setUser(user);
+            return true;
+        }
     }
 }

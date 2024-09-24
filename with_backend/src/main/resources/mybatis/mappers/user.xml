@@ -15,4 +15,29 @@
         FROM USERS
         WHERE ID = #{id} AND PASSWORD = #{password}
     </select>
+
+    <select id="findById" parameterType="String" resultType="String">
+        SELECT
+            ID
+        FROM USERS
+        WHERE ID = #{_parameter}
+    </select>
+
+    <insert id="setUser" parameterType="user">
+        INSERT INTO USERS(
+            USER_NUM, ID, PASSWORD, NAME, BIRTH, PROFILE, COUNTRY, NICKNAME, LANGUAGES, CREATE_DATE)
+        VALUES (
+            UUID(),
+            #{id},
+            #{password},
+            #{name},
+            #{birth},
+            #{profile},
+            #{country},
+            #{nickname},
+            #{language},
+            NOW()
+        )
+    </insert>
+
 </mapper>

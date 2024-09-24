@@ -1,5 +1,6 @@
 package com.newbins.controller.users;
 
+import com.newbins.dto.User;
 import com.newbins.dto.request.UserRequestDTO;
 import com.newbins.dto.response.UserResponseDTO;
 import com.newbins.service.UserService;
@@ -26,8 +27,8 @@ public class UserController {
 
     // 회원가입
     @PostMapping("/signup")
-    public void signup(){
-
+    public boolean signup(@RequestBody User user){
+        return userService.signup(user);
     }
 
     // 프로필 보기
