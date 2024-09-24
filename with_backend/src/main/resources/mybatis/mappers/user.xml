@@ -10,7 +10,7 @@
         WHERE ID = #{_parameter}
     </select>
 
-    <select id="getUserByIdPassword" parameterType="userRequest" resultType="userResponse">
+    <select id="getUserByIdPassword" parameterType="user" resultType="user">
         SELECT *
         FROM USERS
         WHERE ID = #{id} AND PASSWORD = #{password}

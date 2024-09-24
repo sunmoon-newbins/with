@@ -1,6 +1,6 @@
 package com.newbins.controller.routes;
 
-import com.newbins.dto.request.UserRequestDTO;
+import com.newbins.dto.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,7 +12,7 @@ public class RouteLikeController {
     // 루트 좋아요
     @PostMapping
     public void likeRoute(@PathVariable("route_id") String routeId,
-                          @RequestBody UserRequestDTO userRequest){
+                          @RequestBody User userRequest){
 
     }
 
