@@ -1,8 +1,6 @@
 package com.newbins.controller.users;
 
 import com.newbins.dto.User;
-import com.newbins.dto.request.UserRequestDTO;
-import com.newbins.dto.response.UserResponseDTO;
 import com.newbins.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +16,10 @@ public class UserController {
 
     // 로그인
     @PostMapping("/login")
-    public UserResponseDTO login(@RequestBody UserRequestDTO userRequest){
+    public User login(@RequestBody User userRequest){
         log.info("[login] : id = {}", userRequest.getId());
-        UserResponseDTO userResponse = userService.login(userRequest);
-        log.info("[login] : userId = {}", userResponse);
+        User userResponse = userService.login(userRequest);
+        log.info("[login] : user = {}", userResponse);
         return userResponse;
     }
 

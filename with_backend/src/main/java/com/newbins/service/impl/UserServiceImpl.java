@@ -1,8 +1,6 @@
 package com.newbins.service.impl;
 
 import com.newbins.dto.User;
-import com.newbins.dto.request.UserRequestDTO;
-import com.newbins.dto.response.UserResponseDTO;
 import com.newbins.mapper.UserMapper;
 import com.newbins.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -23,10 +21,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponseDTO login(UserRequestDTO userRequest) {
-        String storedHashedPassword = userMapper.getPasswordById(userRequest.getId());
-        if(passwordEncoder.matches(userRequest.getPassword(), storedHashedPassword)){
-            return userMapper.getUserByIdPassword(userRequest);
+    public User login(User user) {
+        String storedHashedPassword = userMapper.getPasswordById(user.getId());
+        log.info("[login] : storedHashedPassword = {}", storedHashedPassword);
+        if(passwordEncoder.matches(user.getPassword(), storedHashedPassword)){
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            return userMapper.getUserByIdPassword(user);
         }
         return null;
     }
