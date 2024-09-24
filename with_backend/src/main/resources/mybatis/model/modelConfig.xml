@@ -10,5 +10,6 @@
     <typeAliases>
         <typeAlias alias="userRequest" type="com.newbins.dto.request.UserRequestDTO"/>
         <typeAlias alias="userResponse" type="com.newbins.dto.response.UserResponseDTO"/>
+        <typeAlias alias="user" type="com.newbins.dto.User"/>
     </typeAliases>
 </configuration>
