@@ -10,7 +10,7 @@
         WHERE ID = #{_parameter}
     </select>
 
-    <select id="getUserById" parameterType="user" resultType="users">
+    <select id="getUserById" parameterType="String" resultType="users">
         SELECT
             USER_NUM,
             ID,
@@ -22,7 +22,7 @@
             LANGUAGES,
             CREATE_DATE
         FROM USERS
-        WHERE ID = #{id}
+        WHERE ID = #{_parameter}
     </select>
 
     <select id="findById" parameterType="String" resultType="String">

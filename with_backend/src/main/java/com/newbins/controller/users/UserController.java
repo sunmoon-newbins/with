@@ -31,8 +31,8 @@ public class UserController {
 
     // 프로필 보기
     @GetMapping("/{user_id}")
-    public void getUser(@PathVariable("user_id") String userId){
-
+    public User getUser(@PathVariable("user_id") String userId){
+        return userService.getUser(userId);
     }
 
     // 프로필 사진 변경

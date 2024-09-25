@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface UserMapper {
     String getPasswordById(String password);
-    UsersEntity getUserById(User user);
+    UsersEntity getUserById(String userId);
     String findById(String id);
     void setUser(User user);
 }

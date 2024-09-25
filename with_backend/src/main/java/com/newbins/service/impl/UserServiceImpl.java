@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
         String storedHashedPassword = userMapper.getPasswordById(user.getId());
         log.info("[login] : storedHashedPassword = {}", storedHashedPassword);
         if(passwordEncoder.matches(user.getPassword(), storedHashedPassword)){
-            return new User().toDTO(userMapper.getUserById(user));
+            return new User().toDTO(userMapper.getUserById(user.getId()));
         }
         return null;
     }
@@ -40,5 +40,10 @@ public class UserServiceImpl implements UserService {
             userMapper.setUser(user);
             return true;
         }
+    }
+
+    @Override
+    public User getUser(String userId) {
+        return new User().toDTO(userMapper.getUserById(userId));
     }
 }

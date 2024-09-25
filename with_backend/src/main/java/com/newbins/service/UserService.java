@@ -5,4 +5,5 @@ import com.newbins.dto.User;
 public interface UserService {
     User login(User user);
     boolean signup(User user);
+    User getUser(String userId);
 }
