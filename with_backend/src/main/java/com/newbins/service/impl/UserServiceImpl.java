@@ -49,7 +49,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User changeProfile(User user) {
-        userMapper.updateProfileById(user);
+        try{
+            userMapper.updateProfileById(user);
+            log.info("[changeProfile] : successfull change profile");
+        } catch(Exception e){
+            log.error("[changeProfile] : failed change profile, error = {}", e);
+        }
         return new User().toDTO(userMapper.getUserById(user.getId()));
     }
 }
