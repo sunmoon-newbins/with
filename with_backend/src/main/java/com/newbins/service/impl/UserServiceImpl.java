@@ -46,4 +46,15 @@ public class UserServiceImpl implements UserService {
     public User getUser(String userId) {
         return new User().toDTO(userMapper.getUserById(userId));
     }
+
+    @Override
+    public User changeProfile(User user) {
+        try{
+            userMapper.updateProfileById(user);
+            log.info("[changeProfile] : successfull change profile");
+        } catch(Exception e){
+            log.error("[changeProfile] : failed change profile, error = {}", e);
+        }
+        return new User().toDTO(userMapper.getUserById(user.getId()));
+    }
 }
