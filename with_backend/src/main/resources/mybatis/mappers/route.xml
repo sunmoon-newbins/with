@@ -3,4 +3,53 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.newbins.mapper.RouteMapper">
+
+    <!-- ROUTE Insert with UUID in MariaDB -->
+    <insert id="createRoute">
+        <!-- MariaDB의 UUID 함수를 사용하여 ROUTE_NUM을 생성 -->
+        <selectKey keyProperty="routeNum" resultType="string" order="BEFORE">
+            SELECT REPLACE(UUID(), '-', '')
+        </selectKey>
+
+        INSERT INTO ROUTE (
+        ROUTE_NUM,
+        USER_NUM,
+        TITLE,
+        PARTICIPANT_COUNT,
+        STATE,
+        PICTURE,
+        CREATE_DATE,
+        START_DATE,
+        END_DATE
+        )
+        VALUES (
+        #{routeNum},
+        #{userNum},
+        #{title},
+        #{participantCount},
+        #{state},
+        #{picture},
+        #{createDate},
+        #{startDate},
+        #{endDate}
+        )
+    </insert>
+
+    <!-- ROUTE 조회 메서드 예시 -->
+    <select id="getRouteByNum" resultType="com.newbins.dto.Route">
+        SELECT
+            ROUTE_NUM,
+            USER_NUM,
+            TITLE,
+            PARTICIPANT_COUNT,
+            STATE,
+            PICTURE,
+            CREATE_DATE,
+            START_DATE,
+            END_DATE
+        FROM ROUTE
+        WHERE ROUTE_NUM = #{routeNum}
+    </select>
+
+
 </mapper>
