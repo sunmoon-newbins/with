@@ -46,4 +46,10 @@ public class UserServiceImpl implements UserService {
     public User getUser(String userId) {
         return new User().toDTO(userMapper.getUserById(userId));
     }
+
+    @Override
+    public User changeProfile(User user) {
+        userMapper.updateProfileById(user);
+        return new User().toDTO(userMapper.getUserById(user.getId()));
+    }
 }

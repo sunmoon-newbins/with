@@ -49,4 +49,10 @@
         )
     </insert>
 
+    <update id="updateProfileById" parameterType="user">
+        UPDATE USERS
+        SET PROFILE = #{profile}
+        WHERE ID = #{id}
+    </update>
+
 </mapper>

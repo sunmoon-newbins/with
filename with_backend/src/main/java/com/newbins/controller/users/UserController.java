@@ -37,8 +37,10 @@ public class UserController {
 
     // 프로필 사진 변경
     @PatchMapping("/{user_id}")
-    public void changeProfile(@PathVariable("user_id") String userId){
-
+    public User changeProfile(@PathVariable("user_id") String userId,
+                              @RequestBody User user){
+        user.setId(userId);
+        return userService.changeProfile(user);
     }
 
 }
