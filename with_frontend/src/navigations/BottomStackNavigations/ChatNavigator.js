@@ -4,6 +4,7 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import ChatListScreen from "../../screens/chat/ChatListScreen";
+import ChatDetailScreen from "../../screens/chat/ChatDetailScreen";
 
 const Stack = createStackNavigator();
 
@@ -21,6 +22,13 @@ const ChatNavigator = () => {
           채팅방에서 프로필 상세 (상대방) 
           해야함. 일단 하나만 넣어놓음 
           왜냐하면 DrawNavigation 이라해서 어떻게 구현할지모름.   */}
+      <Stack.Screen
+        name="ChatDetailScreen"
+        component={ChatDetailScreen}
+        options={{ tabBarStyle: { display: "none" } }}
+
+        // 탭바 안보이게 하려고했음.
+      />
     </Stack.Navigator>
   );
 };

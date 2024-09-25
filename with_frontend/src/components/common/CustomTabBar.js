@@ -4,6 +4,7 @@ import {
   responsiveWidth,
   responsiveHeight,
 } from "react-native-responsive-dimensions";
+import { useNavigationState } from "@react-navigation/native";
 
 import Style from "../../configs/Style.json";
 
@@ -17,6 +18,21 @@ const TAB_ICON_MAP = {
 };
 
 const CustomTabBar = ({ state, descriptors, navigation }) => {
+  // { state, descriptors, navigation }
+  // 현재 활성화된 라우트의 이름을 가져오기
+  // 전달된 state를 사용하여 현재 라우트 이름을 가져오기
+
+  // const currentRouteName = state?.routes?.[state.index]?.name;
+
+  // // state와 currentRouteName 로그 확인
+  // console.log("CustomTabBar State: ", state);
+  // console.log("Current Route Name: ", currentRouteName);
+
+  // // 특정 조건에서 탭바를 숨기기
+  // if (currentRouteName === "ChatDetailScreen") {
+  //   return null; // ChatDetailScreen일 때 탭바 숨기기
+  // }
+
   return (
     <View style={styles.tabBarContainer}>
       {state.routes.map((route, index) => {
