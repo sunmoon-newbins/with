@@ -1,15 +1,16 @@
 package com.newbins.dto;
 
+import com.newbins.entity.UsersEntity;
 import lombok.*;
 import java.sql.Date;
 
+@Builder
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @ToString
-public class User {
+public class User implements Convertible<UsersEntity, User> {
     private String userId;
     private String id;
     private String password;
@@ -22,18 +23,18 @@ public class User {
     private Date createDate;
 
     @Override
-    public String toString() {
-        return "User{" +
-                "userId='" + userId + '\'' +
-                ", id='" + id + '\'' +
-                ", password='" + password + '\'' +
-                ", name='" + name + '\'' +
-                ", birth='" + birth + '\'' +
-                ", profile='" + profile + '\'' +
-                ", country=" + country +
-                ", nickname='" + nickname + '\'' +
-                ", language=" + language +
-                ", createDate=" + createDate +
-                '}';
+    public User toDTO(UsersEntity entity) {
+        User user = new User();
+        return user.builder()
+                .userId(entity.getUser_num())
+                .id(entity.getId())
+                .name(entity.getName())
+                .birth(entity.getBirth())
+                .profile(entity.getProfile())
+                .country(entity.getCountry())
+                .nickname(entity.getNickname())
+                .language(entity.getLanguages())
+                .createDate(entity.getCreate_date())
+                .build();
     }
 }

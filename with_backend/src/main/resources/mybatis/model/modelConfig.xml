@@ -9,5 +9,6 @@
     </settings>
     <typeAliases>
         <typeAlias alias="user" type="com.newbins.dto.User"/>
+        <typeAlias alias="users" type="com.newbins.entity.UsersEntity"/>
     </typeAliases>
 </configuration>
