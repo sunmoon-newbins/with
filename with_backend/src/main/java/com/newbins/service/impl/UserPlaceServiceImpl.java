@@ -1,6 +1,7 @@
 package com.newbins.service.impl;
 
 import com.newbins.dto.Place;
+import com.newbins.entity.PlaceEntity;
 import com.newbins.mapper.PlaceMapper;
 import com.newbins.mapper.UserMapper;
 import com.newbins.service.UserPlaceService;
@@ -19,12 +20,13 @@ public class UserPlaceServiceImpl implements UserPlaceService {
     PlaceMapper placeMapper;
 
     @Override
-    public void addMyPlace(String userId, Place place) {
+    public Place addMyPlace(String userId, Place place) {
         try{
             placeMapper.setMyPlace(userId, place);
             log.info("[addMyPlace] add MyPlace successfull");
         } catch(Exception e){
             log.error("[addMyPlace] add MyPlace failed, error = {}", e);
         }
+        return new Place().toDTO(placeMapper.getMyPlace(userId, place.getPlaceName()));
     }
 }

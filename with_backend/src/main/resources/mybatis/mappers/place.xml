@@ -25,4 +25,11 @@
             NOW()
         )
     </insert>
+
+    <select id="getMyPlace" parameterType="map" resultType="myPlace">
+        SELECT *
+        FROM MY_PLACE
+        WHERE USER_NUM = (SELECT USER_NUM FROM USERS WHERE ID = #{id})
+          AND PLACE_NAME = #{placeName}
+    </select>
 </mapper>

@@ -4,6 +4,8 @@ import com.newbins.entity.MyPlaceEntity;
 import com.newbins.entity.PlaceEntity;
 import lombok.*;
 
+import java.sql.Date;
+
 @Builder
 @Setter
 @Getter
@@ -22,6 +24,7 @@ public class Place implements Convertible<PlaceEntity, Place> {
     private String introduction;// 관광지 소개
     private String phoneNumber; // 관리기관전화번호
     private String management;  // 관리기관명
+    private Date createDate;    // 생성날짜(나만의장소)
 
     @Override
     public Place toDTO(PlaceEntity entity) {
@@ -37,6 +40,18 @@ public class Place implements Convertible<PlaceEntity, Place> {
                 .introduction(entity.getTrrsrtIntrcn())
                 .phoneNumber(entity.getPhoneNumber())
                 .management(entity.getInstitutionNm())
+                .build();
+    }
+
+    public Place toDTO(MyPlaceEntity entity) {
+        return this.builder()
+                .placeName(entity.getPlace_name())
+                .placeType(entity.getPlace_type())
+                .roadAddress(entity.getRoad_address())
+                .address(entity.getAddress())
+                .latitude(entity.getLatitude())
+                .longitude(entity.getLongitude())
+                .createDate(entity.getCreate_date())
                 .build();
     }
 }

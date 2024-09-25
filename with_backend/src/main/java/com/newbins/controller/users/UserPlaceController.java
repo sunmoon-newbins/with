@@ -21,9 +21,12 @@ public class UserPlaceController {
 
     // 나만의 장소 추가
     @PostMapping
-    public void addMyPlace(@PathVariable("user_id") String userId,
+    public Place addMyPlace(@PathVariable("user_id") String userId,
                            @RequestBody Place place){
-        log.info("[addMyPlace] before addMyPlace, userId = {}", userId);
-        userPlaceService.addMyPlace(userId, place);
+        log.info("[addMyPlace] before - addMyPlace, userId = {}", userId);
+        Place myAddedPlace = userPlaceService.addMyPlace(userId, place);
+        log.info("[addMyPlace] after - myAddedPlace = {}", myAddedPlace);
+        return myAddedPlace;
+
     }
 }

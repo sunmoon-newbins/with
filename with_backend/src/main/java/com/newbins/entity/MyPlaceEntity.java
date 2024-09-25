@@ -2,7 +2,7 @@ package com.newbins.entity;
 
 import lombok.*;
 
-import java.util.Date;
+import java.sql.Date;
 
 @Setter
 @Getter
