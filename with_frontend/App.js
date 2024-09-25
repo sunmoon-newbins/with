@@ -11,6 +11,7 @@ export default function App() {
     <NavigationContainer>
       {/* <MainStackNavigator /> */}
       <BottomTabNavigator />
+      {/* 테스트 */}
     </NavigationContainer>
   );
 }
