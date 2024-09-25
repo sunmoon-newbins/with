@@ -1,12 +1,18 @@
 package com.newbins.controller.routes;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import com.newbins.dto.Route;
+import com.newbins.service.RouteService;
 
 @Slf4j
 @RestController
 @RequestMapping("/routes")
 public class RouteController {
+
+    @Autowired
+    RouteService routeService;
 
     // 소개, 모집, 전체 게시글 보기
     @GetMapping
@@ -17,8 +23,10 @@ public class RouteController {
 
     // 루트 게시판 작성
     @PostMapping
-    public void setRoute(){
+    public void createRoute(@RequestBody Route route){
 
+        log.info("[createRoute] : route = {}", route.toString());
+        routeService.createRoute(route);
     }
 
     // 루트 상세 보기
