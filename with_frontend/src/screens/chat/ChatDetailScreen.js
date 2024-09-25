@@ -25,7 +25,7 @@ const ChatDetailScreen = () => {
     navigation.setOptions({
       headerTitle: () => <Text style={styles.headerText}>{title} 4</Text>, // headerTitle을 함수로 설정하여 <Text> 컴포넌트 사용
       headerRight: () => (
-        <TouchableOpacity onPress={() => alert("Menu clicked!")}>
+        <TouchableOpacity onPress={() => navigation.openDrawer()}>
           <Image
             source={require("../../../assets/chatMenu.png")}
             style={styles.headerIcon}

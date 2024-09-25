@@ -1,25 +1,5 @@
 import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  Dimensions,
-  PixelRatio,
-} from "react-native";
-
-// 반응형 크기 계산 함수들
-const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
-
-// 기준 폰의 너비와 높이 (예: iPhone 8)
-const guidelineBaseWidth = 375;
-const guidelineBaseHeight = 667;
-
-// 너비에 따른 비율 계산 함수
-const scaleSize = (size) => (SCREEN_WIDTH / guidelineBaseWidth) * size;
-
-// 폰트 크기에 따른 비율 계산 함수
-const scaleFont = (size) => size * PixelRatio.getFontScale();
+import { View, Text, StyleSheet, Image } from "react-native";
 
 // 메시지 아이템 컴포넌트
 const MessageItem = ({ messageData }) => {
@@ -46,14 +26,10 @@ const MessageItem = ({ messageData }) => {
 
   // 메시지와 시간 렌더링 함수
   const renderMessageRow = () => (
-    <View style={isMyMessage ? styles.myMessageRow : styles.otherMessageRow}>
-      {!isMyMessage && (
-        <MessageBox isMyMessage={isMyMessage} message={message} />
-      )}
+    <View style={styles.messageRow}>
+      {/* 나의 메시지일 경우 시간 먼저, 상대 메시지일 경우 메시지 박스 먼저 */}
+      <MessageBox isMyMessage={isMyMessage} message={message} />
       <Text style={styles.time}>{time}</Text>
-      {isMyMessage && (
-        <MessageBox isMyMessage={isMyMessage} message={message} />
-      )}
     </View>
   );
 
@@ -97,7 +73,7 @@ const styles = StyleSheet.create({
   messageContainer: {
     flexDirection: "row",
     alignItems: "flex-start",
-    marginBottom: scaleSize(3), // 반응형으로 변경
+    marginBottom: 3,
   },
   myMessage: {
     justifyContent: "flex-end", // 나의 메시지는 오른쪽 정렬
@@ -106,25 +82,25 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start", // 상대방 메시지는 왼쪽 정렬
   },
   profileImage: {
-    width: scaleSize(40), // 반응형으로 변경
-    height: scaleSize(40), // 반응형으로 변경
-    borderRadius: scaleSize(20), // 반응형으로 변경
-    marginRight: scaleSize(10), // 반응형으로 변경
-    marginBottom: scaleSize(15), // 반응형으로 변경
-    marginTop: scaleSize(20), // 반응형으로 변경
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    marginRight: 10,
+    marginBottom: 15, // 프로필 이미지 하단 여백
+    marginTop: 20, // 프로필 이미지 상단 여백
   },
   messageContent: {
     maxWidth: "75%", // 메시지 박스의 최대 너비 설정
-    marginTop: scaleSize(20), // 반응형으로 변경
+    marginTop: 20, // 프로필 이미지보다 약간 아래에 위치하도록 설정
   },
   nickname: {
-    fontSize: scaleFont(14), // 반응형으로 변경
+    fontSize: 14,
     color: "#333",
-    marginBottom: scaleSize(2), // 반응형으로 변경
+    marginBottom: 2,
   },
   messageBox: {
-    padding: scaleSize(10), // 반응형으로 변경
-    borderRadius: scaleSize(10), // 반응형으로 변경
+    padding: 10,
+    borderRadius: 10,
   },
   myMessageBox: {
     backgroundColor: "#5775CD",
@@ -135,7 +111,7 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
   },
   messageText: {
-    fontSize: scaleFont(16), // 반응형으로 변경
+    fontSize: 16, // 모든 메시지의 기본 텍스트 크기
   },
   myMessageText: {
     color: "#fff", // 내가 보낸 메시지의 텍스트 색상
@@ -144,9 +120,9 @@ const styles = StyleSheet.create({
     color: "#333", // 다른 사람이 보낸 메시지의 텍스트 색상
   },
   time: {
-    fontSize: scaleFont(10), // 반응형으로 변경
+    fontSize: 10,
     color: "#999", // 시간 텍스트 색상
-    margin: scaleSize(5), // 반응형으로 변경
+    margin: 5,
     alignSelf: "flex-end",
   },
   messageRow: {
