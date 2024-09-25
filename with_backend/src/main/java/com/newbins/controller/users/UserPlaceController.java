@@ -14,11 +14,6 @@ public class UserPlaceController {
     @Autowired
     UserPlaceService userPlaceService;
 
-    @GetMapping
-    public void test(@PathVariable("user_id") String userId){
-        System.out.println(userId);
-    }
-
     // 나만의 장소 추가
     @PostMapping
     public Place addMyPlace(@PathVariable("user_id") String userId,
@@ -28,5 +23,12 @@ public class UserPlaceController {
         log.info("[addMyPlace] after - myAddedPlace = {}", myAddedPlace);
         return myAddedPlace;
 
+    }
+
+    // 나만의 장소 삭제
+    @DeleteMapping("/{place_id}")
+    public void deleteMyPlace(@PathVariable("user_id") String userId,
+                              @PathVariable("place_id") long placeId){
+        userPlaceService.deleteMyPlace(userId, placeId);
     }
 }

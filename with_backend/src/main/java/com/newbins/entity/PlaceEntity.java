@@ -11,7 +11,7 @@ import java.sql.Date;
 @Builder
 @ToString
 public class PlaceEntity {
-    private String place_num;       // 장소 아이디
+    private long place_num;       // 장소 아이디
     private String trrsrtNm;        // 장소명
     private byte trrsrtSe;          // 장소 구분
     private String rdnmadr;         // 소재지도로명주소

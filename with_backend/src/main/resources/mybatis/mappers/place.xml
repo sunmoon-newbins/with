@@ -32,4 +32,10 @@
         WHERE USER_NUM = (SELECT USER_NUM FROM USERS WHERE ID = #{id})
           AND PLACE_NAME = #{placeName}
     </select>
+
+    <delete id="deleteMyPlace" parameterType="map">
+        DELETE FROM MY_PLACE
+        WHERE USER_NUM = (SELECT USER_NUM FROM USERS WHERE ID = #{id})
+            AND PLACE_NUM = #{placeId}
+    </delete>
 </mapper>
