@@ -58,7 +58,7 @@ const messages = [
   {
     id: "7",
     nickname: "박명수",
-    message: "그만웃어",
+    message: "그만웃어ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ",
     time: "12:09",
     isMyMessage: false,
     profileImage: "https://via.placeholder.com/150",
@@ -66,7 +66,7 @@ const messages = [
   {
     id: "8",
     nickname: "박명수",
-    message: "으이",
+    message: "그만웃어",
     time: "12:09",
     isMyMessage: false,
     profileImage: "https://via.placeholder.com/150",
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#f4f4f8",
   },
   list: {
-    paddingVertical: 10,
+    // paddingVertical: 10,
   },
 });
 
