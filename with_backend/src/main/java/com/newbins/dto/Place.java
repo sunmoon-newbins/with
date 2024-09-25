@@ -13,7 +13,7 @@ import java.sql.Date;
 @NoArgsConstructor
 @ToString
 public class Place implements Convertible<PlaceEntity, Place> {
-    private String placeNum;    // 장소 번호
+    private long placeNum;    // 장소 번호
     private String placeName;   // 관광지명, 장소명
     private byte placeType;     // 관광지 구분
     private String roadAddress; // 소재지도록명주소
@@ -45,6 +45,7 @@ public class Place implements Convertible<PlaceEntity, Place> {
 
     public Place toDTO(MyPlaceEntity entity) {
         return this.builder()
+                .placeNum(entity.getPlace_num())
                 .placeName(entity.getPlace_name())
                 .placeType(entity.getPlace_type())
                 .roadAddress(entity.getRoad_address())

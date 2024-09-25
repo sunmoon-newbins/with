@@ -29,4 +29,18 @@ public class UserPlaceServiceImpl implements UserPlaceService {
         }
         return new Place().toDTO(placeMapper.getMyPlace(userId, place.getPlaceName()));
     }
+
+    @Override
+    public void deleteMyPlace(String userId, long placeId) {
+        try{
+            int deletedCount = placeMapper.deleteMyPlace(userId, placeId);
+            if(deletedCount > 0){
+                log.info("[deleteMyPlace] successfully deleted my place");
+            } else {
+                log.warn("[deleteMyPlace] No place found to delete");
+            }
+        } catch(Exception e){
+            log.error("[deleteMyPlace] failed delete my place");
+        }
+    }
 }

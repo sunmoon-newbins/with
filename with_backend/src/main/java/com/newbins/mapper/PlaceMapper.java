@@ -9,4 +9,5 @@ import org.apache.ibatis.annotations.Param;
 public interface PlaceMapper {
     void setMyPlace(@Param("id")String id, @Param("place")Place place);
     MyPlaceEntity getMyPlace(@Param("id")String id, @Param("placeName")String placeName);
+    int deleteMyPlace(@Param("id")String id, @Param("placeId")long placeId);
 }
