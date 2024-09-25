@@ -1,6 +1,6 @@
 import { View, Text } from "react-native";
-import React from "react";
-
+import React, { useLayoutEffect } from "react";
+import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import ChatListScreen from "../../screens/chat/ChatListScreen";
@@ -8,7 +8,16 @@ import ChatDetailScreen from "../../screens/chat/ChatDetailScreen";
 
 const Stack = createStackNavigator();
 
-const ChatNavigator = () => {
+const ChatNavigator = ({ navigation, route }) => {
+  useLayoutEffect(() => {
+    const routeName = getFocusedRouteNameFromRoute(route);
+    if (routeName === "ChatDetailScreen") {
+      navigation.setOptions({ tabBarStyle: { display: "none" } });
+    } else {
+      navigation.setOptions({ tabBarStyle: { display: "flex" } });
+    }
+  }, [navigation, route]);
+
   return (
     <Stack.Navigator initialRouteName="ChatListScreen">
       <Stack.Screen

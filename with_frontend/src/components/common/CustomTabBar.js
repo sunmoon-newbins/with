@@ -19,19 +19,14 @@ const TAB_ICON_MAP = {
 
 const CustomTabBar = ({ state, descriptors, navigation }) => {
   // { state, descriptors, navigation }
-  // 현재 활성화된 라우트의 이름을 가져오기
-  // 전달된 state를 사용하여 현재 라우트 이름을 가져오기
 
-  // const currentRouteName = state?.routes?.[state.index]?.name;
+  // 현재 포커스된 화면의 옵션 가져오기
+  const focusedOptions = descriptors[state.routes[state.index].key].options;
 
-  // // state와 currentRouteName 로그 확인
-  // console.log("CustomTabBar State: ", state);
-  // console.log("Current Route Name: ", currentRouteName);
-
-  // // 특정 조건에서 탭바를 숨기기
-  // if (currentRouteName === "ChatDetailScreen") {
-  //   return null; // ChatDetailScreen일 때 탭바 숨기기
-  // }
+  // 탭 바 스타일이 숨김(`display: 'none'`)인지 확인
+  if (focusedOptions.tabBarStyle?.display === "none") {
+    return null; // 숨김일 경우 null을 반환하여 탭 바를 숨김
+  }
 
   return (
     <View style={styles.tabBarContainer}>
