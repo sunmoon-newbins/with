@@ -19,7 +19,7 @@ public class UserController {
     public User login(@RequestBody User userRequest){
         log.info("[login] : id = {}", userRequest.getId());
         User userResponse = userService.login(userRequest);
-        log.info("[login] : user = {}", userResponse);
+        log.info("[login/result] : user = {}", userResponse);
         return userResponse;
     }
 

@@ -10,10 +10,19 @@
         WHERE ID = #{_parameter}
     </select>
 
-    <select id="getUserByIdPassword" parameterType="user" resultType="user">
-        SELECT *
+    <select id="getUserById" parameterType="user" resultType="users">
+        SELECT
+            USER_NUM,
+            ID,
+            NAME,
+            BIRTH,
+            PROFILE,
+            COUNTRY,
+            NICKNAME,
+            LANGUAGES,
+            CREATE_DATE
         FROM USERS
-        WHERE ID = #{id} AND PASSWORD = #{password}
+        WHERE ID = #{id}
     </select>
 
     <select id="findById" parameterType="String" resultType="String">
