@@ -1,14 +1,14 @@
 // components/PostItem.js
 import React from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import Style from "../../configs/Style.json";
 
-const PostItem = ({ title, author, time, imageUrl, description }) => {
+const PostItem = ({ title, author, time, imageUrl, description, onPress }) => {
   // 로컬 기본 이미지 경로 설정
   const defaultImage = require("../../../assets/BoarderDummy.png"); // 기본 이미지 설정
   const defaultImage_profile = require("../../../assets/Sopia.png"); // 기본 이미지 설정
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={onPress}>
       <View style={styles.header}>
         <Image
           //   source={{ uri: "https://example.com/profile.png" }} // 프로필 이미지 URL
@@ -29,7 +29,7 @@ const PostItem = ({ title, author, time, imageUrl, description }) => {
       />
       <Text style={styles.description}>{description}</Text>
       <Text style={styles.time}>{time}</Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 

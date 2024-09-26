@@ -6,6 +6,7 @@ import {
   Text,
   ScrollView,
 } from "react-native";
+
 import WelcomeMessage from "../../components/loginScreen/WelcomeMessage";
 import LoginForm from "../../components/loginScreen/LoginForm";
 import LanguageButtons from "../../components/loginScreen/LanguageButtons";
@@ -53,7 +54,7 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     fontSize: 24,
     fontWeight: "700",
-    fontFamily: "Inter, sans-serif",
+    // fontFamily: "Inter, sans-serif",
     letterSpacing: 0.34,
   },
   contentContainer: {
