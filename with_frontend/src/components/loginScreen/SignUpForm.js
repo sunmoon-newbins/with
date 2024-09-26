@@ -29,7 +29,7 @@ const SignUpForm = () => {
   const [name, setName] = useState("");
   const [nickname, setNickname] = useState("");
   const [birth, setBirth] = useState("");
-  const [profile, setProfile] = useState("");
+  const [profile, setProfile] = useState(""); // 처음 프로필은 안만듦.
   const [country, setCountry] = useState("");
   const [language, setLanguage] = useState("");
 
@@ -70,7 +70,6 @@ const SignUpForm = () => {
         placeholder="닉네임을 입력하시오."
         value={nickname}
         onChangeText={setNickname}
-        secureTextEntry // ** 로 보이게하는거
       />
       {/* DatePicker를 사용한 생년월일 필드 */}
       <DatePickerInputField
@@ -108,7 +107,7 @@ const styles = StyleSheet.create({
   },
   optionsContainer: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "flex-end",
     alignItems: "center",
     marginBottom: 33,
   },
