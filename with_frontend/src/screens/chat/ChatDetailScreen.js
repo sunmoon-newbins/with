@@ -24,6 +24,19 @@ const ChatDetailScreen = () => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: () => <Text style={styles.headerText}>{title} 4</Text>, // headerTitle을 함수로 설정하여 <Text> 컴포넌트 사용
+
+      headerLeft: () => (
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={styles.headerLeftButton}
+        >
+          <Image
+            source={require("../../../assets/BackIcon.png")} // 나가기(뒤로가기) 아이콘의 경로에 맞게 수정
+            style={styles.headerIcon}
+          />
+        </TouchableOpacity>
+      ),
+
       headerRight: () => (
         <TouchableOpacity onPress={() => navigation.openDrawer()}>
           <Image
@@ -82,7 +95,9 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 18,
   },
-
+  headerLeftButton: {
+    paddingLeft: 10, // 왼쪽에 여백을 추가하여 터치 영역 확대
+  },
   headerIcon: {
     width: 24,
     height: 24,

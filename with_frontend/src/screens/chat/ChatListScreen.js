@@ -63,10 +63,15 @@ function ChatListScreen() {
   const renderItem = ({ item }) => (
     <TouchableOpacity
       onPress={() =>
-        navigation.navigate("ChatDetailScreen", {
-          // title 과 Id를 넘겨줌.
-          title: item.title,
-          Id: item.boardIndex,
+        // navigation.navigate("ChatDetailScreen", {
+        //   // title 과 Id를 넘겨줌.
+        //   title: item.title,
+        //   Id: item.boardIndex,
+        // })
+
+        navigation.navigate("ChatDetailNavigator", {
+          screen: "ChatDetailScreen",
+          params: { title: item.title, Id: item.boardIndex },
         })
       }
     >
