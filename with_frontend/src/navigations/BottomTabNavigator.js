@@ -14,7 +14,7 @@ const BottomTabNavigator = () => {
   return (
     <BTab.Navigator
       initialRouteName="HomeNavigator"
-      tabBar={(props) => <CustomTabBar {...props} />} // 커스텀 탭바 사용
+      tabBar={(props) => <CustomTabBar {...props} state={props.state} />} // 커스텀 탭바 사용 // state를 직접 전달
       screenOptions={{
         headerShown: false,
       }}

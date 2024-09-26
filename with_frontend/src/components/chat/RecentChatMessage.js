@@ -1,40 +1,45 @@
 import React from "react";
 import { View, StyleSheet, Image, Text } from "react-native";
 
-function RecentChatMessage({ title, message, time }) {
+function RecentChatMessage({ title, message, time, name, headCount }) {
   return (
     <View style={styles.container}>
-      {/* 박스 이미지 배경 */}
-      <Image
-        source={require("../../../assets/chatBox.png")}
-        style={styles.backgroundImage}
-      />
-      {/* 제목 텍스트 */}
-      <View style={styles.titleContainer}>
-        <Text style={styles.title}>{title}</Text>
-      </View>
-      {/* 점선 이미지 */}
-      <Image
-        source={require("../../../assets/dottedLine.png")}
-        style={styles.dottedLine}
-        resizeMode="contain"
-      />
-      {/* 메시지 내용 */}
-      <View style={styles.messageContainer}>
-        <View style={styles.userInfo}>
+      {/* 기차표 모양의 배경 */}
+      <View style={styles.chatBoxContainer}>
+        <Image
+          source={require("../../../assets/chatBox.png")}
+          style={styles.ticketBackground}
+          //   resizeMode="contain" // 이미지가 잘리지 않도록 contain 모드 사용
+          resizeMode="stretch"
+        />
+        <View style={styles.contentContainer}>
+          {/* 제목 텍스트 */}
+          <Text style={styles.title}>
+            {title} {headCount}
+          </Text>
+
+          {/* 점선 */}
           <Image
+            source={require("../../../assets/dottedLine.png")}
+            style={styles.dottedLine}
             resizeMode="contain"
-            source={{
-              uri: "https://cdn.builder.io/api/v1/image/assets/TEMP/ef7bd5e132db9a0e92833bd76fb8f6075ec7fd9865e6fca6a35e4ea80b38477a?placeholderIfAbsent=true&apiKey=ee8d539f9a3f4b379629704d1c6bfca3",
-            }}
-            style={styles.userImage}
           />
-          <View style={styles.textContainer}>
-            <Text style={styles.username}>젬마</Text>
-            <Text style={styles.messageText}>{message}</Text>
+          {/* 프로필 이미지와 메시지 */}
+          <View style={styles.messageRow}>
+            <Image
+              resizeMode="contain"
+              source={{
+                uri: "https://cdn.builder.io/api/v1/image/assets/TEMP/ef7bd5e132db9a0e92833bd76fb8f6075ec7fd9865e6fca6a35e4ea80b38477a?placeholderIfAbsent=true&apiKey=ee8d539f9a3f4b379629704d1c6bfca3",
+              }}
+              style={styles.userImage}
+            />
+            <View style={styles.textContainer}>
+              <Text style={styles.username}>{name}</Text>
+              <Text style={styles.messageText}>{message}</Text>
+            </View>
+            <Text style={styles.time}>{time}</Text>
           </View>
         </View>
-        <Text style={styles.timeText}>{time}</Text>
       </View>
     </View>
   );
@@ -42,69 +47,80 @@ function RecentChatMessage({ title, message, time }) {
 
 const styles = StyleSheet.create({
   container: {
-    width: "90%", // 전체 박스의 너비
+    width: "100%",
+    paddingHorizontal: 10, // 양쪽 여백을 추가하여 잘리지 않게 조정
     marginVertical: 10,
-    padding: 10,
-    alignItems: "flex-start", // 컨테이너의 기본 정렬을 왼쪽으로 설정
+    alignItems: "center",
     justifyContent: "center",
-    position: "relative", // 배경 이미지와의 겹침을 위해 상대적 위치 설정
   },
-  backgroundImage: {
+  chatBoxContainer: {
+    width: "100%", // 부모 컨테이너의 너비에 맞추도록 설정
+    // aspectRatio: 4, // 기차표 모양을 유지하기 위한 비율 설정
+    height: 120,
+    position: "relative",
+    borderRadius: 10, // 모서리를 둥글게 처리
+    backgroundColor: "#F4F8FB",
+    overflow: "hidden", // 경계선 밖의 내용을 숨김
+    shadowColor: "#000", // 그림자 색상
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25, // 그림자 불투명도
+    shadowRadius: 3.84, // 그림자 반경
+    elevation: 5, // 안드로이드에서의 그림자 높이
+    // marginHorizontal: -10, // 양쪽 여백을 음수로 설정하여 박스 밖으로 확장------------------------------------
+  },
+  ticketBackground: {
     position: "absolute",
     width: "100%",
     height: "100%",
-    resizeMode: "stretch", // 박스 이미지가 컨테이너를 채우도록 설정
+    top: 0,
+    // left: "-2.5",
+    borderRadius: 10,
   },
-  titleContainer: {
-    width: "100%", // 제목 컨테이너가 박스 너비를 채우도록 설정
-    alignItems: "flex-start", // 제목을 왼쪽 정렬
-    paddingVertical: 5,
-    paddingLeft: 10, // 왼쪽 여백 추가
+  contentContainer: {
+    flex: 1,
+    justifyContent: "center",
+    padding: 10, // 컨텐츠의 안쪽 여백
   },
   title: {
     fontSize: 16,
     fontWeight: "bold",
     color: "#5775CD",
+    marginBottom: 8,
   },
   dottedLine: {
-    position: "absolute", // 절대 위치로 설정
-    top: "33%", // 1/3 지점에 위치
-    left: 10, // 박스 내부 왼쪽 정렬
-    width: "95%", // 박스 너비의 95%를 차지
+    width: "100%",
     height: 2,
+    marginVertical: 5,
   },
-  messageContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between", // 좌우로 정렬
-    alignItems: "center",
-    paddingHorizontal: 10,
-    marginTop: 15, // 메시지 부분을 점선 아래로 이동
-  },
-  userInfo: {
+  messageRow: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between",
+    width: "100%",
   },
   userImage: {
-    width: 36,
-    height: 36,
-    borderRadius: 18, // 원형 프로필 이미지
-    marginRight: 10,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
   },
   textContainer: {
+    flex: 1,
+    marginLeft: 10,
     justifyContent: "center",
   },
   username: {
-    fontWeight: "semi-bold",
+    fontWeight: "bold",
     fontSize: 14,
+    marginBottom: 3,
   },
   messageText: {
-    fontSize: 12,
-    marginTop: 3,
+    fontSize: 13,
   },
-  timeText: {
+  time: {
     fontSize: 12,
-    color: "#333",
-    alignSelf: "flex-end", // 시간만 오른쪽 정렬
+    color: "#a0a0a0",
+    opacity: 0.6,
+    textAlign: "right",
   },
 });
 
