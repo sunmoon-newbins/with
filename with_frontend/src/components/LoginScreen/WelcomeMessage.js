@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     color: "#595F67",
     fontSize: 13,
     lineHeight: 19,
-    fontFamily: "Roboto, sans-serif",
+    // fontFamily: "Roboto, sans-serif",
     textAlign: "center",
     letterSpacing: 0.34,
   },

@@ -2,6 +2,9 @@
 import React from "react";
 import { View, FlatList, StyleSheet } from "react-native";
 import PostItem from "./PostItem";
+import { useNavigation } from "@react-navigation/native"; // 네비게이션 훅 사용
+
+import RouteDetailScreen from "../../screens/home/RouteDetailScreen";
 
 const posts = [
   {
@@ -24,6 +27,7 @@ const posts = [
 ];
 
 const PostList = () => {
+  const navigation = useNavigation(); // 네비게이션 훅 사용
   return (
     <FlatList
       data={posts} // renderItem 을 item -> postItem 으로
@@ -34,6 +38,9 @@ const PostList = () => {
           time={item.time}
           imageUrl={item.imageUrl}
           description={item.description}
+          onPress={
+            () => navigation.navigate("RouteDetailScreen", { postId: item.id }) // PostDetailScreen으로 네비게이트
+          }
         />
       )}
       keyExtractor={(item) => item.id}

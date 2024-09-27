@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     color: "#222",
     fontWeight: "500",
     fontSize: 16,
-    fontFamily: "Inter, sans-serif",
+    // fontFamily: "Inter, sans-serif",
   },
   activeTabButtonText: {
     color: "#FFF",

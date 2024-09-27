@@ -33,6 +33,13 @@ const styles = StyleSheet.create({
   },
   LanguageButton: {
     width: 50,
+    height: 50,
+    borderWidth: 1,
+    borderColor: "E8E8E8",
+    borderRadius: 30,
+    backgroundColor: "#ffffff",
+    alignItems: "center",
+
     aspectRatio: 1,
   },
 });
