@@ -1,5 +1,6 @@
 package com.newbins.service.impl;
 
+import com.newbins.entity.RouteEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,5 +22,11 @@ public class RouteServiceImpl implements RouteService {
         //값이 있는지 검증 해야 할까? ㄴㄴ 프론트에서 검증 하고 경로 식별 번호만 뒤에서 붙여주기
 
         routeMapper.createRoute(route);
+    }
+
+    @Override
+    public Route getRouteByRouteNum(String routeNum) {
+        log.info("[getRoute] : routeNum = {}", routeNum);
+        return new Route().toDTO(routeMapper.getRouteByRouteNum(routeNum));
     }
 }
