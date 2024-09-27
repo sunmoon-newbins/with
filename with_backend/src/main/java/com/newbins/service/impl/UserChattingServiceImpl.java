@@ -32,4 +32,16 @@ public class UserChattingServiceImpl implements UserChattingService {
         }
         return null;
     }
+
+    @Override
+    public boolean enterTheChatting(String chattingId, String userId) {
+        try{
+            chattingMapper.setChattingUser(chattingId, userId);
+            log.info("[enterTheChatting] successful setChattinguser");
+            return true;
+        } catch(Exception e){
+            log.error("[enterTheChatting] failed insert chatting user");
+        }
+        return false;
+    }
 }

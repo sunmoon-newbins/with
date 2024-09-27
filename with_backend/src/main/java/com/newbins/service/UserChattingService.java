@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface UserChattingService {
     List<ChattingRoom> getChattingRooms(String userId);
+    boolean enterTheChatting(String chattingId, String userId);
 }

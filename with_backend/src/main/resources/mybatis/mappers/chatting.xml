@@ -46,4 +46,27 @@
             left join latest_messages lm on(c.chatting_num = lm.chatting_num)
             left join current_users cu on (c.chatting_num = cu.chatting_num)
     </select>
+
+    <insert id="setChattingUser" parameterType="String">
+        INSERT INTO CHATTING_USER (CHATTING_NUM, USER_NUM, ADMISSION_DT, WRITER_ROLE)
+        SELECT
+            #{chattingId},
+            #{userId},
+            NOW(),
+            CASE
+                WHEN (SELECT COUNT(*)
+                      FROM CHATTING C
+                          LEFT JOIN ROUTE R ON C.ROUTE_NUM = R.ROUTE_NUM
+                      WHERE C.CHATTING_NUM = #{chattingId}
+                        AND R.USER_NUM = #{userId}) = 1
+                THEN '모집자'
+                ELSE '참여자'
+            END
+        WHERE NOT EXISTS (
+            SELECT 1
+            FROM CHATTING_USER
+            WHERE CHATTING_NUM = #{chattingId}
+                AND USER_NUM = #{userId}
+        );
+    </insert>
 </mapper>
