@@ -22,9 +22,21 @@ const SortButton = () => {
   // 정렬 옵션을 선택했을 때 실행되는 함수
   const handleSortOptionPress = (option) => {
     console.log(`Selected Sort Option: ${option}`);
-    // 여기서 각각의 정렬 로직을 추가하면 됩니다.
 
-    //  만약 옵션이 "좋아요 많은순" 이라면~~~~ 등
+    // 정렬 옵션에 따른 조건 처리
+    if (option === "좋아요 많은순") {
+      console.log("좋아요 많은순 정렬 로직 실행");
+      // 좋아요 많은순 정렬 로직 추가
+    } else if (option === "좋아요 적은순") {
+      console.log("좋아요 적은순 정렬 로직 실행");
+      // 좋아요 적은순 정렬 로직 추가
+    } else if (option === "달란트 많은순") {
+      console.log("달란트 많은순 정렬 로직 실행");
+      // 달란트 많은순 정렬 로직 추가
+    } else if (option === "최신순") {
+      console.log("최신순 정렬 로직 실행");
+      // 최신순 정렬 로직 추가
+    }
 
     toggleModal(); // 옵션 선택 후 모달 닫기
   };

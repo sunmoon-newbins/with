@@ -1,26 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { View, TouchableOpacity, StyleSheet, Text } from "react-native";
+import { View, TouchableOpacity, StyleSheet, Text, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-import useStore from "../user/useStore"; // zustand 스토어 가져오기
-
+// import useStore from "../user/useStore"; // zustand 스토어 가져오기
+import IPconfig from "../../configs/IPConfig.json";
 import InputTextField from "../common/InputTextField"; // InputTextField 컴포넌트 경로를 적절히 설정하세요.
-import DatePickerInputField from "../loginScreen/DatePickerInputField"; // 새로 만든 DatePickerInputField 컴포넌트
-import CountryDropdownInputField from "../loginScreen/CountryDropdownInputField"; // 새로 만든 CountryDropdownInputField 컴포넌트
+import DatePickerInputField from "./DatePickerInputField"; // 새로 만든 DatePickerInputField 컴포넌트
+import CountryDropdownInputField from "./CountryDropdownInputField"; // 새로 만든 CountryDropdownInputField 컴포넌트
 
 const SignUpForm = () => {
   const navigation = useNavigation();
-
-  //   {
-  //     "id" : "example_id",
-  //     "password" : "example_password",
-  //     "name" : "홍길동",
-  //     "nickname" : "길동이",
-  //     "birth" : "1990-01-01",
-  //     "profile" : "profile description",
-  //     "country" : "KOR",
-  //     "language" : "KOR"
-  // }
 
   // useState 훅으로 로컬 상태 선언
   const [id, setId] = useState("");
@@ -33,10 +22,67 @@ const SignUpForm = () => {
   const [country, setCountry] = useState("");
   const [language, setLanguage] = useState("");
 
-  const handleSignUp = () => {
-    //    백엔드에 지금 변수들 넘기는 코드
-  };
+  const handleSignUp = async () => {
+    const url = IPconfig.IP + `/users/signup`;
+    console.log(url);
 
+    const signUpData = {
+      id: id,
+      password: password,
+      name: name,
+      nickname: nickname,
+      birth: birth,
+      profile: profile,
+      country: country,
+      language: "KOR",
+    };
+
+    try {
+      console.log(JSON.stringify(signUpData));
+
+      console.log("서버 요청 시작");
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(signUpData),
+      });
+      console.log("서버 응답 받음");
+
+      console.log("서버 응답 상태 코드:", response.status);
+      if (response.ok) {
+        const data = await response.json();
+        console.log("회원가입 성공:", data);
+
+        // 회원가입 성공 시 Alert 창 띄우기
+        Alert.alert(
+          "회원가입 성공",
+          "회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.",
+          [
+            {
+              text: "확인",
+              onPress: () => navigation.navigate("LoginScreen"), // 확인 버튼을 눌렀을 때 로그인 페이지로 이동
+            },
+          ]
+        );
+      } else {
+        const errorData = await response.json();
+        console.error("회원가입 실패:", errorData);
+        Alert.alert(
+          "회원가입 실패",
+          "회원가입에 실패했습니다. 다시 시도해주세요."
+        );
+      }
+    } catch (error) {
+      console.error("네트워크 오류!:", error);
+
+      Alert.alert(
+        "네트워크 오류",
+        "네트워크 오류가 발생했습니다. 다시 시도해주세요."
+      );
+    }
+  };
   return (
     <View style={styles.container}>
       <InputTextField

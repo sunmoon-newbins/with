@@ -18,6 +18,20 @@ const recentSearches = ["서울", "부산", "제주", "아산", "충남", "경�
 function BoardSearchScreen() {
   const navigation = useNavigation();
 
+  const [searchText, setSearchText] = useState(""); // 검색 텍스트를 관리하는 상태
+
+  const handleSearchSubmit = () => {
+    // goBack을 사용하면서 파라미터로 데이터 전달
+    navigation.navigate({
+      name: "HomeScreen", // 돌아갈 스크린 이름
+      params: { searchQuery: searchText }, // 전달할 데이터
+      merge: true, // 스크린이 이미 활성화된 경우 병합하도록 설정
+      // 파라미터가 여러개인 경우
+      // params: { sortBy: 'date', category: 'news', searchQuery: '서울' }
+      // 즉, merge: true는 새로 전달한 searchQuery: '서울'만 추가하고, 기존의 sortBy와 category 파라미터는 그대로 유지합니다.
+    });
+  };
+
   return (
     <SafeAreaView style={styles.safeAreaContainer}>
       {/* 상태바 설정 */}
@@ -37,14 +51,16 @@ function BoardSearchScreen() {
         </TouchableOpacity>
         {/* 검색바 */}
         <View style={styles.searchBarWrapper}>
-          <SearchBar />
+          <SearchBar value={searchText} onChangeText={setSearchText} />
         </View>
         {/* 검색 아이콘 */}
-        <Image
-          resizeMode="contain"
-          source={require("../../../assets/Search.png")}
-          style={styles.searchIcon}
-        />
+        <TouchableOpacity onPress={handleSearchSubmit}>
+          <Image
+            resizeMode="contain"
+            source={require("../../../assets/Search.png")}
+            style={styles.searchIcon}
+          />
+        </TouchableOpacity>
       </View>
       {/* 최근 검색어 컨테이너 */}
       <View style={styles.recentSearchContainer}>

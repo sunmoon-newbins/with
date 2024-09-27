@@ -7,8 +7,8 @@ import {
   ScrollView,
   Dimensions,
 } from "react-native";
-import SignUpForm from "../../components/loginScreen/SignUpForm";
-import LanguageButtons from "../../components/loginScreen/LanguageButtons";
+import SignUpForm from "../../components/LoginScreen/SignUpForm";
+import LanguageButtons from "../../components/LoginScreen/LanguageButtons";
 
 const { width, height } = Dimensions.get("window");
 

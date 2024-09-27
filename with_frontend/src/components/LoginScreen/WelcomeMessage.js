@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     color: "#0B1527",
     fontSize: 24,
     fontWeight: "700",
-    fontFamily: "SF Pro Text, sans-serif",
+    // fontFamily: "SF Pro Text, sans-serif",
     textAlign: "center",
     marginBottom: 11,
   },

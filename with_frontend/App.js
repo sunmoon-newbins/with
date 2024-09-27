@@ -15,13 +15,13 @@ export default function App() {
     <NavigationContainer>
       {/* 여기 주석풀면 한번로그인하면 자동로그인. */}
 
-      {/* {isLoggedIn && rememberMe ? (
+      {isLoggedIn && rememberMe ? (
         <BottomTabNavigator />
       ) : (
         <MainStackNavigator />
-      )} */}
+      )}
 
-      <MainStackNavigator />
+      {/* <MainStackNavigator /> */}
       {/* 개발중 */}
     </NavigationContainer>
   );

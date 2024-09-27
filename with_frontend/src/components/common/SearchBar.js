@@ -1,14 +1,15 @@
 import React from "react";
 import { View, StyleSheet, TextInput } from "react-native";
 
-function SearchBar() {
+function SearchBar({ value, onChangeText }) {
   return (
     <View style={styles.searchContainer}>
       <TextInput
         style={styles.input}
         placeholder="관광명소, 식당, 숙소 검색" // 글자 적기전 뭐 적어달라고 써져있는거.
         placeholderTextColor="rgba(0, 0, 0, 0.3)" // 그냥 검은색에 70% 투명도
-        accessibilityLabel="관광명소, 식당, 숙소 검색"
+        value={value}
+        onChangeText={onChangeText}
       />
     </View>
   );
