@@ -10,5 +10,6 @@
     <typeAliases>
         <typeAlias alias="user" type="com.newbins.dto.User"/>
         <typeAlias alias="users" type="com.newbins.entity.UsersEntity"/>
+        <typeAlias alias="routeEntity" type="com.newbins.entity.RouteEntity"/>
     </typeAliases>
 </configuration>

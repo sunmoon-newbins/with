@@ -21,8 +21,7 @@
         CREATE_DATE,
         START_DATE,
         END_DATE
-        )
-        VALUES (
+        ) VALUES (
         #{routeNum},
         #{userNum},
         #{title},
@@ -36,7 +35,7 @@
     </insert>
 
     <!-- ROUTE 조회 메서드 예시 -->
-    <select id="getRouteByNum" resultType="com.newbins.dto.Route">
+    <select id="getRouteByRouteNum" resultType="routeEntity">
         SELECT
             ROUTE_NUM,
             USER_NUM,
@@ -50,6 +49,4 @@
         FROM ROUTE
         WHERE ROUTE_NUM = #{routeNum}
     </select>
-
-
 </mapper>

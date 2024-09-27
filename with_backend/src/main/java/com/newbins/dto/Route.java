@@ -1,7 +1,7 @@
 package com.newbins.dto;
 
+import com.newbins.entity.RouteEntity;
 import lombok.*;
-
 import java.time.LocalDateTime;
 
 @Setter
@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 @ToString
-public class Route {
+public class Route implements Convertible<RouteEntity, Route>{
     private String routeNum;        // 경로 식별 번호
     private String userNum;         // 사용자 식별 번호
     private String title;           // 경로 제목
@@ -20,6 +20,7 @@ public class Route {
     private LocalDateTime createDate; // 생성 날짜
     private LocalDateTime startDate;  // 시작 날짜
     private LocalDateTime endDate;    // 종료 날짜
+
 
     // toString 메서드
     @Override
@@ -36,4 +37,21 @@ public class Route {
                 ", endDate=" + endDate +
                 '}';
     }
+
+    @Override
+    public Route toDTO(RouteEntity entity) {
+        Route route = new Route();
+        return route.builder()
+                .routeNum(entity.getRoute_num())
+                .userNum(entity.getUser_num())
+                .title(entity.getTitle())
+                .state(entity.getState())
+                .participantCount(entity.getParticipant_count())
+                .picture(entity.getPicture())
+                .createDate(entity.getCreate_date())
+                .startDate(entity.getStart_date())
+                .endDate(entity.getEnd_date())
+                .build();
+    }
+
 }
