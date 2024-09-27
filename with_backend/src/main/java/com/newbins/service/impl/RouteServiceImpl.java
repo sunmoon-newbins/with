@@ -8,6 +8,9 @@ import com.newbins.mapper.RouteMapper;
 import com.newbins.dto.Route;
 import com.newbins.service.RouteService;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @Slf4j
 public class RouteServiceImpl implements RouteService {
@@ -25,8 +28,25 @@ public class RouteServiceImpl implements RouteService {
     }
 
     @Override
-    public Route getRouteByRouteNum(String routeNum) {
+    public Route getRoute(String routeNum) {
         log.info("[getRoute] : routeNum = {}", routeNum);
-        return new Route().toDTO(routeMapper.getRouteByRouteNum(routeNum));
+        return new Route().toDTO(routeMapper.getRoute(routeNum));
+    }
+
+    @Override
+    public List<Route> getRoutes(int state, String sortType) {
+        //조건으로 status 넣고, 정렬 sortType
+        log.info("[getRoutes] : state = {}, sortType = {}", state, sortType);
+        // MyBatis Mapper를 호출하여 RouteEntity 목록을 받아옵니다.
+        List<RouteEntity> routeEntities = routeMapper.getRoutes(state, sortType);
+
+        // RouteEntity를 Route로 변환하여 List로 반환
+        List<Route> routes = new ArrayList<>();
+        for (RouteEntity entity : routeEntities) {
+            Route route = new Route();
+            routes.add(route.toDTO(entity)); // Route 클래스에 정의된 toDTO() 메서드 사용
+        }
+
+        return routes;
     }
 }

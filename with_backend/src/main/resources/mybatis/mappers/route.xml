@@ -49,4 +49,27 @@
         FROM ROUTE
         WHERE ROUTE_NUM = #{routeNum}
     </select>
+
+    <!-- 조건부 조회 및 정렬 처리 -->
+    <select id="getRoutes" resultType="routeEntity">
+        SELECT
+        ROUTE_NUM, USER_NUM, TITLE, PARTICIPANT_COUNT, STATE, PICTURE, CREATE_DATE, START_DATE, END_DATE
+        FROM ROUTE
+        WHERE STATE = #{state}
+        <!-- 정렬 조건 처리 -->
+        <choose>
+            <when test="sortType == 'date'">
+                ORDER BY CREATE_DATE DESC
+            </when>
+            <when test="sortType == 'participantsDesc'">
+                ORDER BY PARTICIPANT_COUNT DESC
+            </when>
+            <when test="sortType == 'participantsAsc'">
+                ORDER BY PARTICIPANT_COUNT ASC
+            </when>
+            <otherwise>
+                ORDER BY CREATE_DATE DESC
+            </otherwise>
+        </choose>
+    </select>
 </mapper>
