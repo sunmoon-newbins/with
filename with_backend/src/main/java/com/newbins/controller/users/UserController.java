@@ -19,7 +19,7 @@ public class UserController {
     public User login(@RequestBody User userRequest){
         log.info("[login] : id = {}", userRequest.getId());
         User userResponse = userService.login(userRequest);
-        log.info("[login] : user = {}", userResponse);
+        log.info("[login/result] : user = {}", userResponse);
         return userResponse;
     }
 
@@ -31,14 +31,16 @@ public class UserController {
 
     // 프로필 보기
     @GetMapping("/{user_id}")
-    public void getUser(@PathVariable("user_id") String userId){
-
+    public User getUser(@PathVariable("user_id") String userId){
+        return userService.getUser(userId);
     }
 
     // 프로필 사진 변경
     @PatchMapping("/{user_id}")
-    public void changeProfile(@PathVariable("user_id") String userId){
-
+    public User changeProfile(@PathVariable("user_id") String userId,
+                              @RequestBody User user){
+        user.setId(userId);
+        return userService.changeProfile(user);
     }
 
 }

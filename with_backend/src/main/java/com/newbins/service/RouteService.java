@@ -1,7 +1,7 @@
 package com.newbins.service;
 
-import org.springframework.stereotype.Service;
+import com.newbins.dto.Route;
 
-@Service
 public interface RouteService {
+    void createRoute(Route toute);
 }

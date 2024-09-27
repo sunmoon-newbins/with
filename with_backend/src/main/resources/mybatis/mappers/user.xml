@@ -10,10 +10,19 @@
         WHERE ID = #{_parameter}
     </select>
 
-    <select id="getUserByIdPassword" parameterType="user" resultType="user">
-        SELECT *
+    <select id="getUserById" parameterType="String" resultType="users">
+        SELECT
+            USER_NUM,
+            ID,
+            NAME,
+            BIRTH,
+            PROFILE,
+            COUNTRY,
+            NICKNAME,
+            LANGUAGES,
+            CREATE_DATE
         FROM USERS
-        WHERE ID = #{id} AND PASSWORD = #{password}
+        WHERE ID = #{_parameter}
     </select>
 
     <select id="findById" parameterType="String" resultType="String">
@@ -39,5 +48,11 @@
             NOW()
         )
     </insert>
+
+    <update id="updateProfileById" parameterType="user">
+        UPDATE USERS
+        SET PROFILE = #{profile}
+        WHERE ID = #{id}
+    </update>
 
 </mapper>

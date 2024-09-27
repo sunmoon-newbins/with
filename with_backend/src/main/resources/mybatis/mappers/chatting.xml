@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newbins.mapper.ChattingMapper">
+    <select id="getChattingRoomList" parameterType="String" resultType="chattingRoomList">
+        WITH CHATTING_ROOM_NUMS AS ( -- 해당 유저가 속한 채팅방 번호들
+            SELECT CHATTING_NUM
+            FROM CHATTING_USER
+            WHERE USER_NUM = #{_parameter}
+        ),
+        chattings as ( -- 유저의 채팅방 목록
+            SELECT *
+            FROM CHATTING
+            WHERE CHATTING_NUM IN (select CHATTING_NUM from CHATTING_ROOM_NUMS)
+        ),
+        latest_messages AS ( -- 최신 메시지
+            select *
+            from(SELECT
+                     m.content,
+                     m.chatting_num,
+                     m.user_num,
+                     ROW_NUMBER() OVER (PARTITION BY m.chatting_num ORDER BY m.send_dt DESC) AS rn
+                 FROM message m) as subquery
+            where rn = 1
+        ),
+        current_users as ( -- 각 채팅방 별 현재 유저
+            select
+                chatting_num,
+                count(*) as current_user_count
+            from chatting_user
+            group by chatting_num
+        )
+        select
+            c.chatting_num,
+            c.route_num,
+            r.title,
+            r.participant_count,
+            cu.current_user_count,
+            r.state,
+            r.picture,
+            (select name from users where user_num = lm.user_num) as name,
+            lm.content
+        from chattings c
+            left join route r on(c.route_num = r.route_num)
+            left join latest_messages lm on(c.chatting_num = lm.chatting_num)
+            left join current_users cu on (c.chatting_num = cu.chatting_num)
+    </select>
+</mapper>
