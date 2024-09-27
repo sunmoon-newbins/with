@@ -1,5 +1,6 @@
 package com.newbins.service;
 
+import com.newbins.dto.Place;
 import com.newbins.dto.User;
 
 public interface UserService {

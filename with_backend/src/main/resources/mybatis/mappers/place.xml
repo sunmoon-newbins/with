@@ -3,4 +3,39 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.newbins.mapper.PlaceMapper">
+    <insert id="setMyPlace" parameterType="map">
+        INSERT INTO MY_PLACE(
+            USER_NUM,
+            PLACE_NAME,
+            PLACE_TYPE,
+            ROAD_ADDRESS,
+            ADDRESS,
+            LATITUDE,
+            LONGITUDE,
+            CREATE_DATE
+        )
+        VALUES (
+            (SELECT USER_NUM FROM USERS WHERE ID = #{id}),
+            #{place.placeName},
+            #{place.placeType},
+            #{place.roadAddress},
+            #{place.address},
+            #{place.latitude},
+            #{place.longitude},
+            NOW()
+        )
+    </insert>
+
+    <select id="getMyPlace" parameterType="map" resultType="myPlace">
+        SELECT *
+        FROM MY_PLACE
+        WHERE USER_NUM = (SELECT USER_NUM FROM USERS WHERE ID = #{id})
+          AND PLACE_NAME = #{placeName}
+    </select>
+
+    <delete id="deleteMyPlace" parameterType="map">
+        DELETE FROM MY_PLACE
+        WHERE USER_NUM = (SELECT USER_NUM FROM USERS WHERE ID = #{id})
+            AND PLACE_NUM = #{placeId}
+    </delete>
 </mapper>

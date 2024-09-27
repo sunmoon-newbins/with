@@ -32,12 +32,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean signup(User user) {
-        log.info("[signup] : user = {}", user.toString());
         if(userMapper.findById(user.getId()) != null){
+            log.info("[signup] : failed signup");
             return false;
         } else {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             userMapper.setUser(user);
+            log.info("[signup] : successful signup");
             return true;
         }
     }
@@ -51,7 +52,7 @@ public class UserServiceImpl implements UserService {
     public User changeProfile(User user) {
         try{
             userMapper.updateProfileById(user);
-            log.info("[changeProfile] : successfull change profile");
+            log.info("[changeProfile] : successful change profile");
         } catch(Exception e){
             log.error("[changeProfile] : failed change profile, error = {}", e);
         }

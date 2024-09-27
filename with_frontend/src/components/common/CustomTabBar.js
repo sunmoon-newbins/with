@@ -4,6 +4,7 @@ import {
   responsiveWidth,
   responsiveHeight,
 } from "react-native-responsive-dimensions";
+import { useNavigationState } from "@react-navigation/native";
 
 import Style from "../../configs/Style.json";
 
@@ -17,6 +18,16 @@ const TAB_ICON_MAP = {
 };
 
 const CustomTabBar = ({ state, descriptors, navigation }) => {
+  // { state, descriptors, navigation }
+
+  // 현재 포커스된 화면의 옵션 가져오기
+  const focusedOptions = descriptors[state.routes[state.index].key].options;
+
+  // 탭 바 스타일이 숨김(`display: 'none'`)인지 확인
+  if (focusedOptions.tabBarStyle?.display === "none") {
+    return null; // 숨김일 경우 null을 반환하여 탭 바를 숨김
+  }
+
   return (
     <View style={styles.tabBarContainer}>
       {state.routes.map((route, index) => {

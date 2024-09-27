@@ -24,8 +24,7 @@ public class User implements Convertible<UsersEntity, User> {
 
     @Override
     public User toDTO(UsersEntity entity) {
-        User user = new User();
-        return user.builder()
+        return this.builder()
                 .userId(entity.getUser_num())
                 .id(entity.getId())
                 .name(entity.getName())

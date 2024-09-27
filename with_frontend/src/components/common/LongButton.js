@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
   text: {
     color: "rgba(243, 243, 243, 1)", // 기본 텍스트 색상
     textAlign: "center",
-    fontFamily: "Nunito Sans",
+    // fontFamily: "Nunito Sans",
     fontSize: 18, // 기본 폰트 크기
     fontWeight: "300",
   },
