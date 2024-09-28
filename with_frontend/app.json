@@ -22,12 +22,14 @@
         "backgroundColor": "#ffffff"
       }
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    },
-    "plugins": [
-      "expo-font",
-      "expo-build-properties"
-    ]
+    "config": {
+      "googleMaps": {
+        "apiKey": "AIzaSyBALLdq4uzD_EoOdBdfK33n6Kt1sY06mdk"
+      },
+      "web": {
+        "favicon": "./assets/favicon.png"
+      },
+      "plugins": ["expo-font", "expo-build-properties"]
+    }
   }
 }

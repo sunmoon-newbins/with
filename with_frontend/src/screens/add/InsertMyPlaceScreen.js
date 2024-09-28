@@ -4,6 +4,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import SearchBar from "../../components/common/SearchBar";
 import InputTextField from "../../components/common/InputTextField";
 // import s
+import GoogleMapComponent from "../../components/BoardCreate/GoogleMapComponent";
 
 const InsertMyPlaceScreen = ({ navigation }) => {
   const [searchMyPlace, setSearchMyPlace] = useState("");
@@ -69,7 +70,22 @@ const InsertMyPlaceScreen = ({ navigation }) => {
           labelStyle={styles.label} // 커스텀 label 스타일
         />
 
-        {/* 지도 api 써서  */}
+        {/* 지도 화면 남은 공간 다 채워서 있고, 위에  searchMyPlace 에 검색한 곳이 지도에 적용되며 , 지도에서 마커를 찍으면 그 마커 찍은곳의 위도, 경도를 가져와서 상태변수로 관리함  */}
+        {/* GoogleMap 컴포넌트에서 선택된 위치를 전달받음 */}
+        <View style={styles.mapContainer}>
+          <GoogleMapComponent
+            searchPlace={searchMyPlace}
+            onLocationSelect={handleLocationSelect}
+          />
+        </View>
+
+        {/* 선택된 위치 출력 */}
+        {location && (
+          <View style={styles.locationContainer}>
+            <Text>위도: {location.lat}</Text>
+            <Text>경도: {location.lng}</Text>
+          </View>
+        )}
       </View>
     </View>
   );
@@ -144,6 +160,10 @@ const styles = StyleSheet.create({
   // },
   text: {
     fontSize: 16,
+  },
+  mapContainer: {
+    flex: 1,
+    marginTop: 20,
   },
 });
 
