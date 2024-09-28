@@ -10,7 +10,9 @@ import BottomTabNavigator from "./src/navigations/BottomTabNavigator";
 export default function App() {
   const isLoggedIn = useStore((state) => state.isLoggedIn);
   const rememberMe = useStore((state) => state.rememberMe);
-  console.log("로그인", isLoggedIn, "자동로그인", rememberMe);
+  const id = useStore((state) => state.id);
+
+  console.log("로그인", isLoggedIn, "자동로그인", rememberMe, "아이디", id);
   return (
     <NavigationContainer>
       {/* 여기 주석풀면 한번로그인하면 자동로그인. */}

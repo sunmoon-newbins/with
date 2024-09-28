@@ -1,25 +1,30 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 
-import SearchBar from "../../components/common/SearchBar";
 import InputTextField from "../../components/common/InputTextField";
-// import s
-import GoogleMapComponent from "../../components/BoardCreate/GoogleMapComponent";
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import googleApi from "../../configs/googleApi.json";
+import MapView, { Marker } from "react-native-maps";
+import IPConfig from "../../configs/IPConfig.json";
+import useStore from "../../components/user/useStore";
+import axios from "axios";
 
 const InsertMyPlaceScreen = ({ navigation }) => {
-  const [searchMyPlace, setSearchMyPlace] = useState("");
+  const loginId = useStore((state) => state.id); // 지금 로그인한 아이디
 
-  const [myPlace, setMyPlace] = useState(""); // 비어있음.
+  const apiKey = googleApi.googleAPi;
 
-  const handleSearchSubmit = async () => {
-    console.log(searchMyPlace);
+  // console.log("loginId: ", loginId);
 
-    // 지도에 내가 검색한 주소 쪽으로 가게,,,
-  };
+  const [address, setAddress] = useState(""); // 주소 저장
+  // const [searchMyPlace, setSearchMyPlace] = useState(""); // 검색어 저장
+  const [myPlaceName, setMyPlaceName] = useState(""); // 장소 이름 저장
+  const [latitude, setLatitude] = useState(37.5665); // 기본값 서울 위도
+  const [longitude, setLongitude] = useState(126.978); // 기본값 서울 경도
+
   return (
     <View style={styles.container}>
-      {/* 커스텀 헤더 */}
-
+      {/* 헤더 */}
       <View style={styles.header}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
@@ -27,98 +32,145 @@ const InsertMyPlaceScreen = ({ navigation }) => {
         >
           <Image
             source={require("../../../assets/BackIcon.png")}
-            style={[{ width: 25, height: 25 }]}
+            style={{ width: 25, height: 25 }}
           />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>나만의 장소 추가</Text>
         <TouchableOpacity
-          onPress={() => navigation.navigate("MainBoardWriteScreen")}
+          onPress={async () => {
+            try {
+              await axios.patch(`${IPConfig.IP}/users/${loginId}/places`, {
+                placeName: myPlaceName, // 장소
+                placeType: 1,
+                roadAddress: address,
+                address: address,
+                latitude: latitude,
+                longitude: longitude,
+              });
+              console.log("서버로 데이터 전송 성공!");
+            } catch (error) {
+              console.error("서버로 데이터 전송 실패 : ", error);
+            } finally {
+              navigation.navigate("MainBoardWriteScreen", {
+                latitude: latitude,
+                longitude: longitude,
+                myPlaceName: myPlaceName,
+                placeType: 1, // 나만의 장소
+              });
+            }
+          }}
           style={styles.headerRight}
         >
           <Text style={styles.headerText}>완료</Text>
         </TouchableOpacity>
       </View>
-      <View style={styles.paddingView}>
-        {/* 메인 컨텐츠 영역 */}
-        <View>
-          <View style={styles.headerContainer}>
-            {/* 검색바 */}
-            <View style={styles.searchBarWrapper}>
-              <SearchBar
-                value={searchMyPlace}
-                onChangeText={setSearchMyPlace}
-                onSubmit={handleSearchSubmit}
-                placeholder="주소 검색"
-              />
-            </View>
-            {/* 검색 아이콘 */}
-            <TouchableOpacity onPress={handleSearchSubmit}>
-              <Image
-                resizeMode="contain"
-                source={require("../../../assets/Search.png")}
-                style={styles.searchIcon}
-              />
-            </TouchableOpacity>
-          </View>
-        </View>
 
+      {/* GooglePlacesAutocomplete 컴포넌트 */}
+      <GooglePlacesAutocomplete
+        placeholder="주소 검색"
+        onPress={(data, details = null) => {
+          if (details) {
+            setLatitude(details.geometry.location.lat);
+            setLongitude(details.geometry.location.lng);
+            setAddress(details.formatted_address);
+          }
+        }}
+        query={{
+          key: apiKey,
+          language: "ko",
+        }}
+        styles={{
+          container: {
+            flex: 0,
+            width: "100%",
+            marginTop: 10,
+            // paddingHorizontal: 20,
+          },
+          textInputContainer: {
+            width: "100%",
+            backgroundColor: "white",
+            borderWidth: 1,
+            borderColor: "#ddd",
+            borderRadius: 5,
+            padding: 5,
+          },
+          listView: {
+            backgroundColor: "white",
+            position: "absolute",
+            top: 50,
+            zIndex: 1,
+          },
+        }}
+        fetchDetails={true}
+      />
+
+      <View style={styles.paddingView}>
+        {/* 장소 이름 입력 */}
         <InputTextField
           label="나만의 장소 이름"
           placeholder="나만의 장소 이름을 입력하시오."
-          value={myPlace}
-          onChangeText={setMyPlace}
-          labelStyle={styles.label} // 커스텀 label 스타일
+          value={myPlaceName}
+          onChangeText={setMyPlaceName}
+          labelStyle={styles.label}
         />
 
-        {/* 지도 화면 남은 공간 다 채워서 있고, 위에  searchMyPlace 에 검색한 곳이 지도에 적용되며 , 지도에서 마커를 찍으면 그 마커 찍은곳의 위도, 경도를 가져와서 상태변수로 관리함  */}
-        {/* GoogleMap 컴포넌트에서 선택된 위치를 전달받음 */}
-        <View style={styles.mapContainer}>
-          <GoogleMapComponent
-            searchPlace={searchMyPlace}
-            onLocationSelect={handleLocationSelect}
-          />
-        </View>
+        {/* 주소 표시 */}
+        <Text style={styles.label}> 주소 </Text>
+        <Text> {address}</Text>
 
-        {/* 선택된 위치 출력 */}
-        {location && (
-          <View style={styles.locationContainer}>
-            <Text>위도: {location.lat}</Text>
-            <Text>경도: {location.lng}</Text>
-          </View>
-        )}
+        {/* MapView */}
+        <View style={styles.mapContainer}>
+          <MapView
+            style={styles.map}
+            initialRegion={{
+              latitude: latitude, // 위도
+              longitude: longitude, // 경도
+              latitudeDelta: 0.01, // 확대 수준
+              longitudeDelta: 0.01, // 확대 수준
+            }}
+            region={{
+              latitude: latitude,
+              longitude: longitude,
+              latitudeDelta: 0.01,
+              longitudeDelta: 0.01,
+            }}
+            onPress={async (e) => {
+              const { latitude, longitude } = e.nativeEvent.coordinate; // 터치한 좌표 가져오기
+              setLatitude(latitude);
+              setLongitude(longitude);
+
+              const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${apiKey}&language=ko`;
+              try {
+                const response = await fetch(url);
+                const data = await response.json();
+                if (data.status === "OK") {
+                  const formattedAddress = data.results[0].formatted_address;
+                  setAddress(formattedAddress); // 주소 업데이트 . 역 지오코딩한거.
+                } else {
+                  console.error("Geocoding API 에러 :", data.status);
+                }
+              } catch (error) {
+                console.error("API 요청오류 :", error);
+              }
+            }}
+          >
+            {/* 마커 추가 */}
+            <Marker
+              coordinate={{ latitude: latitude, longitude: longitude }}
+              title="선택한 장소"
+              description={address}
+            />
+          </MapView>
+        </View>
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  paddingView: {
-    paddingHorizontal: 18, // 양옆으로만
-  },
-  label: {
-    fontSize: 16,
-    fontWeight: "bold",
-    marginBottom: 8,
-  },
-  searchIcon: {
-    width: 24,
-    height: 24,
-    padding: 8,
-  },
-  searchBarWrapper: {
-    flex: 1, // 검색바가 가능한 모든 공간을 차지하도록 설정
-    marginHorizontal: 4,
-    height: 40, // 높이 설정
-  },
-  headerContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    // paddingHorizontal: ,
-    marginTop: 10, //
-    marginBottom: 16, // marginBottom 조정 (원래는 16)
-  },
   container: {
     flex: 1,
+    backgroundColor: "#f8f8f8",
   },
   header: {
     height: 60,
@@ -137,7 +189,7 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     flex: 1,
-    textAlign: "left",
+    textAlign: "center",
     fontSize: 18,
     fontWeight: "bold",
     color: "#333",
@@ -150,20 +202,25 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 18,
     color: "#000000",
-    fontSize: 18,
     fontWeight: "bold",
   },
-  // content: {
-  //   flex: 1,
-  //   justifyContent: "center",
-  //   alignItems: "center",
-  // },
-  text: {
+  paddingView: {
+    flex: 1,
+    paddingHorizontal: 18,
+  },
+  label: {
     fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 8,
   },
   mapContainer: {
+    flex: 1, // 부모 뷰의 남은 공간을 모두 차지하도록 설정
+    marginTop: 20, // 위쪽 여백
+    width: "100%",
+    marginHorizontal: 0,
+  },
+  map: {
     flex: 1,
-    marginTop: 20,
   },
 });
 

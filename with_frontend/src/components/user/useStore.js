@@ -16,7 +16,7 @@ const useStore = create(
       nickname: "길동이",
       language: "KOR",
       isLoggedIn: false, // 기본값 false
-      rememberMe: true, //
+      rememberMe: false, //
       // 둘다 트루면 로그인 된상태로 계속 앱 켜짐.
 
       // 상태 업데이트 함수들

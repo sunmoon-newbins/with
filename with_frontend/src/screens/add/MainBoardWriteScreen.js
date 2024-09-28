@@ -5,6 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  ScrollView,
 } from "react-native";
 
 import ThreeTabButton from "../../components/Boards/ThreeTabButton";
@@ -57,70 +58,83 @@ const MainBoardWriteScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      {/* 제목 입력 */}
-      <InputTextField
-        label="제목"
-        placeholder="제목을 입력하시오."
-        value={title}
-        onChangeText={setTitle}
-        labelStyle={styles.label} // 커스텀 label 스타일
-      />
+    <ScrollView
+      style={styles.scrollContainer}
+      contentContainerStyle={styles.scrollContentContainer}
+    >
+      <View style={styles.container}>
+        {/* 제목 입력 */}
+        <InputTextField
+          label="제목"
+          placeholder="제목을 입력하시오."
+          value={title}
+          onChangeText={setTitle}
+          labelStyle={styles.label} // 커스텀 label 스타일
+        />
 
-      {/* 글 종류 선택 */}
-      <View style={styles.labelContainer}>
-        <Text style={styles.label}>글 종류</Text>
-        <Text style={styles.labelPeople}>인원수</Text>
-      </View>
-
-      <View style={styles.row}>
-        <View style={styles.tabContainer}>
-          <ThreeTabButton
-            title="소개"
-            isActive={activeTab === "소개"}
-            onPress={() => setActiveTab("소개")}
-          />
-          <ThreeTabButton
-            title="모집"
-            isActive={activeTab === "모집"}
-            onPress={() => setActiveTab("모집")}
-          />
+        {/* 글 종류 선택 */}
+        <View style={styles.labelContainer}>
+          <Text style={styles.label}>글 종류</Text>
+          <Text style={styles.labelPeople}>인원수</Text>
         </View>
 
-        <View style={styles.peopleContainer}>
-          <TouchableOpacity
-            style={[styles.peopleButton, styles.activeTabButton]}
-            onPress={decrementPeople}
-          >
-            <Text style={styles.peopleButtonText}>-</Text>
-          </TouchableOpacity>
-          <TextInput
-            style={styles.peopleInput}
-            keyboardType="number-pad"
-            value={numberOfPeople}
-            onChangeText={handlePeopleChange}
-            placeholder="인원"
-            placeholderTextColor="#9094B8" // 인원이 비어있을 때 표시되는 색상
-          />
-          <TouchableOpacity
-            style={[styles.peopleButton, styles.activeTabButton]}
-            onPress={incrementPeople}
-          >
-            <Text style={styles.peopleButtonText}>+</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-      <DateRangePicker onDateChange={handleDateChange} />
-      {/* 시작날 종료날 */}
-      <DayPlan startDate={dates.startDate} endDate={dates.endDate} />
-      {/* 받은거 바로 얘한테 줘서 쓸 수 있게. */}
+        <View style={styles.row}>
+          <View style={styles.tabContainer}>
+            <ThreeTabButton
+              title="소개"
+              isActive={activeTab === "소개"}
+              onPress={() => setActiveTab("소개")}
+            />
+            <ThreeTabButton
+              title="모집"
+              isActive={activeTab === "모집"}
+              onPress={() => setActiveTab("모집")}
+            />
+          </View>
 
-      <LongButton title="작성 완료" />
-    </View>
+          <View style={styles.peopleContainer}>
+            <TouchableOpacity
+              style={[styles.peopleButton, styles.activeTabButton]}
+              onPress={decrementPeople}
+            >
+              <Text style={styles.peopleButtonText}>-</Text>
+            </TouchableOpacity>
+            <TextInput
+              style={styles.peopleInput}
+              keyboardType="number-pad"
+              value={numberOfPeople}
+              onChangeText={handlePeopleChange}
+              placeholder="인원"
+              placeholderTextColor="#9094B8" // 인원이 비어있을 때 표시되는 색상
+            />
+            <TouchableOpacity
+              style={[styles.peopleButton, styles.activeTabButton]}
+              onPress={incrementPeople}
+            >
+              <Text style={styles.peopleButtonText}>+</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <DateRangePicker onDateChange={handleDateChange} />
+        {/* 시작날 종료날 */}
+        <DayPlan startDate={dates.startDate} endDate={dates.endDate} />
+        {/* 받은거 바로 얘한테 줘서 쓸 수 있게. */}
+
+        <LongButton title="작성 완료" />
+      </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  scrollContainer: {
+    flex: 1,
+    backgroundColor: "#fff",
+  },
+  scrollContentContainer: {
+    flexGrow: 1, //
+    paddingBottom: 20,
+  },
   container: {
     flex: 1,
     padding: 20,
