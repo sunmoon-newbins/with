@@ -1,7 +1,8 @@
 import React from "react";
 import { View, StyleSheet, TextInput } from "react-native";
 
-function SearchBar({ value, onChangeText }) {
+function SearchBar({ value, onChangeText, onSubmit }) {
+  // onSubmit 은 엔터쳤을 때
   return (
     <View style={styles.searchContainer}>
       <TextInput
@@ -10,6 +11,7 @@ function SearchBar({ value, onChangeText }) {
         placeholderTextColor="rgba(0, 0, 0, 0.3)" // 그냥 검은색에 70% 투명도
         value={value}
         onChangeText={onChangeText}
+        onSubmitEditing={onSubmit} // 엔터(완료) 버튼을 눌렀을 때 실행될 함수
       />
     </View>
   );
