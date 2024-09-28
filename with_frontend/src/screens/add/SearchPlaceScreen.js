@@ -67,7 +67,7 @@ function SearchPlaceScreen() {
 
   const { width } = useWindowDimensions(); // 화면의 너비를 가져옴
   const buttonWidth = Math.min(width * 0.2, 100); // 버튼의 최대 너비를 설정
-  const imageWidth = Math.min(width * 0.5, 120); // 이미지의 최대 너비를 설정
+  const imageWidth = Math.min(width * 0.5, 100); // 이미지의 최대 너비를 설정
 
   const [searchText, setSearchText] = useState(""); // 검색 텍스트를 관리하는 상태
   const [resultPlace, setResultPlace] = useState([]); // 검색 결과 장소 상태

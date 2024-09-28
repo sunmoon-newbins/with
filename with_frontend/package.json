@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@expo/metro-runtime": "~3.2.3",
+    "@mj-studio/react-native-naver-map": "^2.2.0",
     "@react-native-async-storage/async-storage": "^1.23.1",
     "@react-navigation/bottom-tabs": "^6.6.1",
     "@react-navigation/drawer": "^6.7.2",
@@ -17,6 +18,7 @@
     "@react-navigation/stack": "^6.4.1",
     "expo": "~51.0.34",
     "expo-app-loading": "^2.1.1",
+    "expo-build-properties": "~0.12.5",
     "expo-font": "~12.0.10",
     "expo-status-bar": "~1.12.1",
     "moment": "^2.30.1",
