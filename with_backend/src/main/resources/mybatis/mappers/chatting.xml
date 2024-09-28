@@ -4,6 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.newbins.mapper.ChattingMapper">
     <select id="getChattingRoomList" parameterType="String" resultType="chattingRoomList">
+        -- 나의 채팅방 목록 가져오기
         WITH CHATTING_ROOM_NUMS AS ( -- 해당 유저가 속한 채팅방 번호들
             SELECT CHATTING_NUM
             FROM CHATTING_USER
@@ -24,7 +25,7 @@
                  FROM message m) as subquery
             where rn = 1
         ),
-        current_users as ( -- 각 채팅방 별 현재 유저
+        current_users as ( -- 각 채팅방 별 현재 유저 수
             select
                 chatting_num,
                 count(*) as current_user_count
@@ -48,6 +49,7 @@
     </select>
 
     <insert id="setChattingUser" parameterType="String">
+        -- 채팅방 연결 시 데이터 저장(이미 데이터가 존재하는 경우에는 아무것도 안함)
         INSERT INTO CHATTING_USER (CHATTING_NUM, USER_NUM, ADMISSION_DT, WRITER_ROLE)
         SELECT
             #{chattingId},
@@ -69,4 +71,47 @@
                 AND USER_NUM = #{userId}
         );
     </insert>
+
+    <select id="getMessages" parameterType="String" resultType="message">
+        -- 처음 들어간 시간 이후 메시지 가져오기
+        WITH ADMISSION AS ( -- 해당 유저가 채팅방에 처음 입장한 시간
+            SELECT
+                ADMISSION_DT
+            FROM CHATTING_USER
+            WHERE CHATTING_NUM = #{chattingId}
+                AND USER_NUM = #{userId}
+        ),
+        TOTAL_USERS AS (  -- 채팅방의 총 유저 수
+            SELECT
+                CHATTING_NUM,
+                COUNT(*) AS TOTAL_USER_COUNT
+            FROM CHATTING_USER
+            WHERE CHATTING_NUM = #{chattingId}
+            GROUP BY CHATTING_NUM
+        )
+        SELECT -- 해당 유저기 입장한 시간 이후 메시지들의 정보 + 안읽은 사람 수
+            M.MESSAGE_NUM,
+            M.CHATTING_NUM,
+            M.USER_NUM,
+            M.CONTENT,
+            TU.TOTAL_USER_COUNT - COUNT(MRS.USER_NUM) AS UNREAD_COUNT,
+            M.SEND_DT
+        FROM MESSAGE M
+            LEFT JOIN MESSAGE_READ_STATUS MRS ON (M.MESSAGE_NUM = MRS.MESSAGE_NUM)
+            LEFT JOIN TOTAL_USERS TU ON (M.CHATTING_NUM = TU.CHATTING_NUM)
+        WHERE M.CHATTING_NUM = #{chattingId}
+            AND SEND_DT > (SELECT ADMISSION_DT FROM ADMISSION)
+        GROUP BY M.MESSAGE_NUM, M.CHATTING_NUM, M.USER_NUM, M.CONTENT, M.SEND_DT, TU.TOTAL_USER_COUNT
+    </select>
+
+    <select id="getChattingUsers" parameterType="String" resultType="users">
+        -- 채팅방 유저들의 정보 가져오기
+        select *
+        from users
+        where user_num in (
+            select user_num
+            from chatting_user
+            where chatting_num = '9761e272-7c1d-11ef-95ee-bc0358927c36'
+        )
+    </select>
 </mapper>

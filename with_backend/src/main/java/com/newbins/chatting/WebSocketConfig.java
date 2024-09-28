@@ -28,7 +28,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
         registry.addHandler(webSocketMessageHandler, "/users/{userId}/chatting/{chattingId}/ws")
                 .setAllowedOrigins("*")
                 .addInterceptors(new HandshakeInterceptor() {
-                    //
+                    // 클라이언트와 서버 간에 WebSocket 연결을 설정(핸드셰이크)
                     @Override
                     public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Map<String, Object> attributes) throws Exception {
 //                        String path = ((ServletServerHttpRequest) request).getServletRequest().getRequestURI();
@@ -38,6 +38,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
                         return true;
                     }
 
+                    // 연결 후 실행
                     @Override
                     public void afterHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Exception exception) {
 
