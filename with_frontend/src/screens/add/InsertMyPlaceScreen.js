@@ -37,28 +37,29 @@ const InsertMyPlaceScreen = ({ navigation }) => {
         </TouchableOpacity>
         <Text style={styles.headerTitle}>나만의 장소 추가</Text>
         <TouchableOpacity
-          onPress={async () => {
-            try {
-              await axios.patch(`${IPConfig.IP}/users/${loginId}/places`, {
-                placeName: myPlaceName, // 장소
-                placeType: 1,
-                roadAddress: address,
-                address: address,
-                latitude: latitude,
-                longitude: longitude,
-              });
-              console.log("서버로 데이터 전송 성공!");
-            } catch (error) {
-              console.error("서버로 데이터 전송 실패 : ", error);
-            } finally {
-              navigation.navigate("MainBoardWriteScreen", {
-                latitude: latitude,
-                longitude: longitude,
-                myPlaceName: myPlaceName,
-                placeType: 1, // 나만의 장소
-              });
-            }
-          }}
+          // onPress={async () => {
+          //   try {
+          //     await axios.patch(`${IPConfig.IP}/users/${loginId}/places`, {
+          //       placeName: myPlaceName, // 장소
+          //       placeType: 1,
+          //       roadAddress: address,
+          //       address: address,
+          //       latitude: latitude,
+          //       longitude: longitude,
+          //     });
+          //     console.log("서버로 데이터 전송 성공!");
+          //   } catch (error) {
+          //     console.error("서버로 데이터 전송 실패 : ", error);
+          //   } finally {
+          //     navigation.navigate("MainBoardWriteScreen", {
+          //       latitude: latitude,
+          //       longitude: longitude,
+          //       myPlaceName: myPlaceName,
+          //       placeType: 1, // 나만의 장소
+          //     });
+          //   }
+          // }}
+          onPress={() => navigation.navigate("MainBoardWriteScreen")}
           style={styles.headerRight}
         >
           <Text style={styles.headerText}>완료</Text>
