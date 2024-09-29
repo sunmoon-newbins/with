@@ -114,46 +114,4 @@
             where chatting_num = '9761e272-7c1d-11ef-95ee-bc0358927c36'
         )
     </select>
-
-    <insert id="setMessage" parameterType="String" useGeneratedKeys="true" keyProperty="messageId">
-        INSERT INTO MESSAGE (
-            CHATTING_NUM,
-            USER_NUM,
-            CONTENT
-        )
-        VALUES (
-            #{chattingId},
-            #{userId},
-            #{content}
-        );
-
-        INSERT INTO MESSAGE_READ_STATUS
-        VALUES (
-            LAST_INSERT_ID(),
-            #{userId},
-            SYSDATE()
-        );
-    </insert>
-
-    <select id="getMessageById" parameterType="Long" resultType="message">
-        -- 메시지 정보 가져오기
-        WITH TOTAL_USERS AS (  -- 채팅방의 총 유저 수
-            SELECT
-                CHATTING_NUM,
-                COUNT(*) AS TOTAL_USER_COUNT
-            FROM CHATTING_USER
-            WHERE CHATTING_NUM = (SELECT CHATTING_NUM FROM MESSAGE WHERE MESSAGE_NUM = #{_parameter})
-            GROUP BY CHATTING_NUM
-        )
-        SELECT
-            M.USER_NUM,
-            M.CONTENT,
-            TU.TOTAL_USER_COUNT - COUNT(MRS.USER_NUM) AS UNREAD_COUNT,
-            M.SEND_DT
-        FROM MESSAGE M
-                 LEFT JOIN MESSAGE_READ_STATUS MRS ON(M.MESSAGE_NUM = MRS.MESSAGE_NUM)
-                 LEFT JOIN TOTAL_USERS TU ON(M.CHATTING_NUM = TU.CHATTING_NUM)
-        WHERE M.MESSAGE_NUM = #{_parameter}
-        GROUP BY M.USER_NUM, M.CONTENT, M.SEND_DT;
-    </select>
 </mapper>

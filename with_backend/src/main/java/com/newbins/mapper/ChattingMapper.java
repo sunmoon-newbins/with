@@ -14,7 +14,4 @@ public interface ChattingMapper {
     void setChattingUser(@Param("chattingId") String chattingId, @Param("userId")String userId);
     List<MessageEntity> getMessages(@Param("chattingId")String chattingId, @Param("userId")String userId);
     List<UsersEntity> getChattingUsers(String chattingId);
-    long setMessage(@Param("chattingId")String chattingId,
-                     @Param("userId")String userId, @Param("content")String message);
-    MessageEntity getMessageById(long messageId);
 }
