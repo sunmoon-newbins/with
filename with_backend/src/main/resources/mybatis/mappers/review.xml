@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newbins.mapper.ReviewMapper">
+    <select id="getReviewsByUserId" parameterType="String" resultType="review">
+        SELECT
+            R.ROUTE_NUM ,
+            R.USER_NUM ,
+            U.NAME ,
+            U.PROFILE,
+            R.DALANT ,
+            R.CONTENT ,
+            R.WRITE_DT
+        FROM REVIEW R
+                 LEFT JOIN USERS U ON (R.USER_NUM = U.USER_NUM)
+        WHERE ROUTE_NUM IN (
+            SELECT
+                ROUTE_NUM
+            FROM ROUTE
+            WHERE USER_NUM = #{userId}
+        )
+        ORDER BY WRITE_DT DESC
+    </select>
+</mapper>
