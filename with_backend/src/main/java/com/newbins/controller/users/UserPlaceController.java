@@ -6,6 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequestMapping(value = "/users/{user_id}/places")
@@ -14,6 +16,11 @@ public class UserPlaceController {
     @Autowired
     UserPlaceService userPlaceService;
 
+    @GetMapping
+    public List<Place> getMyPlaces(@PathVariable("user_id") String userNum) {
+        log.info("[getMyPlaces] userId = {}", userNum);
+        return userPlaceService.getMyPlaces(userNum);
+    }
     // 나만의 장소 추가
     @PostMapping
     public Place addMyPlace(@PathVariable("user_id") String userId,
