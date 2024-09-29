@@ -63,4 +63,19 @@ public class RouteServiceImpl implements RouteService {
         }
         return routes;
     }
+
+    public List<Route> getRoutes(String userNum) {
+        //조건으로 status 넣고, 정렬 sortType
+        log.info("[getRoutes] : userNum = {}", userNum);
+        // MyBatis Mapper를 호출하여 RouteEntity 목록을 받아옵니다.
+        List<RouteEntity> routeEntities = routeMapper.getRouteByUserNum(userNum);
+
+        // RouteEntity를 Route로 변환하여 List로 반환
+        List<Route> routes = new ArrayList<>();
+        for (RouteEntity entity : routeEntities) {
+            Route route = new Route();
+            routes.add(route.toDTO(entity)); // Route 클래스에 정의된 toDTO() 메서드 사용
+        }
+        return routes;
+    }
 }
