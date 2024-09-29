@@ -13,6 +13,7 @@ import com.newbins.service.UserChattingService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.socket.TextMessage;
 
 import java.util.List;
 
@@ -77,5 +78,19 @@ public class UserChattingServiceImpl implements UserChattingService {
                 .messages(messageList)
                 .users(userList)
                 .build();
+    }
+
+    @Override
+    public Message sendMessage(String chattingId, String userId, String message) {
+        try{
+            long messageId = chattingMapper.setMessage(chattingId, userId, message);
+            log.info("[sendMessage] successful send message, messageId = {}", messageId);
+            MessageEntity messageEntity = chattingMapper.getMessageById(messageId);
+            log.info("[sendMessage] successful get message info");
+            return new Message().toDTO(messageEntity);
+        } catch(Exception e){
+            log.error("[sendMessage] failed send message");
+        }
+        return null;
     }
 }
