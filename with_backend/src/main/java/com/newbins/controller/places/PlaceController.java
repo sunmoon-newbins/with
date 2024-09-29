@@ -25,6 +25,7 @@ public class PlaceController {
     // 장소 검색
     @GetMapping("/search")
     public List<Place> searchPlaces(@RequestParam(required = false) String placeName){
+        log.info("[searchPlaces] : placeName = {}", placeName);
         return placeService.searchPlaces(placeName);
     }
 
