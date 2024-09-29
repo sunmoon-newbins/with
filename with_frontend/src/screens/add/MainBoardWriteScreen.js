@@ -16,8 +16,10 @@ import { useNavigation } from "@react-navigation/native"; // 네비게이션 훅
 import moment from "moment";
 import { useRoute } from "@react-navigation/native";
 
+import MapView, { Marker } from "react-native-maps";
+
 const MainBoardWriteScreen = () => {
-  // 🔵 상태 관리
+  //  상태 관리
   // 제목, 글 종류, 인원수 등의 상태를 관리
   const [title, setTitle] = useState(""); // 제목
   const [activeTab, setActiveTab] = useState("모집"); // 글 종류
@@ -35,6 +37,7 @@ const MainBoardWriteScreen = () => {
   // placeType 3 숙소
   // placeType 4 식당
 
+  // plans 하나에 [
   //   {
   //     day: "Day 1", // Day 1, Day 2 등으로 구분
   //     date: "2024-09-29", // 날짜 (YYYY-MM-DD 형식)
@@ -60,6 +63,7 @@ const MainBoardWriteScreen = () => {
   //     ]
   //   },
   //   { day 2 ~~~ }
+  //  ]
 
   const route = useRoute(); // Route 객체 사용하여 전달된 파라미터 받기
   const { latitude, longitude, myPlaceName, placeType } = route.params || {}; // 전달된 장소 정보
@@ -68,7 +72,12 @@ const MainBoardWriteScreen = () => {
 
   const [selectedDay, setSelectedDay] = useState(null); // 선택된 날짜 상태
 
-  // 🔵 전달된 장소 정보를 선택된 날짜에 추가
+  //  지도 보기 상태 관리
+  const [mapVisible, setMapVisible] = useState(false); // 처음엔 안보이게 .
+  //  선택된 계획 상태 관리
+  const [selectedPlan, setSelectedPlan] = useState(null);
+
+  //  전달된 장소 정보를 선택된 날짜에 추가
   useEffect(() => {
     if (latitude && longitude && myPlaceName && placeType && selectedDay) {
       console.log(
@@ -109,7 +118,17 @@ const MainBoardWriteScreen = () => {
 
   const navigation = useNavigation(); // 네비게이션 객체 가져오기
 
-  // 🔵 날짜 선택 시 계획 목록을 초기화
+  const handleShowMap = (plan) => {
+    setSelectedPlan(plan);
+    setMapVisible(true);
+  };
+
+  const handleHideMap = () => {
+    setMapVisible(false);
+    setSelectedPlan(null);
+  };
+
+  // 날짜 선택 시 계획 목록을 초기화
   const handleDateChange = (newDates) => {
     setDates(newDates);
 
@@ -119,7 +138,7 @@ const MainBoardWriteScreen = () => {
     }
   };
 
-  // 🔵 날짜 범위(startDate와 endDate) 기반으로 날짜 목록 생성
+  //  날짜 범위(startDate와 endDate) 기반으로 날짜 목록 생성
   // 각 날짜별로 day, date, dayOfWeek, places(장소 리스트)를 초기화
   const getDateList = (start, end) => {
     const dates = [];
@@ -138,7 +157,7 @@ const MainBoardWriteScreen = () => {
     return dates;
   };
 
-  // 🔵 인원수 증가 함수
+  //  인원수 증가 함수
   const incrementPeople = () => {
     setNumberOfPeople((prev) => {
       const newNumber = parseInt(prev) || 0;
@@ -146,7 +165,7 @@ const MainBoardWriteScreen = () => {
     });
   };
 
-  // 🔵 인원수 감소 함수
+  //  인원수 감소 함수
   const decrementPeople = () => {
     setNumberOfPeople((prev) => {
       const newNumber = parseInt(prev) || 0;
@@ -154,7 +173,7 @@ const MainBoardWriteScreen = () => {
     });
   };
 
-  // 🔵 인원수 입력 변경 함수
+  //  인원수 입력 변경 함수
   const handlePeopleChange = (text) => {
     // 숫자만 허용하고 빈 문자열도 허용
     if (/^\d*$/.test(text)) {
@@ -165,7 +184,7 @@ const MainBoardWriteScreen = () => {
   return (
     <ScrollView>
       <View style={styles.container}>
-        {/* 🔵 제목 입력 필드 */}
+        {/* 제목 입력 필드 */}
         <InputTextField
           label="제목"
           placeholder="제목을 입력하시오."
@@ -174,7 +193,7 @@ const MainBoardWriteScreen = () => {
           labelStyle={styles.label}
         />
 
-        {/* 🔵 글 종류 선택 및 인원수 입력 */}
+        {/*  글 종류 선택 및 인원수 입력 */}
         <View style={styles.labelContainer}>
           <Text style={styles.label}>글 종류</Text>
           <Text style={styles.labelPeople}>인원수</Text>
@@ -218,27 +237,91 @@ const MainBoardWriteScreen = () => {
           </View>
         </View>
 
-        {/* 🔵 날짜 선택 */}
+        {/*  날짜 선택 */}
         <DateRangePicker onDateChange={handleDateChange} />
 
-        {/* 🔵 일정 계획 (날짜별 장소 추가) */}
+        {/*  일정 계획 (날짜별 장소 추가) */}
         <ScrollView contentContainerStyle={styles.scrollContainer}>
           {plans.map((item, index) => (
             <View key={index} style={styles.planContainer}>
               <Text style={styles.dateTitle}>
                 {`${item.day} ${item.date} / ${item.dayOfWeek}`}
               </Text>
+
+              {/*  Day 아래에 지도 보기 버튼 추가 */}
+              {item.places.length > 0 && (
+                <TouchableOpacity
+                  style={styles.mapButton}
+                  onPress={() => handleShowMap(item)} // 현재 일정을 기반으로 지도 보기
+                >
+                  <Text style={styles.mapButtonText}>지도로 보기</Text>
+                </TouchableOpacity>
+              )}
+
+              {/*  선택된 Day에 해당하는 장소의 지도 표시 */}
+              {mapVisible && selectedPlan?.date === item.date && (
+                <View style={styles.mapContainer}>
+                  <MapView
+                    style={styles.map}
+                    initialRegion={{
+                      latitude: selectedPlan.places[0].latitude, // 첫 장소의 위도
+                      longitude: selectedPlan.places[0].longitude, // 첫 장소의 경도
+                      latitudeDelta: 0.05, // 지도의 확대 수준
+                      longitudeDelta: 0.05, // 지도의 확대 수준
+                    }}
+                  >
+                    {selectedPlan.places.map((place, index) => (
+                      <Marker
+                        key={index}
+                        coordinate={{
+                          latitude: place.latitude,
+                          longitude: place.longitude,
+                        }}
+                        title={`장소 ${place.order}`}
+                        description={place.placeName}
+                      >
+                        {/* Custom Marker */}
+                        <View
+                          style={[
+                            styles.marker,
+                            {
+                              backgroundColor:
+                                place.placeType === 1
+                                  ? "#5775CD" // 나만의 장소
+                                  : place.placeType === 2
+                                  ? "#B6FFB6" // 관광명소
+                                  : place.placeType === 3
+                                  ? "#D9B6FF" // 숙소
+                                  : "#FFB6B6", // 식당
+                            },
+                          ]}
+                        >
+                          <Text style={styles.markerText}>{place.order}</Text>
+                        </View>
+                      </Marker>
+                    ))}
+                  </MapView>
+                  {/* 지도 닫기 버튼 추가 */}
+                  <TouchableOpacity
+                    style={styles.closeMapButton}
+                    onPress={handleHideMap}
+                  >
+                    <Text style={styles.closeMapButtonText}>닫기</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+
               {item.places.length > 0 ? (
                 item.places.map((place, placeIndex) => (
                   <View key={placeIndex} style={styles.placeContainer}>
                     <Text style={styles.placeText}>
-                      {/* 🔴 placeType에 따라 다른 문자열을 출력 */}
+                      {/*  placeType에 따라 다른 문자열을 출력 */}
                       {`${place.order} . `}
                       {place.placeType === 1 && "나만의 장소 "}
                       {place.placeType === 2 && "관광명소 "}
                       {place.placeType === 3 && "숙소 "}
                       {place.placeType === 4 && "식당 "}
-                      {/* 🔴 장소명 출력 */}
+                      {/*  장소명 출력 */}
                       {` ${place.placeName}`}
                     </Text>
                   </View>
@@ -248,7 +331,7 @@ const MainBoardWriteScreen = () => {
                   방문할 곳을 추가해주세요.
                 </Text>
               )}
-              {/* 🔵 장소 추가 버튼 */}
+              {/*  장소 추가 버튼 */}
               <TouchableOpacity
                 style={styles.addButton}
                 onPress={() => {
@@ -262,7 +345,7 @@ const MainBoardWriteScreen = () => {
           ))}
         </ScrollView>
 
-        {/* 🔵 작성 완료 버튼 */}
+        {/*  작성 완료 버튼 */}
         <LongButton title="작성 완료" />
       </View>
     </ScrollView>
@@ -388,6 +471,57 @@ const styles = StyleSheet.create({
   placeItemText: {
     fontSize: 14,
     marginLeft: 8,
+  },
+  // 🔺 지도 스타일 추가
+  mapContainer: {
+    height: 250, // 원하는 높이 설정
+    borderRadius: 8,
+    overflow: "hidden",
+    marginBottom: 10,
+  },
+  map: {
+    width: "100%",
+    height: "100%",
+  },
+  // 🔺 Custom Marker 스타일 추가
+  marker: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    backgroundColor: "red",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  markerText: {
+    color: "white",
+    fontWeight: "bold",
+  },
+  // 🔺 지도 닫기 버튼 스타일 추가
+  closeMapButton: {
+    position: "absolute",
+    top: 20,
+    right: 20,
+    backgroundColor: "#fff",
+    borderRadius: 8,
+    padding: 10,
+    elevation: 5,
+  },
+  closeMapButtonText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#333",
+  },
+  // 🔺 지도 보기 버튼 스타일 추가
+  mapButton: {
+    backgroundColor: "#e6e6e6",
+    padding: 10,
+    borderRadius: 4,
+    alignItems: "center",
+    marginBottom: 12,
+  },
+  mapButtonText: {
+    color: "#333",
+    fontSize: 14,
   },
 });
 

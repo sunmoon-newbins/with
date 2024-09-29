@@ -20,10 +20,23 @@ const initialSeoulSearchPlace = [
   {
     //
     placeType: 2, //      관광명소
-    placeName: "아산역", // 찐주소
-    latitude: 36.7920561, // 위도 경도
-    longitude: 127.1044621,
+    placeName: "장영실 과학관", // 찐주소
+    latitude: 36.7976746,
+    longitude: 126.9770609,
   },
+  {
+    placeType: 4,
+    placeName: "식당",
+    latitude: 36.7766027,
+    longitude: 127.022734,
+  },
+  {
+    placeType: 3,
+    placeName: "아산 호텔 ",
+    latitude: 36.788836,
+    longitude: 126.9971004,
+  },
+
   // {
   //   placeName: "남산타워",
   //   placeType: "관광명소",
