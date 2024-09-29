@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   ScrollView,
+  Image,
 } from "react-native";
 
 import ThreeTabButton from "../../components/Boards/ThreeTabButton";
@@ -17,6 +18,7 @@ import moment from "moment";
 import { useRoute } from "@react-navigation/native";
 
 import MapView, { Marker } from "react-native-maps";
+import { Swipeable } from "react-native-gesture-handler"; //
 
 const MainBoardWriteScreen = () => {
   //  상태 관리
@@ -37,7 +39,7 @@ const MainBoardWriteScreen = () => {
   // placeType 3 숙소
   // placeType 4 식당
 
-  // plans 하나에 [
+  // plans 하나에 [ places 장소
   //   {
   //     day: "Day 1", // Day 1, Day 2 등으로 구분
   //     date: "2024-09-29", // 날짜 (YYYY-MM-DD 형식)
@@ -77,6 +79,37 @@ const MainBoardWriteScreen = () => {
   //  선택된 계획 상태 관리
   const [selectedPlan, setSelectedPlan] = useState(null);
 
+  // 삭제함수
+  const handleDeletePlace = (planIndex, placeIndex) => {
+    // 삭제 날짜 인덱스, 삭제장소  인덱스
+    setPlans(
+      (
+        prevPlans // 원래 있던 변수에서
+      ) =>
+        prevPlans.map(
+          (
+            plan,
+            i // plan 날짜  , i 인덱스
+          ) =>
+            i === planIndex // 삭제할 장소가 속한 날짜인지 확인 . 인덱스를 ..
+              ? {
+                  ...plan, // 기존 날짜(plan)의 다른 정보는 그대로 유지하고,
+                  places: plan.places // place 중에서
+                    .filter((_, index) => index !== placeIndex) // 선택한 장소 삭제   // 인덱스랑 맞지않는것만 남겨놓는다. 인덱스 맞는건 사라지는거.
+                    // 매개변수를 무시하기 위해 관습적으로 _(언더스코어)
+                    .map((place, index) => ({
+                      ...place,
+                      order: index + 1, // 1부터 새로운 순서로 설정
+                    })),
+                }
+              : plan
+        )
+    );
+  };
+  // 👆 여기다 넣으면 돼!
+
+  // 나머지 컴포넌트 로직...
+
   //  전달된 장소 정보를 선택된 날짜에 추가
   useEffect(() => {
     if (latitude && longitude && myPlaceName && placeType && selectedDay) {
@@ -88,7 +121,7 @@ const MainBoardWriteScreen = () => {
         placeType,
         selectedDay
       );
-      setPlans(
+      +setPlans(
         (
           prevPlans // 이전거에 원래있던거에 date 랑 selectedDay 랑  일치하면
         ) =>
@@ -374,42 +407,57 @@ const MainBoardWriteScreen = () => {
                   </TouchableOpacity>
                 </View>
               )}
-
+              {/* 장소 하나하나 컴포넌트  */}
               {item.places.length > 0 ? (
                 item.places.map((place, placeIndex) => (
-                  <View key={placeIndex} style={styles.placeContainer}>
-                    {/* 핀 디자인 */}
-                    <View
-                      style={[
-                        styles.pinContainer,
-                        {
-                          backgroundColor:
-                            place.placeType === 1
-                              ? "#5775CD" // 나만의 장소
-                              : place.placeType === 2
-                              ? "#B6FFB6" // 관광명소
-                              : place.placeType === 3
-                              ? "#D9B6FF" // 숙소
-                              : "#FFB6B6", // 식당
-                        },
-                      ]}
-                    >
-                      {/* 동그라미 안에 하얀색 번호 */}
-                      <Text style={styles.pinText}>{place.order}</Text>
-                    </View>
+                  <Swipeable
+                    key={placeIndex}
+                    renderRightActions={() => (
+                      <TouchableOpacity
+                        onPress={() => handleDeletePlace(index, placeIndex)} // 스와이프 삭제 기능
+                        // style={styles.deleteButton} // 삭제 버튼 스타일
+                      >
+                        <Image
+                          source={require("../../../assets/XButton.png")}
+                          style={{ width: 50, height: 50, marginBottom: 10 }}
+                        />
+                      </TouchableOpacity>
+                    )}
+                  >
+                    <View key={placeIndex} style={styles.placeContainer}>
+                      {/* 핀 디자인 */}
+                      <View
+                        style={[
+                          styles.pinContainer,
+                          {
+                            backgroundColor:
+                              place.placeType === 1
+                                ? "#5775CD" // 나만의 장소
+                                : place.placeType === 2
+                                ? "#B6FFB6" // 관광명소
+                                : place.placeType === 3
+                                ? "#D9B6FF" // 숙소
+                                : "#FFB6B6", // 식당
+                          },
+                        ]}
+                      >
+                        {/* 동그라미 안에 하얀색 번호 */}
+                        <Text style={styles.pinText}>{place.order}</Text>
+                      </View>
 
-                    <View style={styles.placeInfoContainer}>
-                      <Text style={styles.placeText}>
-                        {/*  placeType에 따라 다른 문자열을 출력 */}
-                        {place.placeType === 1 && "나만의 장소 "}
-                        {place.placeType === 2 && "관광명소 "}
-                        {place.placeType === 3 && "숙소 "}
-                        {place.placeType === 4 && "식당 "}
-                        {/*  장소명 출력 */}
-                        {` ${place.placeName}`}
-                      </Text>
+                      <View style={styles.placeInfoContainer}>
+                        <Text style={styles.placeText}>
+                          {/*  placeType에 따라 다른 문자열을 출력 */}
+                          {place.placeType === 1 && "나만의 장소 "}
+                          {place.placeType === 2 && "관광명소 "}
+                          {place.placeType === 3 && "숙소 "}
+                          {place.placeType === 4 && "식당 "}
+                          {/*  장소명 출력 */}
+                          {` ${place.placeName}`}
+                        </Text>
+                      </View>
                     </View>
-                  </View>
+                  </Swipeable>
                 ))
               ) : (
                 <Text style={styles.noPlaceText}>
@@ -626,6 +674,17 @@ const styles = StyleSheet.create({
   mapButtonText: {
     color: "#333",
     fontSize: 14,
+  },
+  deleteButton: {
+    backgroundColor: "red", // 삭제 버튼 배경색
+    justifyContent: "center", // 가운데 정렬
+    alignItems: "center",
+    width: 80, // 버튼 너비
+  },
+  deleteButtonText: {
+    color: "white", // 텍스트 색상
+    fontWeight: "bold",
+    fontSize: 16,
   },
 });
 
