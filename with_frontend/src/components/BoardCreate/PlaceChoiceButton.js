@@ -2,11 +2,19 @@ import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
 function PlaceChoiceButton({ placeName, placeType, onSelect }) {
+  console.log("placetype 여기 어떻게들어오길래", placeType);
   return (
     <View style={styles.container}>
       <View style={styles.infoContainer}>
         <Text style={styles.placeName}>{placeName}</Text>
-        <Text style={styles.placeType}>{placeType}</Text>
+        {/* <Text style={styles.placeType}>{placeType}</Text> */}
+        {/* 🔴 placeType 값에 따른 텍스트 출력 */}
+        <Text style={styles.placeType}>
+          {placeType === 1 && "나만의 장소 "}
+          {placeType === 2 && "관광명소"}
+          {placeType === 3 && "숙소"}
+          {placeType === 4 && "식당"}
+        </Text>
       </View>
 
       <TouchableOpacity style={styles.selectButton} onPress={onSelect}>

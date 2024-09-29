@@ -5,10 +5,11 @@ import InputTextField from "../../components/common/InputTextField";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import googleApi from "../../configs/googleApi.json";
 import MapView, { Marker } from "react-native-maps";
-import IPConfig from "../../configs/IPConfig.json";
 import useStore from "../../components/user/useStore";
 import axios from "axios";
+import { SafeAreaView } from "react-native-safe-area-context";
 
+// myPlaceName과 주소가 없는상태로 완료 버튼 누르면 안됨.
 const InsertMyPlaceScreen = ({ navigation }) => {
   const loginId = useStore((state) => state.id); // 지금 로그인한 아이디
 
@@ -23,7 +24,7 @@ const InsertMyPlaceScreen = ({ navigation }) => {
   const [longitude, setLongitude] = useState(126.978); // 기본값 서울 경도
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       {/* 헤더 */}
       <View style={styles.header}>
         <TouchableOpacity
@@ -59,7 +60,19 @@ const InsertMyPlaceScreen = ({ navigation }) => {
           //     });
           //   }
           // }}
-          onPress={() => navigation.navigate("MainBoardWriteScreen")}
+          onPress={() => {
+            if (!myPlaceName || !address) {
+              alert("장소 이름과 주소를 입력해주세요.");
+            } else {
+              navigation.navigate("MainBoardWriteScreen", {
+                latitude: latitude, /// 위도
+                longitude: longitude, // 경도
+                myPlaceName: myPlaceName, //  나만의 장소 입력한 이름.
+                placeType: 1, // 나만의 장소라는 장소타입.
+                // adressName 도로명 주소 안줘도 된다해서. 일단 안줌
+              });
+            }
+          }}
           style={styles.headerRight}
         >
           <Text style={styles.headerText}>완료</Text>
@@ -164,7 +177,7 @@ const InsertMyPlaceScreen = ({ navigation }) => {
           </MapView>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

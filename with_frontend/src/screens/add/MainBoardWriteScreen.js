@@ -14,9 +14,11 @@ import DateRangePicker from "../../components/BoardCreate/DateRangePicker";
 import LongButton from "../../components/common/LongButton";
 import { useNavigation } from "@react-navigation/native"; // 네비게이션 훅 가져오기
 import moment from "moment";
+import { useRoute } from "@react-navigation/native";
 
 const MainBoardWriteScreen = () => {
-  // 상태 관리
+  // 🔵 상태 관리
+  // 제목, 글 종류, 인원수 등의 상태를 관리
   const [title, setTitle] = useState(""); // 제목
   const [activeTab, setActiveTab] = useState("모집"); // 글 종류
   const [numberOfPeople, setNumberOfPeople] = useState(""); // 인원수
@@ -24,11 +26,90 @@ const MainBoardWriteScreen = () => {
     startDate: null,
     endDate: null,
   });
-  const [plans, setPlans] = useState([]); // 일정 상태 관리
+
+  const [plans, setPlans] = useState([]);
+  console.log(JSON.stringify(plans, null, 2));
+
+  // placeType 1 나만의장소
+  // placeType 2 관광명소
+  // placeType 3 숙소
+  // placeType 4 식당
+
+  //   {
+  //     day: "Day 1", // Day 1, Day 2 등으로 구분
+  //     date: "2024-09-29", // 날짜 (YYYY-MM-DD 형식)
+  //     dayOfWeek: "Mon", // 요일 (Mon, Tue 등)
+  //     places: [ // 해당 날짜에 추가된 장소 목록
+  //       {
+  //         order: 1, // 장소 순서 (추가된 순서대로 1, 2, 3... 증가)
+  //         placeType: 1, // 장소 타입 (1: 나만의 장소, 2: 식당 등)
+  //         placeName: "나만의 장소", // 장소명 (나만의 장소, 특정 장소명 등)
+  //         latitude: 37.5665, // 장소의 위도
+  //         longitude: 126.978, // 장소의 경도
+  //         addressName: "" // 장소의 주소명 (필요 시 추가)
+  //       },
+  //       {
+  //         order: 2, // 두 번째 장소
+  //         placeType: 2, // 장소 타입 (2: 식당)
+  //         placeName: "스타벅스", // 장소명
+  //         latitude: 37.5667,
+  //         longitude: 126.9781,
+  //         addressName: "서울시 중구 남대문로" // 주소명
+  //       }
+  //       // ... 추가적인 장소들
+  //     ]
+  //   },
+  //   { day 2 ~~~ }
+
+  const route = useRoute(); // Route 객체 사용하여 전달된 파라미터 받기
+  const { latitude, longitude, myPlaceName, placeType } = route.params || {}; // 전달된 장소 정보
+
+  // 4개를 받아서 해당 날짜에 저장.
+
+  const [selectedDay, setSelectedDay] = useState(null); // 선택된 날짜 상태
+
+  // 🔵 전달된 장소 정보를 선택된 날짜에 추가
+  useEffect(() => {
+    if (latitude && longitude && myPlaceName && placeType && selectedDay) {
+      console.log(
+        "새 정보 들어올 때 ",
+        latitude,
+        longitude,
+        myPlaceName,
+        placeType,
+        selectedDay
+      );
+      setPlans(
+        (
+          prevPlans // 이전거에 원래있던거에 date 랑 selectedDay 랑  일치하면
+        ) =>
+          prevPlans.map(
+            (plan) =>
+              plan.date === selectedDay // 선택된 날짜와 일치할 때만 장소 추가
+                ? {
+                    ...plan, // 이전 내용 그대로 유지 .
+                    places: [
+                      ...plan.places, // 기존 장소 내용 유지 .
+                      {
+                        order: plan.places.length + 1, // 장소 순서 자동 증가
+                        placeType: placeType, // 장소 타입 (1: 나만의 장소, 2: 식당 등)
+                        placeName: myPlaceName, // 장소명 설정
+                        latitude: latitude, // 위도
+                        longitude: longitude, // 경도
+                        addressName: "", // 필요 시 주소명 추가
+                      },
+                    ],
+                  }
+                : plan // 일치하지 않는 날짜는 그대로 유지
+          )
+      );
+      setSelectedDay(null); // 선택된 날짜 초기화
+    }
+  }, [latitude, longitude, myPlaceName, placeType]); // 날짜 변경될떄 또 실행되면 x
 
   const navigation = useNavigation(); // 네비게이션 객체 가져오기
 
-  // CustomDateRangePicker에서 날짜를 선택하면 상태를 업데이트하는 함수
+  // 🔵 날짜 선택 시 계획 목록을 초기화
   const handleDateChange = (newDates) => {
     setDates(newDates);
 
@@ -38,17 +119,18 @@ const MainBoardWriteScreen = () => {
     }
   };
 
-  // 날짜 범위(startDate와 endDate) 기반으로 날짜 목록 생성
+  // 🔵 날짜 범위(startDate와 endDate) 기반으로 날짜 목록 생성
+  // 각 날짜별로 day, date, dayOfWeek, places(장소 리스트)를 초기화
   const getDateList = (start, end) => {
     const dates = [];
     let currentDate = moment(start);
-    let dayCount = 1; // Day 1, Day 2 등의 카운트를 위한 변수
+    let dayCount = 1;
     while (currentDate.isSameOrBefore(end, "day")) {
       dates.push({
         day: `Day ${dayCount}`,
         date: currentDate.format("YYYY-MM-DD"),
         dayOfWeek: currentDate.format("ddd"), // 요일
-        places: [], // 각 날짜별 장소 리스트
+        places: [], // 각 날짜별 장소 리스트 초기화
       });
       currentDate.add(1, "days");
       dayCount++;
@@ -56,24 +138,7 @@ const MainBoardWriteScreen = () => {
     return dates;
   };
 
-  // 장소 추가 함수
-  const addPlace = (date) => {
-    setPlans((prevPlans) =>
-      prevPlans.map((plan) =>
-        plan.date === date
-          ? {
-              ...plan,
-              places: [
-                ...plan.places,
-                { 장소명: `장소 ${plan.places.length + 1}` }, // 임시 장소명
-              ],
-            }
-          : plan
-      )
-    );
-  };
-
-  // 인원수 증가 함수
+  // 🔵 인원수 증가 함수
   const incrementPeople = () => {
     setNumberOfPeople((prev) => {
       const newNumber = parseInt(prev) || 0;
@@ -81,7 +146,7 @@ const MainBoardWriteScreen = () => {
     });
   };
 
-  // 인원수 감소 함수
+  // 🔵 인원수 감소 함수
   const decrementPeople = () => {
     setNumberOfPeople((prev) => {
       const newNumber = parseInt(prev) || 0;
@@ -89,7 +154,7 @@ const MainBoardWriteScreen = () => {
     });
   };
 
-  // 인원수 입력 변경 함수
+  // 🔵 인원수 입력 변경 함수
   const handlePeopleChange = (text) => {
     // 숫자만 허용하고 빈 문자열도 허용
     if (/^\d*$/.test(text)) {
@@ -100,16 +165,16 @@ const MainBoardWriteScreen = () => {
   return (
     <ScrollView>
       <View style={styles.container}>
-        {/* 제목 입력 */}
+        {/* 🔵 제목 입력 필드 */}
         <InputTextField
           label="제목"
           placeholder="제목을 입력하시오."
           value={title}
           onChangeText={setTitle}
-          labelStyle={styles.label} // 커스텀 label 스타일
+          labelStyle={styles.label}
         />
 
-        {/* 글 종류 선택 */}
+        {/* 🔵 글 종류 선택 및 인원수 입력 */}
         <View style={styles.labelContainer}>
           <Text style={styles.label}>글 종류</Text>
           <Text style={styles.labelPeople}>인원수</Text>
@@ -153,36 +218,42 @@ const MainBoardWriteScreen = () => {
           </View>
         </View>
 
-        {/* 날짜 선택 */}
+        {/* 🔵 날짜 선택 */}
         <DateRangePicker onDateChange={handleDateChange} />
 
-        {/* 일정 계획 (날짜별 장소 추가) */}
+        {/* 🔵 일정 계획 (날짜별 장소 추가) */}
         <ScrollView contentContainerStyle={styles.scrollContainer}>
           {plans.map((item, index) => (
             <View key={index} style={styles.planContainer}>
               <Text style={styles.dateTitle}>
                 {`${item.day} ${item.date} / ${item.dayOfWeek}`}
               </Text>
-
               {item.places.length > 0 ? (
                 item.places.map((place, placeIndex) => (
                   <View key={placeIndex} style={styles.placeContainer}>
-                    <Text
-                      style={styles.placeText}
-                    >{`장소명: ${place.장소명}`}</Text>
+                    <Text style={styles.placeText}>
+                      {/* 🔴 placeType에 따라 다른 문자열을 출력 */}
+                      {`${place.order} . `}
+                      {place.placeType === 1 && "나만의 장소 "}
+                      {place.placeType === 2 && "관광명소 "}
+                      {place.placeType === 3 && "숙소 "}
+                      {place.placeType === 4 && "식당 "}
+                      {/* 🔴 장소명 출력 */}
+                      {` ${place.placeName}`}
+                    </Text>
                   </View>
                 ))
               ) : (
-                <Text style={styles.noPlaceText}>추가된 장소가 없습니다.</Text>
+                <Text style={styles.noPlaceText}>
+                  방문할 곳을 추가해주세요.
+                </Text>
               )}
-
-              {/* 장소 추가 버튼 */}
+              {/* 🔵 장소 추가 버튼 */}
               <TouchableOpacity
                 style={styles.addButton}
                 onPress={() => {
-                  navigation.navigate("SearchPlaceScreen", {
-                    onPlaceSelect: (newPlace) => addPlace(item.date),
-                  }); // 장소 검색 스크린으로 이동
+                  setSelectedDay(item.date); // 현재 클릭된 날짜를 selectedDay로 설정
+                  navigation.navigate("SearchPlaceScreen"); // 장소 검색 스크린으로 이동
                 }}
               >
                 <Text style={styles.addButtonText}>장소 추가</Text>
@@ -191,7 +262,7 @@ const MainBoardWriteScreen = () => {
           ))}
         </ScrollView>
 
-        {/* 작성 완료 버튼 */}
+        {/* 🔵 작성 완료 버튼 */}
         <LongButton title="작성 완료" />
       </View>
     </ScrollView>
@@ -235,7 +306,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   peopleButton: {
-    // borderWidth: 1,
     borderColor: "rgba(232, 232, 232, 1)",
     borderRadius: 8,
     backgroundColor: "rgba(244, 248, 251, 1)",
@@ -266,7 +336,7 @@ const styles = StyleSheet.create({
   planContainer: {
     padding: 16,
     marginVertical: 8,
-    backgroundColor: "#f0f0f0",
+    backgroundColor: "#F4F8FB",
     borderRadius: 8,
     marginHorizontal: 0,
   },
@@ -303,6 +373,21 @@ const styles = StyleSheet.create({
     fontStyle: "italic",
     color: "#888",
     marginBottom: 8,
+  },
+  placeSummaryContainer: {
+    marginBottom: 8,
+    padding: 8,
+    backgroundColor: "#e0e0e0",
+    borderRadius: 4,
+  },
+  placeSummaryText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 4,
+  },
+  placeItemText: {
+    fontSize: 14,
+    marginLeft: 8,
   },
 });
 

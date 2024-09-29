@@ -18,48 +18,54 @@ import PlaceChoiceButton from "../../components/BoardCreate/PlaceChoiceButton";
 // 초기 상태로 사용할 장소 데이터
 const initialSeoulSearchPlace = [
   {
-    placeName: "경복궁",
-    placeType: "관광명소",
+    //
+    placeType: 2, //      관광명소
+    placeName: "아산역", // 찐주소
+    latitude: 36.7920561, // 위도 경도
+    longitude: 127.1044621,
   },
-  {
-    placeName: "남산타워",
-    placeType: "관광명소",
-  },
-  {
-    placeName: "롯데호텔",
-    placeType: "숙소",
-  },
-  {
-    placeName: "명동교자",
-    placeType: "식당",
-  },
-  {
-    placeName: "롯데월드",
-    placeType: "관광명소",
-  },
+  // {
+  //   placeName: "남산타워",
+  //   placeType: "관광명소",
+  // },
+  // {
+  //   placeName: "롯데호텔",
+  //   placeType: "숙소",
+  // },
+  // {
+  //   placeName: "명동교자",
+  //   placeType: "식당",
+  // },
+  // {
+  //   placeName: "롯데월드",
+  //   placeType: "관광명소",
+  // },
 ];
 
 const initialMyPlace = [
   {
-    placeName: "선문대학교",
-    placeType: "학교",
+    address: "충남 아산시 선문대학교", // 찐주소,,  // 이 찐주소는 메인에 안뜨네,,
+    placeName: "선문대학교", // 내가 칭한 주소
+    placeType: 1, // 나만의장소 타입
+    latitude: 36.7989764,
+    longitude: 127.0750025,
   },
-  {
-    placeName: "탕정 지중해마을",
-    placeType: "탕정에서 그나마 볼거리 있는 곳",
-  },
-  {
-    placeName: "아산 레일바이크",
-    placeType: "아산에서 그나마 자전거 탈수 있는 곳",
-  },
-  {
-    placeName: "아산 이순신체육관",
-    placeType: "운동장",
-  },
-  {
-    placeName: "배방초등학교 운동장",
-    placeType: "학교 운동장",
-  },
+  // {
+  //   placeName: "탕정 지중해마을",
+  //   placeType: "탕정에서 그나마 볼거리 있는 곳",
+  // },
+  // {
+  //   placeName: "아산 레일바이크",
+  //   placeType: "아산에서 그나마 자전거 탈수 있는 곳",
+  // },
+  // {
+  //   placeName: "아산 이순신체육관",
+  //   placeType: "운동장",
+  // },
+  // {
+  //   placeName: "배방초등학교 운동장",
+  //   placeType: "학교 운동장",
+  // },
 ];
 
 function SearchPlaceScreen() {
@@ -160,6 +166,14 @@ function SearchPlaceScreen() {
                 onSelect={() => {
                   // 선택 버튼을 눌렀을 때 실행할 동작
                   console.log(`${place.placeName} 선택됨`);
+
+                  navigation.navigate("MainBoardWriteScreen", {
+                    latitude: place.latitude, /// 위도
+                    longitude: place.longitude, // 경도
+                    myPlaceName: place.placeName, //  나만의 장소 입력한 이름.
+                    placeType: place.placeType, // 나만의 장소라는 장소타입.
+                    // adressName 도로명 주소 안줘도 된다해서. 일단 안줌
+                  });
                 }}
               />
             ))
@@ -180,6 +194,15 @@ function SearchPlaceScreen() {
             onSelect={() => {
               // 선택 버튼을 눌렀을 때 실행할 동작
               console.log(`${place.placeName} 선택됨`);
+
+              navigation.navigate("MainBoardWriteScreen", {
+                latitude: place.latitude, /// 위도
+                longitude: place.longitude, // 경도
+                myPlaceName: place.placeName, //  나만의 장소 입력한 이름.
+                placeType: 1, // 나만의 장소라는 장소타입.
+                // adressName 도로명 주소 안줘도 된다해서. 일단 안줌
+              });
+              //
             }}
           />
         ))}
