@@ -378,16 +378,37 @@ const MainBoardWriteScreen = () => {
               {item.places.length > 0 ? (
                 item.places.map((place, placeIndex) => (
                   <View key={placeIndex} style={styles.placeContainer}>
-                    <Text style={styles.placeText}>
-                      {/*  placeType에 따라 다른 문자열을 출력 */}
-                      {`${place.order} . `}
-                      {place.placeType === 1 && "나만의 장소 "}
-                      {place.placeType === 2 && "관광명소 "}
-                      {place.placeType === 3 && "숙소 "}
-                      {place.placeType === 4 && "식당 "}
-                      {/*  장소명 출력 */}
-                      {` ${place.placeName}`}
-                    </Text>
+                    {/* 핀 디자인 */}
+                    <View
+                      style={[
+                        styles.pinContainer,
+                        {
+                          backgroundColor:
+                            place.placeType === 1
+                              ? "#5775CD" // 나만의 장소
+                              : place.placeType === 2
+                              ? "#B6FFB6" // 관광명소
+                              : place.placeType === 3
+                              ? "#D9B6FF" // 숙소
+                              : "#FFB6B6", // 식당
+                        },
+                      ]}
+                    >
+                      {/* 동그라미 안에 하얀색 번호 */}
+                      <Text style={styles.pinText}>{place.order}</Text>
+                    </View>
+
+                    <View style={styles.placeInfoContainer}>
+                      <Text style={styles.placeText}>
+                        {/*  placeType에 따라 다른 문자열을 출력 */}
+                        {place.placeType === 1 && "나만의 장소 "}
+                        {place.placeType === 2 && "관광명소 "}
+                        {place.placeType === 3 && "숙소 "}
+                        {place.placeType === 4 && "식당 "}
+                        {/*  장소명 출력 */}
+                        {` ${place.placeName}`}
+                      </Text>
+                    </View>
                   </View>
                 ))
               ) : (
@@ -504,12 +525,31 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   placeContainer: {
-    padding: 8,
+    backgroundColor: "#ffffff",
+    flexDirection: "row", // 핀과 장소 정보를 가로로 배치
+    alignItems: "center",
     marginBottom: 8,
-    backgroundColor: "#fff",
-    borderColor: "#ddd",
+    padding: 8,
+
+    borderRadius: 8,
     borderWidth: 1,
-    borderRadius: 4,
+    borderColor: "#ddd",
+  },
+  pinContainer: {
+    width: 35, // 핀의 크기
+    height: 35, // 핀의 크기
+    borderRadius: 20, // 핀을 동그랗게
+    justifyContent: "center", // 가운데 정렬
+    alignItems: "center", // 가운데 정렬
+    marginRight: 10, // 핀과 텍스트 간격
+  },
+  placeInfoContainer: {
+    flex: 1, // 장소 정보가 핀 옆에 맞게 배치되도록
+  },
+  pinText: {
+    fontSize: 16,
+    color: "#ffffff",
+    fontWeight: "bold",
   },
   placeText: {
     fontSize: 14,
