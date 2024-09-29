@@ -7,6 +7,7 @@ import {
   StyleSheet,
   ScrollView,
   Image,
+  Modal,
 } from "react-native";
 
 import ThreeTabButton from "../../components/Boards/ThreeTabButton";
@@ -52,6 +53,7 @@ const MainBoardWriteScreen = () => {
   //         latitude: 37.5665, // 장소의 위도
   //         longitude: 126.978, // 장소의 경도
   //         addressName: "" // 장소의 주소명 (필요 시 추가)
+  //           memo: "", // 👈 memo 변수를 추가
   //       },
   //       {
   //         order: 2, // 두 번째 장소
@@ -78,6 +80,37 @@ const MainBoardWriteScreen = () => {
   const [mapVisible, setMapVisible] = useState(false); // 처음엔 안보이게 .
   //  선택된 계획 상태 관리
   const [selectedPlan, setSelectedPlan] = useState(null);
+
+  const [isMemoModalVisible, setIsMemoModalVisible] = useState(false); // 모달 가시성 상태
+  const [selectedPlace, setSelectedPlace] = useState(null); // 선택된 장소
+  const [memoInput, setMemoInput] = useState(""); // 메모 입력 값
+
+  const openMemoModal = (place) => {
+    setSelectedPlace(place); // 선택한 장소 저장
+    setMemoInput(place.memo || ""); // 기존 메모를 입력창에 표시
+    setIsMemoModalVisible(true); // 모달 열기
+  };
+
+  // 메모를 저장하는 함수. 선택된 place 객체에 메모를 업데이트합니다.
+  const saveMemo = () => {
+    // 선택된 장소의 메모 업데이트
+    setPlans((prevPlans) =>
+      prevPlans.map((plan) =>
+        plan.date === selectedPlace.date
+          ? {
+              ...plan,
+              places: plan.places.map(
+                (place) =>
+                  place === selectedPlace // selectedPlace로 직접 비교하여 메모 업데이트
+                    ? { ...place, memo: memoInput } // 메모 입력값을 place에 저장
+                    : place // 다른 장소는 변경하지 않음
+              ),
+            }
+          : plan
+      )
+    );
+    setIsMemoModalVisible(false); // 모달 닫기
+  };
 
   // 삭제함수
   const handleDeletePlace = (planIndex, placeIndex) => {
@@ -215,273 +248,311 @@ const MainBoardWriteScreen = () => {
   };
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        {/* 제목 입력 필드 */}
-        <InputTextField
-          label="제목"
-          placeholder="제목을 입력하시오."
-          value={title}
-          onChangeText={setTitle}
-          labelStyle={styles.label}
-        />
-
-        {/*  글 종류 선택 및 인원수 입력 */}
-        <View style={styles.labelContainer}>
-          <Text style={styles.label}>글 종류</Text>
-          <Text style={styles.labelPeople}>인원수</Text>
-        </View>
-
-        <View style={styles.row}>
-          <View style={styles.tabContainer}>
-            <ThreeTabButton
-              title="소개"
-              isActive={activeTab === "소개"}
-              onPress={() => setActiveTab("소개")}
-            />
-            <ThreeTabButton
-              title="모집"
-              isActive={activeTab === "모집"}
-              onPress={() => setActiveTab("모집")}
-            />
-          </View>
-
-          <View style={styles.peopleContainer}>
-            <TouchableOpacity
-              style={[styles.peopleButton, styles.activeTabButton]}
-              onPress={decrementPeople}
-            >
-              <Text style={styles.peopleButtonText}>-</Text>
-            </TouchableOpacity>
+    <>
+      <Modal
+        visible={isMemoModalVisible}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setIsMemoModalVisible(false)} // Android 뒤로 가기 버튼 대응
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
             <TextInput
-              style={styles.peopleInput}
-              keyboardType="number-pad"
-              value={numberOfPeople}
-              onChangeText={handlePeopleChange}
-              placeholder="인원"
-              placeholderTextColor="#9094B8" // 인원이 비어있을 때 표시되는 색상
+              style={styles.memoInput}
+              multiline={true}
+              placeholder="메모를 입력하세요"
+              value={memoInput}
+              onChangeText={setMemoInput}
             />
-            <TouchableOpacity
-              style={[styles.peopleButton, styles.activeTabButton]}
-              onPress={incrementPeople}
-            >
-              <Text style={styles.peopleButtonText}>+</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-
-        {/*  날짜 선택 */}
-        <DateRangePicker onDateChange={handleDateChange} />
-
-        {/*  일정 계획 (날짜별 장소 추가) */}
-        <ScrollView contentContainerStyle={styles.scrollContainer}>
-          {plans.map((item, index) => (
-            <View key={index} style={styles.planContainer}>
-              <Text style={styles.dateTitle}>
-                {`${item.day} ${item.date} / ${item.dayOfWeek}`}
-              </Text>
-
-              {/*  Day 아래에 지도 보기 버튼 추가 */}
-              {item.places.length > 0 && (
-                <TouchableOpacity
-                  style={styles.mapButton}
-                  onPress={() => handleShowMap(item)} // 현재 일정을 기반으로 지도 보기
-                >
-                  <Text style={styles.mapButtonText}>지도로 보기</Text>
-                </TouchableOpacity>
-              )}
-
-              {/*  선택된 Day에 해당하는 장소의 지도 표시 */}
-              {mapVisible && selectedPlan?.date === item.date && (
-                <View style={styles.mapContainer}>
-                  <MapView
-                    ref={(ref) => {
-                      // 이걸로 지도를 "참조"
-                      this.mapRef = ref;
-                    }}
-                    style={styles.map}
-                    onLayout={() => {
-                      if (selectedPlan.places.length > 0) {
-                        const coordinates = selectedPlan.places.map(
-                          (place) => ({
-                            latitude: place.latitude,
-                            longitude: place.longitude,
-                          })
-                        );
-
-                        // 먼저 여백을 설정하면서 fitToCoordinates 호출
-                        this.mapRef.fitToCoordinates(coordinates, {
-                          edgePadding: {
-                            top: 50,
-                            right: 50,
-                            bottom: 50,
-                            left: 50,
-                          },
-                          animated: true,
-                        });
-
-                        // 확대 수준을 제한하기 위한 계산
-                        const latitudes = coordinates.map(
-                          (coord) => coord.latitude
-                        );
-                        const longitudes = coordinates.map(
-                          (coord) => coord.longitude
-                        );
-
-                        const maxLatitude = Math.max(...latitudes);
-                        const minLatitude = Math.min(...latitudes);
-                        const maxLongitude = Math.max(...longitudes);
-                        const minLongitude = Math.min(...longitudes);
-
-                        const latitudeDelta = maxLatitude - minLatitude;
-                        const longitudeDelta = maxLongitude - minLongitude;
-
-                        // 최소 확대 수준을 0.01로 제한
-                        if (latitudeDelta < 0.01 || longitudeDelta < 0.01) {
-                          const limitedLatitudeDelta = Math.max(
-                            latitudeDelta,
-                            0.01
-                          );
-                          const limitedLongitudeDelta = Math.max(
-                            longitudeDelta,
-                            0.01
-                          );
-
-                          this.mapRef.animateToRegion(
-                            {
-                              latitude: (maxLatitude + minLatitude) / 2,
-                              longitude: (maxLongitude + minLongitude) / 2,
-                              latitudeDelta: limitedLatitudeDelta,
-                              longitudeDelta: limitedLongitudeDelta,
-                            },
-                            500
-                          ); // 애니메이션 적용
-                        }
-                      }
-                    }}
-
-                    // initialRegion={{
-                    //   latitude: selectedPlan.places[0].latitude, // 첫 장소의 위도
-                    //   longitude: selectedPlan.places[0].longitude, // 첫 장소의 경도
-                    //   latitudeDelta: 0.05, // 지도의 확대 수준
-                    //   longitudeDelta: 0.05, // 지도의 확대 수준
-                    // }}
-                  >
-                    {selectedPlan.places.map((place, index) => (
-                      <Marker
-                        key={index}
-                        coordinate={{
-                          latitude: place.latitude,
-                          longitude: place.longitude,
-                        }}
-                        title={`장소 ${place.order}`}
-                        description={place.placeName}
-                      >
-                        {/* Custom Marker */}
-                        <View
-                          style={[
-                            styles.marker,
-                            {
-                              backgroundColor:
-                                place.placeType === 1
-                                  ? "#5775CD" // 나만의 장소
-                                  : place.placeType === 2
-                                  ? "#B6FFB6" // 관광명소
-                                  : place.placeType === 3
-                                  ? "#D9B6FF" // 숙소
-                                  : "#FFB6B6", // 식당
-                            },
-                          ]}
-                        >
-                          <Text style={styles.markerText}>{place.order}</Text>
-                        </View>
-                      </Marker>
-                    ))}
-                  </MapView>
-                  {/* 지도 닫기 버튼 추가 */}
-                  <TouchableOpacity
-                    style={styles.closeMapButton}
-                    onPress={handleHideMap}
-                  >
-                    <Text style={styles.closeMapButtonText}>닫기</Text>
-                  </TouchableOpacity>
-                </View>
-              )}
-              {/* 장소 하나하나 컴포넌트  */}
-              {item.places.length > 0 ? (
-                item.places.map((place, placeIndex) => (
-                  <Swipeable
-                    key={placeIndex}
-                    renderRightActions={() => (
-                      <TouchableOpacity
-                        onPress={() => handleDeletePlace(index, placeIndex)} // 스와이프 삭제 기능
-                        // style={styles.deleteButton} // 삭제 버튼 스타일
-                      >
-                        <Image
-                          source={require("../../../assets/XButton.png")}
-                          style={{ width: 50, height: 50, marginBottom: 10 }}
-                        />
-                      </TouchableOpacity>
-                    )}
-                  >
-                    <View key={placeIndex} style={styles.placeContainer}>
-                      {/* 핀 디자인 */}
-                      <View
-                        style={[
-                          styles.pinContainer,
-                          {
-                            backgroundColor:
-                              place.placeType === 1
-                                ? "#5775CD" // 나만의 장소
-                                : place.placeType === 2
-                                ? "#B6FFB6" // 관광명소
-                                : place.placeType === 3
-                                ? "#D9B6FF" // 숙소
-                                : "#FFB6B6", // 식당
-                          },
-                        ]}
-                      >
-                        {/* 동그라미 안에 하얀색 번호 */}
-                        <Text style={styles.pinText}>{place.order}</Text>
-                      </View>
-
-                      <View style={styles.placeInfoContainer}>
-                        <Text style={styles.placeText}>
-                          {/*  placeType에 따라 다른 문자열을 출력 */}
-                          {place.placeType === 1 && "나만의 장소 "}
-                          {place.placeType === 2 && "관광명소 "}
-                          {place.placeType === 3 && "숙소 "}
-                          {place.placeType === 4 && "식당 "}
-                          {/*  장소명 출력 */}
-                          {` ${place.placeName}`}
-                        </Text>
-                      </View>
-                    </View>
-                  </Swipeable>
-                ))
-              ) : (
-                <Text style={styles.noPlaceText}>
-                  방문할 곳을 추가해주세요.
-                </Text>
-              )}
-              {/*  장소 추가 버튼 */}
+            <View style={styles.modalButtons}>
+              <TouchableOpacity onPress={saveMemo} style={styles.confirmButton}>
+                <Text style={styles.confirmButtonText}>확인</Text>
+              </TouchableOpacity>
               <TouchableOpacity
-                style={styles.addButton}
-                onPress={() => {
-                  setSelectedDay(item.date); // 현재 클릭된 날짜를 selectedDay로 설정
-                  navigation.navigate("SearchPlaceScreen"); // 장소 검색 스크린으로 이동
-                }}
+                onPress={() => setIsMemoModalVisible(false)}
+                style={styles.cancelButton}
               >
-                <Text style={styles.addButtonText}>장소 추가</Text>
+                <Text style={styles.cancelButtonText}>취소</Text>
               </TouchableOpacity>
             </View>
-          ))}
-        </ScrollView>
+          </View>
+        </View>
+      </Modal>
 
-        {/*  작성 완료 버튼 */}
-        <LongButton title="작성 완료" />
-      </View>
-    </ScrollView>
+      <ScrollView>
+        <View style={styles.container}>
+          {/* 제목 입력 필드 */}
+          <InputTextField
+            label="제목"
+            placeholder="제목을 입력하시오."
+            value={title}
+            onChangeText={setTitle}
+            labelStyle={styles.label}
+          />
+
+          {/*  글 종류 선택 및 인원수 입력 */}
+          <View style={styles.labelContainer}>
+            <Text style={styles.label}>글 종류</Text>
+            <Text style={styles.labelPeople}>인원수</Text>
+          </View>
+
+          <View style={styles.row}>
+            <View style={styles.tabContainer}>
+              <ThreeTabButton
+                title="소개"
+                isActive={activeTab === "소개"}
+                onPress={() => setActiveTab("소개")}
+              />
+              <ThreeTabButton
+                title="모집"
+                isActive={activeTab === "모집"}
+                onPress={() => setActiveTab("모집")}
+              />
+            </View>
+
+            <View style={styles.peopleContainer}>
+              <TouchableOpacity
+                style={[styles.peopleButton, styles.activeTabButton]}
+                onPress={decrementPeople}
+              >
+                <Text style={styles.peopleButtonText}>-</Text>
+              </TouchableOpacity>
+              <TextInput
+                style={styles.peopleInput}
+                keyboardType="number-pad"
+                value={numberOfPeople}
+                onChangeText={handlePeopleChange}
+                placeholder="인원"
+                placeholderTextColor="#9094B8" // 인원이 비어있을 때 표시되는 색상
+              />
+              <TouchableOpacity
+                style={[styles.peopleButton, styles.activeTabButton]}
+                onPress={incrementPeople}
+              >
+                <Text style={styles.peopleButtonText}>+</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          {/*  날짜 선택 */}
+          <DateRangePicker onDateChange={handleDateChange} />
+
+          {/*  일정 계획 (날짜별 장소 추가) */}
+          <ScrollView contentContainerStyle={styles.scrollContainer}>
+            {plans.map((item, index) => (
+              <View key={index} style={styles.planContainer}>
+                <Text style={styles.dateTitle}>
+                  {`${item.day} ${item.date} / ${item.dayOfWeek}`}
+                </Text>
+
+                {/*  Day 아래에 지도 보기 버튼 추가 */}
+                {item.places.length > 0 && (
+                  <TouchableOpacity
+                    style={styles.mapButton}
+                    onPress={() => handleShowMap(item)} // 현재 일정을 기반으로 지도 보기
+                  >
+                    <Text style={styles.mapButtonText}>지도로 보기</Text>
+                  </TouchableOpacity>
+                )}
+
+                {/*  선택된 Day에 해당하는 장소의 지도 표시 */}
+                {mapVisible && selectedPlan?.date === item.date && (
+                  <View style={styles.mapContainer}>
+                    <MapView
+                      ref={(ref) => {
+                        // 이걸로 지도를 "참조"
+                        this.mapRef = ref;
+                      }}
+                      style={styles.map}
+                      onLayout={() => {
+                        if (selectedPlan.places.length > 0) {
+                          const coordinates = selectedPlan.places.map(
+                            (place) => ({
+                              latitude: place.latitude,
+                              longitude: place.longitude,
+                            })
+                          );
+
+                          // 먼저 여백을 설정하면서 fitToCoordinates 호출
+                          this.mapRef.fitToCoordinates(coordinates, {
+                            edgePadding: {
+                              top: 50,
+                              right: 50,
+                              bottom: 50,
+                              left: 50,
+                            },
+                            animated: true,
+                          });
+
+                          // 확대 수준을 제한하기 위한 계산
+                          const latitudes = coordinates.map(
+                            (coord) => coord.latitude
+                          );
+                          const longitudes = coordinates.map(
+                            (coord) => coord.longitude
+                          );
+
+                          const maxLatitude = Math.max(...latitudes);
+                          const minLatitude = Math.min(...latitudes);
+                          const maxLongitude = Math.max(...longitudes);
+                          const minLongitude = Math.min(...longitudes);
+
+                          const latitudeDelta = maxLatitude - minLatitude;
+                          const longitudeDelta = maxLongitude - minLongitude;
+
+                          // 최소 확대 수준을 0.01로 제한
+                          if (latitudeDelta < 0.01 || longitudeDelta < 0.01) {
+                            const limitedLatitudeDelta = Math.max(
+                              latitudeDelta,
+                              0.01
+                            );
+                            const limitedLongitudeDelta = Math.max(
+                              longitudeDelta,
+                              0.01
+                            );
+
+                            this.mapRef.animateToRegion(
+                              {
+                                latitude: (maxLatitude + minLatitude) / 2,
+                                longitude: (maxLongitude + minLongitude) / 2,
+                                latitudeDelta: limitedLatitudeDelta,
+                                longitudeDelta: limitedLongitudeDelta,
+                              },
+                              500
+                            ); // 애니메이션 적용
+                          }
+                        }
+                      }}
+
+                      // initialRegion={{
+                      //   latitude: selectedPlan.places[0].latitude, // 첫 장소의 위도
+                      //   longitude: selectedPlan.places[0].longitude, // 첫 장소의 경도
+                      //   latitudeDelta: 0.05, // 지도의 확대 수준
+                      //   longitudeDelta: 0.05, // 지도의 확대 수준
+                      // }}
+                    >
+                      {selectedPlan.places.map((place, index) => (
+                        <Marker
+                          key={index}
+                          coordinate={{
+                            latitude: place.latitude,
+                            longitude: place.longitude,
+                          }}
+                          title={`장소 ${place.order}`}
+                          description={place.placeName}
+                        >
+                          {/* Custom Marker */}
+                          <View
+                            style={[
+                              styles.marker,
+                              {
+                                backgroundColor:
+                                  place.placeType === 1
+                                    ? "#5775CD" // 나만의 장소
+                                    : place.placeType === 2
+                                    ? "#B6FFB6" // 관광명소
+                                    : place.placeType === 3
+                                    ? "#D9B6FF" // 숙소
+                                    : "#FFB6B6", // 식당
+                              },
+                            ]}
+                          >
+                            <Text style={styles.markerText}>{place.order}</Text>
+                          </View>
+                        </Marker>
+                      ))}
+                    </MapView>
+                    {/* 지도 닫기 버튼 추가 */}
+                    <TouchableOpacity
+                      style={styles.closeMapButton}
+                      onPress={handleHideMap}
+                    >
+                      <Text style={styles.closeMapButtonText}>닫기</Text>
+                    </TouchableOpacity>
+                  </View>
+                )}
+                {/* 장소 하나하나 컴포넌트  */}
+                {item.places.length > 0 ? (
+                  item.places.map((place, placeIndex) => (
+                    <Swipeable
+                      key={placeIndex}
+                      renderRightActions={() => (
+                        <TouchableOpacity
+                          onPress={() => handleDeletePlace(index, placeIndex)} // 스와이프 삭제 기능
+                          // style={styles.deleteButton} // 삭제 버튼 스타일
+                        >
+                          <Image
+                            source={require("../../../assets/XButton.png")}
+                            style={{ width: 50, height: 50, marginBottom: 10 }}
+                          />
+                        </TouchableOpacity>
+                      )}
+                    >
+                      <TouchableOpacity onPress={() => openMemoModal(place)}>
+                        <View key={placeIndex} style={styles.placeContainer}>
+                          {/* 핀 디자인 */}
+                          <View
+                            style={[
+                              styles.pinContainer,
+                              {
+                                backgroundColor:
+                                  place.placeType === 1
+                                    ? "#5775CD" // 나만의 장소
+                                    : place.placeType === 2
+                                    ? "#B6FFB6" // 관광명소
+                                    : place.placeType === 3
+                                    ? "#D9B6FF" // 숙소
+                                    : "#FFB6B6", // 식당
+                              },
+                            ]}
+                          >
+                            {/* 동그라미 안에 하얀색 번호 */}
+                            <Text style={styles.pinText}>{place.order}</Text>
+                          </View>
+
+                          <View style={styles.placeInfoContainer}>
+                            <Text style={styles.placeText}>
+                              {/*  placeType에 따라 다른 문자열을 출력 */}
+                              {place.placeType === 1 && "나만의 장소 "}
+                              {place.placeType === 2 && "관광명소 "}
+                              {place.placeType === 3 && "숙소 "}
+                              {place.placeType === 4 && "식당 "}
+                              {/*  장소명 출력 */}
+                              {` ${place.placeName}`}
+                            </Text>
+                            {/* 메모가 있으면 아래에 표시 */}
+                            {place.memo ? (
+                              <Text style={styles.memoText}>{place.memo}</Text>
+                            ) : null}
+                          </View>
+                        </View>
+                      </TouchableOpacity>
+                    </Swipeable>
+                  ))
+                ) : (
+                  <Text style={styles.noPlaceText}>
+                    방문할 곳을 추가해주세요.
+                  </Text>
+                )}
+                {/*  장소 추가 버튼 */}
+                <TouchableOpacity
+                  style={styles.addButton}
+                  onPress={() => {
+                    setSelectedDay(item.date); // 현재 클릭된 날짜를 selectedDay로 설정
+                    navigation.navigate("SearchPlaceScreen"); // 장소 검색 스크린으로 이동
+                  }}
+                >
+                  <Text style={styles.addButtonText}>장소 추가</Text>
+                </TouchableOpacity>
+              </View>
+            ))}
+          </ScrollView>
+
+          {/*  작성 완료 버튼 */}
+          <LongButton title="작성 완료" />
+        </View>
+      </ScrollView>
+    </>
   );
 };
 
@@ -685,6 +756,53 @@ const styles = StyleSheet.create({
     color: "white", // 텍스트 색상
     fontWeight: "bold",
     fontSize: 16,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)", // 반투명 배경
+  },
+  modalContent: {
+    backgroundColor: "white",
+    padding: 20,
+    borderRadius: 10,
+    width: "80%",
+  },
+  memoInput: {
+    height: 150,
+    borderColor: "#ccc",
+    borderWidth: 1,
+    marginBottom: 20,
+    padding: 10,
+    borderRadius: 5,
+    textAlignVertical: "top", // TextInput을 상단 정렬
+  },
+  modalButtons: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  confirmButton: {
+    backgroundColor: "#5775CD",
+    padding: 10,
+    borderRadius: 5,
+  },
+  confirmButtonText: {
+    color: "white",
+    fontWeight: "bold",
+  },
+  cancelButton: {
+    backgroundColor: "#ccc",
+    padding: 10,
+    borderRadius: 5,
+  },
+  cancelButtonText: {
+    color: "black",
+  },
+  memoText: {
+    fontSize: 14,
+    color: "#888",
+    marginTop: 5,
   },
 });
 
