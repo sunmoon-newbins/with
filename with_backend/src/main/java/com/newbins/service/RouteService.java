@@ -9,4 +9,5 @@ public interface RouteService {
     void createRoute(Route toute);
     Route getRoute(String routeNum);
     List<Route> getRoutes(int state, String sortType);
+    List<Route> getRoutes(String userNum);
 }
