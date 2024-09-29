@@ -38,4 +38,11 @@
         WHERE USER_NUM = #{userId}
             AND PLACE_NUM = #{placeId}
     </delete>
+
+    <!-- getPlaces-->
+    <select id="getPlaces" resultType="place">
+        SELECT *
+        FROM MY_PLACE
+        WHERE PLACE_NAME LIKE CONCAT('%', #{placeName}, '%')
+    </select>
 </mapper>

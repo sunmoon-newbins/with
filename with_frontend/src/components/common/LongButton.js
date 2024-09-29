@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     // fontFamily: "Nunito Sans",
     fontSize: 18, // 기본 폰트 크기
-    fontWeight: "300",
+    fontWeight: "700", // 폰트 볼드 , , ,
   },
 });
 

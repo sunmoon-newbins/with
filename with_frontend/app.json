@@ -12,19 +12,24 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.sunmoon.with"
     },
     "android": {
+      "package": "com.sunmoon.with",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       }
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    },
-    "plugins": [
-      "expo-font"
-    ]
+    "config": {
+      "googleMaps": {
+        "apiKey": "AIzaSyBALLdq4uzD_EoOdBdfK33n6Kt1sY06mdk"
+      },
+      "web": {
+        "favicon": "./assets/favicon.png"
+      },
+      "plugins": ["expo-font", "expo-build-properties"]
+    }
   }
 }

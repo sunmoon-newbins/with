@@ -26,8 +26,24 @@ const posts = [
   // 더 많은 게시글 데이터...
 ];
 
-const PostList = () => {
+// 여기서 기본으로는 최신순 정렬인데 , ,
+
+// 3 탭 (전체, 모집, 소개 ) 뭘 선택했냐에 따라  요청 달리해서 보내야하고
+// 정렬 누른거에 따라 또 다르게 보여줘야함.
+
+// 근데 그거 상태관리 아직안함..
+
+const PostList = ({ searchQuery }) => {
+  // searchQuery prop 받기
   const navigation = useNavigation(); // 네비게이션 훅 사용
+
+  // 검색어를 기준으로 게시물 필터링
+  // const filteredPosts = posts.filter((post) => {
+  //   // title이 존재하고 searchQuery를 포함하는 경우만 필터링
+  //   return post.title?.toLowerCase().includes(searchQuery.toLowerCase());
+  // });
+  console.log("잘 받아오나 : ", searchQuery);
+
   return (
     <FlatList
       data={posts} // renderItem 을 item -> postItem 으로

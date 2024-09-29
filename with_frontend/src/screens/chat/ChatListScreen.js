@@ -10,7 +10,7 @@ import {
 
 import { useNavigation } from "@react-navigation/native";
 import RecentChatMessage from "../../components/chat/RecentChatMessage";
-
+import useStore from "../../components/user/useStore";
 //  여기에서 어떤 채팅방들이 있는지 알 수 있어야하고 ,  ( ID , 글제목, 인원수 ) 그냥 ID , 글제목, 인원수 글 Id 만알면  해당 채팅방 정보 다 갖고올 수 있을텐데.
 // 가장 최신 채팅 글의 닉네임, 메시지, 시간
 const chatRooms = [
@@ -59,6 +59,8 @@ const chatRooms = [
 function ChatListScreen() {
   const navigation = useNavigation();
 
+  const userName = useStore((state) => state.name);
+
   // 렌더 아이템을 이렇게 묶어주면 눌렀을때 해당 스크린으로 넘어가게 된다.
   const renderItem = ({ item }) => (
     <TouchableOpacity
@@ -95,7 +97,7 @@ function ChatListScreen() {
           style={styles.profileImage}
         />
         <View>
-          <Text style={styles.username}>니콜라스</Text>
+          <Text style={styles.username}>{userName}</Text>
         </View>
       </View>
       <FlatList

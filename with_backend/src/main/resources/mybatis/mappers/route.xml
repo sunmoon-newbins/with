@@ -21,8 +21,7 @@
         CREATE_DATE,
         START_DATE,
         END_DATE
-        )
-        VALUES (
+        ) VALUES (
         #{routeNum},
         #{userNum},
         #{title},
@@ -36,7 +35,7 @@
     </insert>
 
     <!-- ROUTE 조회 메서드 예시 -->
-    <select id="getRouteByNum" resultType="com.newbins.dto.Route">
+    <select id="getRouteByRouteNum" resultType="routeEntity">
         SELECT
             ROUTE_NUM,
             USER_NUM,
@@ -51,5 +50,57 @@
         WHERE ROUTE_NUM = #{routeNum}
     </select>
 
+    <!-- 조건부 조회 및 정렬 처리 -->
+    <select id="getRoutesBy" resultType="routeEntity">
+        SELECT
+        ROUTE_NUM, USER_NUM, TITLE, PARTICIPANT_COUNT, STATE, PICTURE, CREATE_DATE, START_DATE, END_DATE
+        FROM ROUTE
+        WHERE STATE = #{state}
+        <!-- 정렬 조건 처리 -->
+        <choose>
+            <when test="sortType == 'date'">
+                ORDER BY CREATE_DATE DESC
+            </when>
+            <when test="sortType == 'participantsDesc'">
+                ORDER BY PARTICIPANT_COUNT DESC
+            </when>
+            <when test="sortType == 'participantsAsc'">
+                ORDER BY PARTICIPANT_COUNT ASC
+            </when>
+            <otherwise>
+                ORDER BY CREATE_DATE DESC
+            </otherwise>
+        </choose>
+    </select>
 
+
+    <!-- 조건부 검색 -->
+    <select id="searchRoutes" resultType="routeEntity">
+        SELECT
+        ROUTE_NUM, USER_NUM, TITLE, PARTICIPANT_COUNT, STATE, PICTURE, CREATE_DATE, START_DATE, END_DATE
+        FROM ROUTE
+        WHERE 1 = 1
+        <if test="title != null and title != ''">
+            AND TITLE LIKE CONCAT('%', #{title}, '%')
+        </if>
+        <if test="content != null and content != ''">
+            AND CONTENT LIKE CONCAT('%', #{content}, '%')
+        </if>
+    </select>
+
+    <!-- userNum에 따라 route 목록-->
+    <select id="getRouteByUserNum" resultType="routeEntity">
+        SELECT
+            ROUTE_NUM,
+            USER_NUM,
+            TITLE,
+            PARTICIPANT_COUNT,
+            STATE,
+            PICTURE,
+            CREATE_DATE,
+            START_DATE,
+            END_DATE
+        FROM ROUTE
+        WHERE USER_NUM = #{userNum}
+    </select>
 </mapper>
