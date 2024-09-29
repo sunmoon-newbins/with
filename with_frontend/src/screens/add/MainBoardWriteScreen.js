@@ -262,13 +262,77 @@ const MainBoardWriteScreen = () => {
               {mapVisible && selectedPlan?.date === item.date && (
                 <View style={styles.mapContainer}>
                   <MapView
-                    style={styles.map}
-                    initialRegion={{
-                      latitude: selectedPlan.places[0].latitude, // 첫 장소의 위도
-                      longitude: selectedPlan.places[0].longitude, // 첫 장소의 경도
-                      latitudeDelta: 0.05, // 지도의 확대 수준
-                      longitudeDelta: 0.05, // 지도의 확대 수준
+                    ref={(ref) => {
+                      // 이걸로 지도를 "참조"
+                      this.mapRef = ref;
                     }}
+                    style={styles.map}
+                    onLayout={() => {
+                      if (selectedPlan.places.length > 0) {
+                        const coordinates = selectedPlan.places.map(
+                          (place) => ({
+                            latitude: place.latitude,
+                            longitude: place.longitude,
+                          })
+                        );
+
+                        // 먼저 여백을 설정하면서 fitToCoordinates 호출
+                        this.mapRef.fitToCoordinates(coordinates, {
+                          edgePadding: {
+                            top: 50,
+                            right: 50,
+                            bottom: 50,
+                            left: 50,
+                          },
+                          animated: true,
+                        });
+
+                        // 확대 수준을 제한하기 위한 계산
+                        const latitudes = coordinates.map(
+                          (coord) => coord.latitude
+                        );
+                        const longitudes = coordinates.map(
+                          (coord) => coord.longitude
+                        );
+
+                        const maxLatitude = Math.max(...latitudes);
+                        const minLatitude = Math.min(...latitudes);
+                        const maxLongitude = Math.max(...longitudes);
+                        const minLongitude = Math.min(...longitudes);
+
+                        const latitudeDelta = maxLatitude - minLatitude;
+                        const longitudeDelta = maxLongitude - minLongitude;
+
+                        // 최소 확대 수준을 0.01로 제한
+                        if (latitudeDelta < 0.01 || longitudeDelta < 0.01) {
+                          const limitedLatitudeDelta = Math.max(
+                            latitudeDelta,
+                            0.01
+                          );
+                          const limitedLongitudeDelta = Math.max(
+                            longitudeDelta,
+                            0.01
+                          );
+
+                          this.mapRef.animateToRegion(
+                            {
+                              latitude: (maxLatitude + minLatitude) / 2,
+                              longitude: (maxLongitude + minLongitude) / 2,
+                              latitudeDelta: limitedLatitudeDelta,
+                              longitudeDelta: limitedLongitudeDelta,
+                            },
+                            500
+                          ); // 애니메이션 적용
+                        }
+                      }
+                    }}
+
+                    // initialRegion={{
+                    //   latitude: selectedPlan.places[0].latitude, // 첫 장소의 위도
+                    //   longitude: selectedPlan.places[0].longitude, // 첫 장소의 경도
+                    //   latitudeDelta: 0.05, // 지도의 확대 수준
+                    //   longitudeDelta: 0.05, // 지도의 확대 수준
+                    // }}
                   >
                     {selectedPlan.places.map((place, index) => (
                       <Marker
