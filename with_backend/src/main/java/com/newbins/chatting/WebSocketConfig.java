@@ -3,6 +3,7 @@ package com.newbins.chatting;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
+import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
@@ -31,10 +32,17 @@ public class WebSocketConfig implements WebSocketConfigurer {
                     // 클라이언트와 서버 간에 WebSocket 연결을 설정(핸드셰이크)
                     @Override
                     public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Map<String, Object> attributes) throws Exception {
-//                        String path = ((ServletServerHttpRequest) request).getServletRequest().getRequestURI();
                         String path = request.getURI().getPath();
-                        attributes.put("userId", extractUserIdFromPath(path));
-                        attributes.put("chattingId", extractChattingIdFromPath(path));
+                        String[] pathSegments = path.split("/");
+                        if (pathSegments.length >= 5) {
+                            String userId = pathSegments[2];
+                            String chattingId = pathSegments[4];
+
+                            attributes.put("userId", userId);
+                            attributes.put("chattingId", chattingId);
+                        } else {
+                            throw new IllegalArgumentException("Invalid WebSocket path");
+                        }
                         return true;
                     }
 
@@ -44,14 +52,6 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
                     }
                 });
-    }
-
-    private String extractUserIdFromPath(String path){
-        return path.split("/")[2];
-    }
-
-    private String extractChattingIdFromPath(String path){
-        return path.split("/")[4];
     }
 }
 

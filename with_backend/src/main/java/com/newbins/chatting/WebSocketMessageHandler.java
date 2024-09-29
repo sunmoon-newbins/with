@@ -28,11 +28,12 @@ public class WebSocketMessageHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         Map<String, Object> attributes = session.getAttributes();
-        String userId = (String) attributes.get("user_id");
-        String chattingId = (String) attributes.get("chatting_id");
+        String userId = (String) attributes.get("userId");
+        String chattingId = (String) attributes.get("chattingId");
 
         ChatRoom chatRoom = chatRoomService.getOrCreateChatRoom(chattingId);
         chatRoom.addSession(session);
+
         if(userChattingService.enterTheChatting(chattingId, userId)){
             session.sendMessage(new TextMessage(userService.getUser(userId).getName()+"님이 입장했습니다."));
         }
@@ -42,8 +43,8 @@ public class WebSocketMessageHandler extends TextWebSocketHandler {
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         Map<String, Object> attributes = session.getAttributes();
-        String userId = (String) attributes.get("user_id");
-        String chattingId = (String) attributes.get("chatting_id");
+        String userId = (String) attributes.get("userId");
+        String chattingId = (String) attributes.get("chattingId");
 
         ChatRoom chatRoom = chatRoomService.getOrCreateChatRoom(chattingId);
 
@@ -58,10 +59,11 @@ public class WebSocketMessageHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionClosed(WebSocketSession session, org.springframework.web.socket.CloseStatus status) throws Exception {
         Map<String, Object> attributes = session.getAttributes();
-        String userId = (String) attributes.get("user_id");
-        String chattingId = (String) attributes.get("chatting_id");
+        String userId = (String) attributes.get("userId");
+        String chattingId = (String) attributes.get("chattingId");
 
         ChatRoom chatRoom = chatRoomService.getOrCreateChatRoom(chattingId);
+        userChattingService.leaveTheChatting(chattingId, userId);
         chatRoom.removeSession(session); // 연결 종료 시 세션 삭제
     }
 }

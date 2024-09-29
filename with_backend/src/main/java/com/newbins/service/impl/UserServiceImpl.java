@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
         String storedHashedPassword = userMapper.getPasswordById(user.getId());
         log.info("[login] : storedHashedPassword = {}", storedHashedPassword);
         if(passwordEncoder.matches(user.getPassword(), storedHashedPassword)){
-            return new User().toDTO(userMapper.getUserById(user.getId()));
+            return new User().toDTO(userMapper.getUserByUserId(user.getId()));
         }
         return null;
     }
@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean signup(User user) {
         if(userMapper.findById(user.getId()) != null){
-            log.info("[signup] : failed signup");
+            log.warn("[signup] : failed signup");
             return false;
         } else {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -45,17 +45,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUser(String userId) {
-        return new User().toDTO(userMapper.getUserById(userId));
+        return new User().toDTO(userMapper.getUserByUserId(userId));
     }
 
     @Override
     public User changeProfile(User user) {
         try{
-            userMapper.updateProfileById(user);
+            userMapper.updateProfileByUserId(user);
             log.info("[changeProfile] : successful change profile");
         } catch(Exception e){
             log.error("[changeProfile] : failed change profile, error = {}", e);
         }
-        return new User().toDTO(userMapper.getUserById(user.getId()));
+        return new User().toDTO(userMapper.getUserByUserId(user.getUserId()));
     }
 }

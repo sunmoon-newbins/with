@@ -15,7 +15,7 @@
             CREATE_DATE
         )
         VALUES (
-            (SELECT USER_NUM FROM USERS WHERE ID = #{id}),
+            #{userId},
             #{place.placeName},
             #{place.placeType},
             #{place.roadAddress},
@@ -29,13 +29,13 @@
     <select id="getMyPlace" parameterType="map" resultType="myPlace">
         SELECT *
         FROM MY_PLACE
-        WHERE USER_NUM = (SELECT USER_NUM FROM USERS WHERE ID = #{id})
+        WHERE USER_NUM = #{userId}
           AND PLACE_NAME = #{placeName}
     </select>
 
     <delete id="deleteMyPlace" parameterType="map">
         DELETE FROM MY_PLACE
-        WHERE USER_NUM = (SELECT USER_NUM FROM USERS WHERE ID = #{id})
+        WHERE USER_NUM = #{userId}
             AND PLACE_NUM = #{placeId}
     </delete>
 </mapper>

@@ -21,8 +21,10 @@ public class UserChattingController {
     // 내 채팅방 목록
     @GetMapping
     public List<ChattingRoom> getChattings(@PathVariable("user_id") String userId){
-        log.info("[getChatting] before getChattings");
-        return userChattingService.getChattingRooms(userId);
+        log.info("[getChattings] before getChattings, userId = {}", userId);
+        List<ChattingRoom> chattingRoomList = userChattingService.getChattingRooms(userId);
+        log.info("[getChattings] after getChattings, chattingRoomList = {}", chattingRoomList);
+        return  chattingRoomList;
     }
 
     // 채팅방 들어가기(채팅방 상세)

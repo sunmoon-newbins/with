@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface ChattingMapper {
@@ -14,7 +15,8 @@ public interface ChattingMapper {
     void setChattingUser(@Param("chattingId") String chattingId, @Param("userId")String userId);
     List<MessageEntity> getMessages(@Param("chattingId")String chattingId, @Param("userId")String userId);
     List<UsersEntity> getChattingUsers(String chattingId);
-    long setMessage(@Param("chattingId")String chattingId,
-                     @Param("userId")String userId, @Param("content")String message);
+    long setMessage(Map<String, Object> params);
+    void setMessageReadStatus(String userId);
     MessageEntity getMessageById(long messageId);
+    void updateChattingUserLeaveDT(String chattingId, String userId);
 }

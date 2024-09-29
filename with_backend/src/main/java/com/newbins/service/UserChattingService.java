@@ -11,4 +11,5 @@ public interface UserChattingService {
     boolean enterTheChatting(String chattingId, String userId);
     Chatting getChattingRoomInfo(String chattingId, String userid);
     Message sendMessage(String chattingId, String userId, String message);
+    void leaveTheChatting(String chattingId, String userId);
 }

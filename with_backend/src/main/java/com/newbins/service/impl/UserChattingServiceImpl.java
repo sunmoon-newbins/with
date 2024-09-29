@@ -13,9 +13,14 @@ import com.newbins.service.UserChattingService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.socket.TextMessage;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -26,18 +31,18 @@ public class UserChattingServiceImpl implements UserChattingService {
 
     @Override
     public List<ChattingRoom> getChattingRooms(String userId) {
+        List<ChattingRoom> chattingRooms = new ArrayList<>();
         try{
             List<ChattingRoomEntity> chattingRoomEntities = chattingMapper.getChattingRoomList(userId);
-            log.info("[getChattingRooms] successful getChattingRoomList");
-            List<ChattingRoom> chattingRooms = null;
+            log.info("[getChattingRooms] successful getChattingRoomList, chattingRoomEntities = {}", chattingRoomEntities);
             for(ChattingRoomEntity chattingRoom : chattingRoomEntities){
                 chattingRooms.add(new ChattingRoom().toDTO(chattingRoom));
             }
-            return chattingRooms;
+            log.info("[getChattingsRoom] chattingRooms = {}", chattingRooms);
         } catch(Exception e){
-            log.error("[getChattingRooms] failed getChattingRoomList");
+            log.error("[getChattingRooms] failed getChattingRooms");
         }
-        return null;
+        return chattingRooms;
     }
 
     @Override
@@ -66,7 +71,7 @@ public class UserChattingServiceImpl implements UserChattingService {
             }
 
             List<UsersEntity> usersEntities = chattingMapper.getChattingUsers(chattingId);
-            log.info("[getChattingRoomInfo] sucessful getChattingUsers");
+            log.info("[getChattingRoomInfo] successful getChattingUsers");
             for(UsersEntity usersEntity : usersEntities){
                 userList.add(new User().toDTO(usersEntity));
             }
@@ -81,16 +86,39 @@ public class UserChattingServiceImpl implements UserChattingService {
     }
 
     @Override
+    @Transactional
     public Message sendMessage(String chattingId, String userId, String message) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("chattingId", chattingId);
+        params.put("userId", userId);
+        params.put("message", message);
+
         try{
-            long messageId = chattingMapper.setMessage(chattingId, userId, message);
-            log.info("[sendMessage] successful send message, messageId = {}", messageId);
-            MessageEntity messageEntity = chattingMapper.getMessageById(messageId);
+            chattingMapper.setMessage(params);
+            long insertMessageId = ((BigInteger) params.get("messageId")).longValue();
+            if(insertMessageId != 0){
+                log.info("[sendMessage] successful setMessage, messageId = {}", insertMessageId);
+                chattingMapper.setMessageReadStatus(userId);
+            } else {
+                throw new Exception();
+            }
+            MessageEntity messageEntity = chattingMapper.getMessageById(insertMessageId);
             log.info("[sendMessage] successful get message info");
             return new Message().toDTO(messageEntity);
         } catch(Exception e){
             log.error("[sendMessage] failed send message");
+            e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public void leaveTheChatting(String chattingId, String userId) {
+        try{
+            chattingMapper.updateChattingUserLeaveDT(chattingId, userId);
+            log.info("[leaveTheChatting] successful {} leave chatting", userId);
+        } catch(Exception e){
+            log.error("[leaveTheChatting] failed {} leave chatting", userId);
+        }
     }
 }

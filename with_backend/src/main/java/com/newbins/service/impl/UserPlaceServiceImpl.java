@@ -14,10 +14,7 @@ import org.springframework.stereotype.Service;
 public class UserPlaceServiceImpl implements UserPlaceService {
 
     @Autowired
-    UserMapper userMapper;
-
-    @Autowired
-    PlaceMapper placeMapper;
+    private PlaceMapper placeMapper;
 
     @Override
     public Place addMyPlace(String userId, Place place) {
