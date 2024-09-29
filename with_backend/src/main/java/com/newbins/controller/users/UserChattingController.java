@@ -38,6 +38,6 @@ public class UserChattingController {
     @DeleteMapping("/{chatting_id}")
     public void exitChatting(@PathVariable("user_id") String userId,
                              @PathVariable("chatting_id") String chattingId){
-
+        userChattingService.leaveTheChatting(chattingId, userId);
     }
 }
