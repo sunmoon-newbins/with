@@ -19,4 +19,5 @@ public interface ChattingMapper {
     void setMessageReadStatus(String userId);
     MessageEntity getMessageById(long messageId);
     void updateChattingUserLeaveDT(String chattingId, String userId);
+    String getChattingIdByRouteId(String routeId);
 }

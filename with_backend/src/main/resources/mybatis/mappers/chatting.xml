@@ -164,4 +164,10 @@
         SET LEAVE_DT = NOW()
         WHERE USER_NUM = #{userId} AND CHATTING_NUM = #{chattingId}
     </update>
+
+    <select id="getChattingIdByRouteId" parameterType="String" resultType="String">
+        SELECT CHATTING_NUM
+        FROM CHATTING
+        WHERE ROUTE_NUM = #{routeId}
+    </select>
 </mapper>

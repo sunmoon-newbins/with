@@ -13,7 +13,6 @@ import java.util.Map;
 public class WebSocketMessageHandler extends TextWebSocketHandler {
 
     // 연결된 클라이언트 세션을 저장할 리스트
-    private final NotificationService notificationService = new NotificationService(this);
     private final ChatRoomService chatRoomService;
     private final UserChattingService userChattingService;
     private final UserService userService;
@@ -52,7 +51,6 @@ public class WebSocketMessageHandler extends TextWebSocketHandler {
         for (WebSocketSession webSocketSession : chatRoom.getSessions()) {
             webSocketSession.sendMessage(new TextMessage("New message: " + message.getPayload()));
         }
-        notificationService.sendNotificationToClients(message.getPayload());
     }
 
     // WebSocket 연결 종료 시 실행
