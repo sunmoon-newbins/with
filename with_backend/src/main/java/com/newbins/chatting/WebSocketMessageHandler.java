@@ -1,5 +1,7 @@
 package com.newbins.chatting;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.newbins.dto.Message;
 import com.newbins.service.UserChattingService;
 import com.newbins.service.UserService;
 import org.springframework.stereotype.Component;
@@ -45,11 +47,14 @@ public class WebSocketMessageHandler extends TextWebSocketHandler {
         String userId = (String) attributes.get("userId");
         String chattingId = (String) attributes.get("chattingId");
 
+        ObjectMapper objectMapper = new ObjectMapper();
+        Message messageObj = userChattingService.sendMessage(chattingId, userId, message.getPayload());
+
         ChatRoom chatRoom = chatRoomService.getOrCreateChatRoom(chattingId);
 
         // 받은 메시지를 모든 연결된 클라이언트에게 전달
         for (WebSocketSession webSocketSession : chatRoom.getSessions()) {
-            webSocketSession.sendMessage(new TextMessage("New message: " + message.getPayload()));
+            webSocketSession.sendMessage(new TextMessage(objectMapper.writeValueAsString(messageObj)));
         }
     }
 
@@ -61,7 +66,6 @@ public class WebSocketMessageHandler extends TextWebSocketHandler {
         String chattingId = (String) attributes.get("chattingId");
 
         ChatRoom chatRoom = chatRoomService.getOrCreateChatRoom(chattingId);
-        userChattingService.leaveTheChatting(chattingId, userId);
         chatRoom.removeSession(session); // 연결 종료 시 세션 삭제
     }
 }
