@@ -4,6 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.newbins.mapper.ChattingMapper">
     <select id="getChattingRoomList" parameterType="String" resultType="chattingRoomList">
+        -- 나의 채팅방 목록 가져오기
         WITH CHATTING_ROOM_NUMS AS ( -- 해당 유저가 속한 채팅방 번호들
             SELECT CHATTING_NUM
             FROM CHATTING_USER
@@ -24,7 +25,7 @@
                  FROM message m) as subquery
             where rn = 1
         ),
-        current_users as ( -- 각 채팅방 별 현재 유저
+        current_users as ( -- 각 채팅방 별 현재 유저 수
             select
                 chatting_num,
                 count(*) as current_user_count
@@ -46,4 +47,121 @@
             left join latest_messages lm on(c.chatting_num = lm.chatting_num)
             left join current_users cu on (c.chatting_num = cu.chatting_num)
     </select>
+
+    <insert id="setChattingUser" parameterType="String">
+        -- 채팅방 연결 시 데이터 저장(이미 데이터가 존재하는 경우에는 아무것도 안함)
+        INSERT INTO CHATTING_USER (CHATTING_NUM, USER_NUM, ADMISSION_DT, WRITER_ROLE)
+        VALUES(
+            #{chattingId},
+            #{userId},
+            NOW(),
+            CASE
+                WHEN (SELECT COUNT(*)
+                      FROM CHATTING C
+                          LEFT JOIN ROUTE R ON C.ROUTE_NUM = R.ROUTE_NUM
+                      WHERE C.CHATTING_NUM = #{chattingId}
+                        AND R.USER_NUM = #{userId}) = 1
+                THEN '모집자'
+                ELSE '참여자'
+                END
+        )
+        ON DUPLICATE KEY UPDATE
+            ADMISSION_DT = CASE WHEN LEAVE_DT IS NOT NULL THEN NOW() ELSE ADMISSION_DT END,
+            LEAVE_DT = CASE WHEN LEAVE_DT IS NOT NULL THEN NULL ELSE LEAVE_DT END;
+    </insert>
+
+    <select id="getMessages" parameterType="String" resultType="message">
+        -- 처음 들어간 시간 이후 메시지 가져오기
+        WITH ADMISSION AS ( -- 해당 유저가 채팅방에 처음 입장한 시간
+            SELECT
+                ADMISSION_DT
+            FROM CHATTING_USER
+            WHERE CHATTING_NUM = #{chattingId}
+                AND USER_NUM = #{userId}
+        ),
+        TOTAL_USERS AS (  -- 채팅방의 총 유저 수
+            SELECT
+                CHATTING_NUM,
+                COUNT(*) AS TOTAL_USER_COUNT
+            FROM CHATTING_USER
+            WHERE CHATTING_NUM = #{chattingId}
+              AND LEAVE_DT IS NULL
+            GROUP BY CHATTING_NUM
+        )
+        SELECT -- 해당 유저기 입장한 시간 이후 메시지들의 정보 + 안읽은 사람 수
+            M.MESSAGE_NUM,
+            M.CHATTING_NUM,
+            M.USER_NUM,
+            M.CONTENT,
+            TU.TOTAL_USER_COUNT - COUNT(MRS.USER_NUM) AS UNREAD_COUNT,
+            M.SEND_DT
+        FROM MESSAGE M
+            LEFT JOIN MESSAGE_READ_STATUS MRS ON (M.MESSAGE_NUM = MRS.MESSAGE_NUM)
+            LEFT JOIN TOTAL_USERS TU ON (M.CHATTING_NUM = TU.CHATTING_NUM)
+        WHERE M.CHATTING_NUM = #{chattingId}
+            AND SEND_DT > (SELECT ADMISSION_DT FROM ADMISSION)
+        GROUP BY M.MESSAGE_NUM, M.CHATTING_NUM, M.USER_NUM, M.CONTENT, M.SEND_DT, TU.TOTAL_USER_COUNT
+    </select>
+
+    <select id="getChattingUsers" parameterType="String" resultType="users">
+        -- 채팅방 유저들의 정보 가져오기
+        select *
+        from users
+        where user_num in (
+            select user_num
+            from chatting_user
+            where chatting_num = '9761e272-7c1d-11ef-95ee-bc0358927c36'
+        )
+    </select>
+
+    <insert id="setMessage" parameterType="map" useGeneratedKeys="true" keyProperty="messageId">
+        INSERT INTO MESSAGE (
+            CHATTING_NUM,
+            USER_NUM,
+            CONTENT
+        )
+        VALUES (
+            #{chattingId},
+            #{userId},
+            #{message}
+        );
+    </insert>
+
+    <insert id="setMessageReadStatus" parameterType="String">
+        INSERT INTO MESSAGE_READ_STATUS
+        VALUES (
+           LAST_INSERT_ID(),
+           #{userId},
+           NOW()
+        );
+    </insert>
+
+    <select id="getMessageById" parameterType="Long" resultType="message">
+        -- 메시지 정보 가져오기
+        WITH TOTAL_USERS AS (  -- 채팅방의 총 유저 수
+            SELECT
+                CHATTING_NUM,
+                COUNT(*) AS TOTAL_USER_COUNT
+            FROM CHATTING_USER
+            WHERE CHATTING_NUM = (SELECT CHATTING_NUM FROM MESSAGE WHERE MESSAGE_NUM = #{_parameter})
+              AND LEAVE_DT IS NULL
+            GROUP BY CHATTING_NUM
+        )
+        SELECT
+            M.USER_NUM,
+            M.CONTENT,
+            TU.TOTAL_USER_COUNT - COUNT(MRS.USER_NUM) AS UNREAD_COUNT,
+            M.SEND_DT
+        FROM MESSAGE M
+                 LEFT JOIN MESSAGE_READ_STATUS MRS ON(M.MESSAGE_NUM = MRS.MESSAGE_NUM)
+                 LEFT JOIN TOTAL_USERS TU ON(M.CHATTING_NUM = TU.CHATTING_NUM)
+        WHERE M.MESSAGE_NUM = #{_parameter}
+        GROUP BY M.USER_NUM, M.CONTENT, M.SEND_DT;
+    </select>
+
+    <update id="updateChattingUserLeaveDT" parameterType="String">
+        UPDATE CHATTING_USER
+        SET LEAVE_DT = NOW()
+        WHERE USER_NUM = #{userId} AND CHATTING_NUM = #{chattingId}
+    </update>
 </mapper>

@@ -10,7 +10,7 @@
         WHERE ID = #{_parameter}
     </select>
 
-    <select id="getUserById" parameterType="String" resultType="users">
+    <select id="getUserByUserId" parameterType="String" resultType="users">
         SELECT
             USER_NUM,
             ID,
@@ -22,7 +22,7 @@
             LANGUAGES,
             CREATE_DATE
         FROM USERS
-        WHERE ID = #{_parameter}
+        WHERE USER_NUM = #{_parameter}
     </select>
 
     <select id="findById" parameterType="String" resultType="String">
@@ -49,10 +49,10 @@
         )
     </insert>
 
-    <update id="updateProfileById" parameterType="user">
+    <update id="updateProfileByUserId" parameterType="user">
         UPDATE USERS
         SET PROFILE = #{profile}
-        WHERE ID = #{id}
+        WHERE USER_NUM = #{userId}
     </update>
 
 </mapper>

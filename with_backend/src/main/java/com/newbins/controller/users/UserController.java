@@ -39,7 +39,7 @@ public class UserController {
     @PatchMapping("/{user_id}")
     public User changeProfile(@PathVariable("user_id") String userId,
                               @RequestBody User user){
-        user.setId(userId);
+        user.setUserId(userId);
         return userService.changeProfile(user);
     }
 

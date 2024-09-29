@@ -18,9 +18,9 @@ public class UserPlaceController {
     @PostMapping
     public Place addMyPlace(@PathVariable("user_id") String userId,
                            @RequestBody Place place){
-        log.info("[addMyPlace] before - addMyPlace, userId = {}", userId);
+        log.info("[addMyPlace] before addMyPlace, userId = {}", userId);
         Place myAddedPlace = userPlaceService.addMyPlace(userId, place);
-        log.info("[addMyPlace] after - myAddedPlace = {}", myAddedPlace);
+        log.info("[addMyPlace] after myAddedPlace = {}", myAddedPlace);
         return myAddedPlace;
 
     }

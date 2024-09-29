@@ -15,5 +15,6 @@
         <typeAlias alias="place" type="com.newbins.entity.PlaceEntity"/>
         <typeAlias alias="myPlace" type="com.newbins.entity.MyPlaceEntity"/>
         <typeAlias alias="chattingRoomList" type="com.newbins.entity.ChattingRoomEntity"/>
+        <typeAlias alias="message" type="com.newbins.entity.MessageEntity"/>
     </typeAliases>
 </configuration>
