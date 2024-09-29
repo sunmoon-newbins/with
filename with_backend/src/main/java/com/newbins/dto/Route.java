@@ -3,6 +3,8 @@ package com.newbins.dto;
 import com.newbins.entity.RouteEntity;
 import lombok.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Setter
 @Getter
@@ -52,6 +54,18 @@ public class Route implements Convertible<RouteEntity, Route>{
                 .startDate(entity.getStart_date())
                 .endDate(entity.getEnd_date())
                 .build();
+    }
+
+    // List에 담겨있는 RouteEntity를 Route로 변환하여 List로 반환
+    public List<Route> toDTO(List<RouteEntity> entities) {
+        // RouteEntity를 Route로 변환하여 List로 반환
+        List<Route> routes = new ArrayList<>();
+        for (RouteEntity entity : entities) {
+            Route route = new Route();
+            routes.add(route.toDTO(entity)); // Route 클래스에 정의된 toDTO() 메서드 사용
+        }
+
+        return routes;
     }
 
 }

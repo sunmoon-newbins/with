@@ -44,11 +44,12 @@ public class RouteController {
         return routeInfo;
     }
 
-//    // 루트 검색
-//    @GetMapping("/search")
-//    public void getSearchRoutes(@RequestParam(required = false) String search){
-//
-//    }
+    // 루트 검색
+    @GetMapping("/search")
+    public List<Route> getSearchRoutes(@RequestParam(required = false) String title, @RequestParam(required = false) String content){
+        log.info("[getSearchRoutes] : title = {}, content = {}", title, content);
+        return routeService.searchRoutes(title, content);
+    }
 //
 //    // 좋아요 누른 게시글 보기 + 소개, 모집, 전체 보기
 //    @GetMapping("/{user_id}")

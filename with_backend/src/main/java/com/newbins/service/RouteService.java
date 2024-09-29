@@ -10,4 +10,5 @@ public interface RouteService {
     Route getRoute(String routeNum);
     List<Route> getRoutes(int state, String sortType);
     List<Route> getRoutes(String userNum);
+    List<Route> searchRoutes(String title, String content);
 }

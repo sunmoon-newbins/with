@@ -73,6 +73,21 @@
         </choose>
     </select>
 
+
+    <!-- 조건부 검색 -->
+    <select id="searchRoutes" resultType="routeEntity">
+        SELECT
+        ROUTE_NUM, USER_NUM, TITLE, PARTICIPANT_COUNT, STATE, PICTURE, CREATE_DATE, START_DATE, END_DATE
+        FROM ROUTE
+        WHERE 1 = 1
+        <if test="title != null and title != ''">
+            AND TITLE LIKE CONCAT('%', #{title}, '%')
+        </if>
+        <if test="content != null and content != ''">
+            AND CONTENT LIKE CONCAT('%', #{content}, '%')
+        </if>
+    </select>
+
     <!-- userNum에 따라 route 목록-->
     <select id="getRouteByUserNum" resultType="routeEntity">
         SELECT
@@ -88,5 +103,4 @@
         FROM ROUTE
         WHERE USER_NUM = #{userNum}
     </select>
-
 </mapper>

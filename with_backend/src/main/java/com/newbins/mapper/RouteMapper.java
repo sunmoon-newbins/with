@@ -14,5 +14,6 @@ public interface RouteMapper {
     RouteEntity getRoute(String routeNum);
     List<RouteEntity> getRoutes(@Param("state") int state, @Param("sortType") String sortType);
     List<RouteEntity> getRouteByUserNum(@Param("userNum") String userNum);
+    List<RouteEntity> searchRoutes(@Param("title") String title, @Param("content") String content);
 }
 
