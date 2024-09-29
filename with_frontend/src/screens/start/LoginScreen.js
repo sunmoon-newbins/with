@@ -7,9 +7,9 @@ import {
   ScrollView,
 } from "react-native";
 
-import WelcomeMessage from "../../components/loginScreen/WelcomeMessage";
-import LoginForm from "../../components/loginScreen/LoginForm";
-import LanguageButtons from "../../components/loginScreen/LanguageButtons";
+import WelcomeMessage from "../../components/LoginScreen/WelcomeMessage";
+import LoginForm from "../../components/LoginScreen/LoginForm";
+import LanguageButtons from "../../components/LoginScreen/LanguageButtons";
 
 const LoginScreen = () => {
   return (

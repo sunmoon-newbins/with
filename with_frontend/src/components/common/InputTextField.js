@@ -8,10 +8,11 @@ const InputTextField = ({
   onChangeText,
   secureTextEntry,
   accessibilityLabel,
+  labelStyle,
 }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>{label}</Text>
+      <Text style={[styles.label, labelStyle]}>{label}</Text>
       <TextInput
         style={styles.input}
         placeholder={placeholder}
@@ -32,11 +33,10 @@ const styles = StyleSheet.create({
   label: {
     color: "#0B1527",
     fontSize: 15,
-    // fontFamily: "Inter, sans-serif",
+
     marginBottom: 12,
   },
   input: {
-    // fontFamily: "Inter, sans-serif",
     fontSize: 16,
     backgroundColor: "#F4F8FB",
     borderRadius: 5,
