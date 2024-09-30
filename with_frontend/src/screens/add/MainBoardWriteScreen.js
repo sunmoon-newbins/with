@@ -93,6 +93,24 @@ const MainBoardWriteScreen = () => {
 
   // 메모를 저장하는 함수. 선택된 place 객체에 메모를 업데이트합니다.
 
+  useEffect(() => {
+    //  plans 맵 가져올때마다 렌더링 다시되게 , , 여백 있이 , 모든 장소가 지도 화면에 다보이게
+    if (plans.length > 0 && this.mapRef) {
+      const allPlaces = plans.flatMap((plan) => plan.places); // 모든 plan의 places를 하나로 합침
+      if (allPlaces.length > 0) {
+        const coordinates = allPlaces.map((place) => ({
+          latitude: place.latitude,
+          longitude: place.longitude,
+        }));
+
+        this.mapRef.fitToCoordinates(coordinates, {
+          edgePadding: { top: 50, right: 50, bottom: 50, left: 50 },
+          animated: true,
+        });
+      }
+    }
+  }, [plans]); // plans가 업데이트될 때마다 실행
+
   const saveMemo = () => {
     console.log("Saving memo:", memoInput);
     console.log("Selected place:", selectedPlace);
@@ -355,17 +373,9 @@ const MainBoardWriteScreen = () => {
                 </Text>
 
                 {/*  Day 아래에 지도 보기 버튼 추가 */}
-                {item.places.length > 0 && (
-                  <TouchableOpacity
-                    style={styles.mapButton}
-                    onPress={() => handleShowMap(item)} // 현재 일정을 기반으로 지도 보기
-                  >
-                    <Text style={styles.mapButtonText}>지도로 보기</Text>
-                  </TouchableOpacity>
-                )}
 
                 {/*  선택된 Day에 해당하는 장소의 지도 표시 */}
-                {mapVisible && selectedPlan?.date === item.date && (
+                {item.places.length > 0 && (
                   <View style={styles.mapContainer}>
                     <MapView
                       ref={(ref) => {
@@ -374,20 +384,18 @@ const MainBoardWriteScreen = () => {
                       }}
                       style={styles.map}
                       onLayout={() => {
-                        if (selectedPlan.places.length > 0) {
-                          const coordinates = selectedPlan.places.map(
-                            (place) => ({
-                              latitude: place.latitude,
-                              longitude: place.longitude,
-                            })
-                          );
+                        if (item.places.length > 0) {
+                          const coordinates = item.places.map((place) => ({
+                            latitude: place.latitude,
+                            longitude: place.longitude,
+                          }));
 
-                          if (selectedPlan.places.length === 1) {
+                          if (item.places.length === 1) {
                             // 장소가 하나인 경우 확대 수준을 0.1로 고정
                             this.mapRef.animateToRegion(
                               {
-                                latitude: selectedPlan.places[0].latitude,
-                                longitude: selectedPlan.places[0].longitude,
+                                latitude: item.places[0].latitude,
+                                longitude: item.places[0].longitude,
                                 latitudeDelta: 0.01, // 확대 수준 고정
                                 longitudeDelta: 0.01, // 확대 수준 고정
                               }
@@ -408,7 +416,7 @@ const MainBoardWriteScreen = () => {
                         }
                       }}
                     >
-                      {selectedPlan.places.map((place, index) => (
+                      {item.places.map((place, index) => (
                         <Marker
                           key={index}
                           coordinate={{
@@ -440,12 +448,6 @@ const MainBoardWriteScreen = () => {
                       ))}
                     </MapView>
                     {/* 지도 닫기 버튼 추가 */}
-                    <TouchableOpacity
-                      style={styles.closeMapButton}
-                      onPress={handleHideMap}
-                    >
-                      <Text style={styles.closeMapButtonText}>닫기</Text>
-                    </TouchableOpacity>
                   </View>
                 )}
                 {/* 장소 하나하나 컴포넌트  */}
