@@ -94,23 +94,29 @@ const MainBoardWriteScreen = () => {
   // 메모를 저장하는 함수. 선택된 place 객체에 메모를 업데이트합니다.
 
   const saveMemo = () => {
+    console.log("Saving memo:", memoInput);
+    console.log("Selected place:", selectedPlace);
     // 선택된 장소의 메모 업데이트
     setPlans((prevPlans) =>
       prevPlans.map((plan) =>
-        plan.date === selectedPlace.date
+        plan.date === selectedPlace.date // 먼저 선택한 날짜 맞는지 ,
           ? {
-              ...plan,
+              ...plan, // 원래 배열 그대롣 두고,
               places: plan.places.map(
                 (place) =>
-                  place === selectedPlace // selectedPlace로 직접 비교하여 메모 업데이트
-                    ? { ...place, memo: memoInput } // 메모 입력값을 place에 저장
-                    : place // 다른 장소는 변경하지 않음
+                  place.order === selectedPlace.order // selectedPlace로 직접 비교하여 메모 업데이트
+                    ? // 원래 order 없었는데 서로 order 순서로 내가 정한 장소에 대한 메모를 작성하는ㄱ ㅔ맞는지
+                      { ...place, memo: memoInput } // 메모 입력값을 place에 저장
+                    : // { ...place }는 place 객체의 모든 기존 속성을 복사한 새로운 객체를 만듭니다.
+                      // 그래서  place 에 memo란 속성이 없어도 새롭게 추가됨 ..
+                      place // 다른 장소는 변경하지 않음
               ),
             }
           : plan
       )
     );
     setIsMemoModalVisible(false); // 모달 닫기
+    console.log("Updated plans: 메모", JSON.stringify(plans, null, 2)); // 상태 확인용
   };
 
   // 삭제함수
@@ -173,6 +179,8 @@ const MainBoardWriteScreen = () => {
                         latitude: latitude, // 위도
                         longitude: longitude, // 경도
                         addressName: "", // 필요 시 주소명 추가
+                        date: selectedDay, // 날짜정보 추가
+                        memo: "", // 메모 초기화.
                       },
                     ],
                   }
@@ -471,7 +479,11 @@ const MainBoardWriteScreen = () => {
                                     ? "#B6FFB6" // 관광명소
                                     : place.placeType === 3
                                     ? "#D9B6FF" // 숙소
-                                    : "#FFB6B6", // 식당
+                                    : "#FFB6B6", // 식당 ,
+                                // flex: 1,,
+                                alignSelf: "flex-start",
+                                marginTop: 10,
+                                marginLeft: 5,
                               },
                             ]}
                           >
@@ -486,7 +498,13 @@ const MainBoardWriteScreen = () => {
                               {/*  장소명 출력 */}
                             </Text>
 
-                            <Text style={{ opacity: 0.5 }}>
+                            <Text
+                              style={{
+                                opacity: 0.5,
+                                fontSize: 10,
+                                fontWeight: 500,
+                              }}
+                            >
                               {/*  placeType에 따라 다른 문자열을 출력 */}
                               {place.placeType === 1 && "나만의 장소 "}
                               {place.placeType === 2 && "관광명소 "}
@@ -495,7 +513,12 @@ const MainBoardWriteScreen = () => {
                             </Text>
                             {/* 메모가 있으면 아래에 표시 */}
                             {place.memo ? (
-                              <Text style={styles.memoText}>{place.memo}</Text>
+                              <View style={styles.memoContainer}>
+                                {/*  여기 네모칸 하얀거 */}
+                                <Text style={styles.memoText}>
+                                  {place.memo}
+                                </Text>
+                              </View>
                             ) : null}
                           </View>
                         </View>
@@ -593,13 +616,26 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     backgroundColor: "#F4F8FB",
   },
+  // planContainer: {
+  //   padding: 16,
+  //   marginVertical: 8,
+  //   backgroundColor: "#F4F8FB",
+  //   borderRadius: 8,
+  //   marginHorizontal: 0,
+  // },
+
   planContainer: {
-    padding: 16,
+    backgroundColor: "#ffffff",
+    padding: 5,
     marginVertical: 8,
-    backgroundColor: "#F4F8FB",
     borderRadius: 8,
-    marginHorizontal: 0,
+    elevation: 1, // 그림자 효과 (Android)
+    shadowColor: "#000", // 그림자 색상 (iOS)
+    shadowOffset: { width: 0, height: 2 }, // 그림자 오프셋 (iOS)
+    shadowOpacity: 0.1, // 그림자 투명도 (iOS)
+    shadowRadius: 4, // 그림자 반경 (iOS)
   },
+
   dateTitle: {
     fontSize: 18,
     fontWeight: "bold",
@@ -623,9 +659,9 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     padding: 8,
 
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: "#ddd",
+    // borderRadius: 8,
+    // borderWidth: 1,
+    // borderColor: "#ddd",
   },
   pinContainer: {
     width: 25, // 핀의 크기
@@ -644,11 +680,14 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   placeText: {
-    fontSize: 16,
+    // marginHorizontal: 5,    fontSize: 16,
     fontWeight: "bold",
-    marginBottom: 4,
+    fontSize: 16,
+    marginBottom: 2,
+    marginTop: 10,
   },
   noPlaceText: {
+    marginHorizontal: 10,
     fontSize: 14,
     fontStyle: "italic",
     color: "#888",
@@ -682,8 +721,8 @@ const styles = StyleSheet.create({
   },
   // 🔺 Custom Marker 스타일 추가
   marker: {
-    width: 30,
-    height: 30,
+    width: 25,
+    height: 25,
     borderRadius: 15,
     backgroundColor: "red",
     justifyContent: "center",
@@ -777,6 +816,21 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#888",
     marginTop: 5,
+  },
+  // 메모 컨테이너
+  memoContainer: {
+    backgroundColor: "#F4F8FB",
+    flexDirection: "row", // 핀과 장소 정보를 가로로 배치
+    alignItems: "center",
+    margin: 8,
+    marginLeft: -1,
+    // marginHorizontal: 5,
+    padding: 8,
+    // paddingBottom :,
+
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "#ddd",
   },
 });
 

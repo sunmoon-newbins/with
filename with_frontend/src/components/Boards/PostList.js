@@ -56,6 +56,8 @@ const PostList = ({ searchQuery }) => {
           time={item.time}
           imageUrl={item.imageUrl}
           description={item.description}
+          currentMember={item.currentMember}
+          maxMember={item.maxMember}
           onPress={
             () => navigation.navigate("RouteDetailScreen", { postId: item.id }) // PostDetailScreen으로 네비게이트
           }

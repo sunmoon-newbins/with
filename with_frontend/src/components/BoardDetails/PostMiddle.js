@@ -111,7 +111,11 @@ const PostMiddle = ({ plans }) => {
                         ? "#B6FFB6" // 관광명소
                         : place.placeType === 3
                         ? "#D9B6FF" // 숙소
-                        : "#FFB6B6", // 식당
+                        : "#FFB6B6", // 식당 ,
+                    // flex: 1,,
+                    alignSelf: "flex-start",
+                    marginTop: 10,
+                    marginLeft: 5,
                   },
                 ]}
               >
@@ -121,17 +125,30 @@ const PostMiddle = ({ plans }) => {
 
               <View style={styles.placeInfoContainer}>
                 <Text style={styles.placeText}>
+                  {`${place.placeName}`}
+
+                  {/*  장소명 출력 */}
+                </Text>
+
+                <Text
+                  style={{
+                    opacity: 0.5,
+                    fontSize: 10,
+                    fontWeight: 500,
+                  }}
+                >
                   {/*  placeType에 따라 다른 문자열을 출력 */}
                   {place.placeType === 1 && "나만의 장소 "}
                   {place.placeType === 2 && "관광명소 "}
                   {place.placeType === 3 && "숙소 "}
                   {place.placeType === 4 && "식당 "}
-                  {/*  장소명 출력 */}
-                  {` ${place.placeName}`}
                 </Text>
                 {/* 메모가 있으면 아래에 표시 */}
                 {place.memo ? (
-                  <Text style={styles.memoText}>{place.memo}</Text>
+                  <View style={styles.memoContainer}>
+                    {/*  여기 네모칸 하얀거 */}
+                    <Text style={styles.memoText}>{place.memo}</Text>
+                  </View>
                 ) : null}
               </View>
             </View>
@@ -143,8 +160,32 @@ const PostMiddle = ({ plans }) => {
 };
 // 스타일 정의
 const styles = StyleSheet.create({
+  memoContainer: {
+    backgroundColor: "#F4F8FB",
+    flexDirection: "row", // 핀과 장소 정보를 가로로 배치
+    alignItems: "center",
+    margin: 8,
+    marginLeft: -1,
+    // marginHorizontal: 5,
+    padding: 8,
+    // paddingBottom :,
+
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "#ddd",
+  },
+  placeText: {
+    // marginHorizontal: 5,    fontSize: 16,
+    fontWeight: "bold",
+    fontSize: 16,
+    marginBottom: 2,
+    marginTop: 10,
+  },
   dateContainer: {
+    backgroundColor: "#ffffff",
     marginVertical: 10,
+    padding: 40,
+    // paddingBottom: -50,
     paddingHorizontal: 15,
   },
   dateText: {
@@ -153,12 +194,15 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   placeContainer: {
-    marginBottom: 15,
-    padding: 10,
-    borderRadius: 10,
-    backgroundColor: "#f9f9f9",
-    borderWidth: 1,
-    borderColor: "#ddd",
+    backgroundColor: "#ffffff",
+    flexDirection: "row", // 핀과 장소 정보를 가로로 배치
+    alignItems: "center",
+    marginBottom: 8,
+    padding: 8,
+
+    // borderRadius: 8,
+    // borderWidth: 1,
+    // borderColor: "#ddd",
   },
   placeHeader: {
     flexDirection: "row",
@@ -193,8 +237,8 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
   },
   marker: {
-    width: 30,
-    height: 30,
+    width: 25,
+    height: 25,
     borderRadius: 15,
     backgroundColor: "red",
     justifyContent: "center",
@@ -205,15 +249,15 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   pinContainer: {
-    width: 35, // 핀의 크기
-    height: 35, // 핀의 크기
+    width: 25, // 핀의 크기
+    height: 25, // 핀의 크기
     borderRadius: 20, // 핀을 동그랗게
     justifyContent: "center", // 가운데 정렬
     alignItems: "center", // 가운데 정렬
     marginRight: 10, // 핀과 텍스트 간격
   },
   pinText: {
-    fontSize: 16,
+    fontSize: 13,
     color: "#ffffff",
     fontWeight: "bold",
   },

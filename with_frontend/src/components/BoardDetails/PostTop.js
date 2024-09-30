@@ -27,7 +27,7 @@ const PostTop = ({ image, title, description, currentMember, maxMember }) => {
         <Text style={styles.title}>{title}</Text>
         <Text
           style={styles.memberCount}
-        >{`${currentMember} / ${maxMember}`}</Text>
+        >{`모집인원 : ${currentMember} / ${maxMember}`}</Text>
         <Text style={styles.description}>{description}</Text>
         <View style={styles.horizontalLine} />
       </View>
@@ -74,12 +74,12 @@ const styles = StyleSheet.create({
     color: "#555", // 약간 먹색
     lineHeight: 24,
   },
-  horizontalLine: {
-    borderBottomColor: "#bbb", // 선의 색상
-    borderBottomWidth: 0.3, // 선의 두께
-    marginVertical: 10, // 수평선 위아래 여백
-    padding: 16,
-  },
+  // horizontalLine: {
+  //   borderBottomColor: "#bbb", // 선의 색상
+  //   borderBottomWidth: 0.3, // 선의 두께
+  //   marginVertical: 10, // 수평선 위아래 여백
+  //   padding: 16,
+  // },
   memberCount: {
     fontSize: 13,
     marginBottom: 10,
