@@ -92,6 +92,7 @@ const MainBoardWriteScreen = () => {
   };
 
   // 메모를 저장하는 함수. 선택된 place 객체에 메모를 업데이트합니다.
+
   const saveMemo = () => {
     // 선택된 장소의 메모 업데이트
     setPlans((prevPlans) =>
@@ -373,63 +374,31 @@ const MainBoardWriteScreen = () => {
                             })
                           );
 
-                          // 먼저 여백을 설정하면서 fitToCoordinates 호출
-                          this.mapRef.fitToCoordinates(coordinates, {
-                            edgePadding: {
-                              top: 50,
-                              right: 50,
-                              bottom: 50,
-                              left: 50,
-                            },
-                            animated: true,
-                          });
-
-                          // 확대 수준을 제한하기 위한 계산
-                          const latitudes = coordinates.map(
-                            (coord) => coord.latitude
-                          );
-                          const longitudes = coordinates.map(
-                            (coord) => coord.longitude
-                          );
-
-                          const maxLatitude = Math.max(...latitudes);
-                          const minLatitude = Math.min(...latitudes);
-                          const maxLongitude = Math.max(...longitudes);
-                          const minLongitude = Math.min(...longitudes);
-
-                          const latitudeDelta = maxLatitude - minLatitude;
-                          const longitudeDelta = maxLongitude - minLongitude;
-
-                          // 최소 확대 수준을 0.01로 제한
-                          if (latitudeDelta < 0.01 || longitudeDelta < 0.01) {
-                            const limitedLatitudeDelta = Math.max(
-                              latitudeDelta,
-                              0.01
-                            );
-                            const limitedLongitudeDelta = Math.max(
-                              longitudeDelta,
-                              0.01
-                            );
-
+                          if (selectedPlan.places.length === 1) {
+                            // 장소가 하나인 경우 확대 수준을 0.1로 고정
                             this.mapRef.animateToRegion(
                               {
-                                latitude: (maxLatitude + minLatitude) / 2,
-                                longitude: (maxLongitude + minLongitude) / 2,
-                                latitudeDelta: limitedLatitudeDelta,
-                                longitudeDelta: limitedLongitudeDelta,
+                                latitude: selectedPlan.places[0].latitude,
+                                longitude: selectedPlan.places[0].longitude,
+                                latitudeDelta: 0.01, // 확대 수준 고정
+                                longitudeDelta: 0.01, // 확대 수준 고정
+                              }
+                              // 1 // 애니메이션 시간
+                            );
+                          } else {
+                            // 장소가 두 개 이상일 경우 fitToCoordinates 호출
+                            this.mapRef.fitToCoordinates(coordinates, {
+                              edgePadding: {
+                                top: 50,
+                                right: 50,
+                                bottom: 50,
+                                left: 50,
                               },
-                              500
-                            ); // 애니메이션 적용
+                              animated: true,
+                            });
                           }
                         }
                       }}
-
-                      // initialRegion={{
-                      //   latitude: selectedPlan.places[0].latitude, // 첫 장소의 위도
-                      //   longitude: selectedPlan.places[0].longitude, // 첫 장소의 경도
-                      //   latitudeDelta: 0.05, // 지도의 확대 수준
-                      //   longitudeDelta: 0.05, // 지도의 확대 수준
-                      // }}
                     >
                       {selectedPlan.places.map((place, index) => (
                         <Marker
@@ -512,13 +481,17 @@ const MainBoardWriteScreen = () => {
 
                           <View style={styles.placeInfoContainer}>
                             <Text style={styles.placeText}>
+                              {`${place.placeName}`}
+
+                              {/*  장소명 출력 */}
+                            </Text>
+
+                            <Text style={{ opacity: 0.5 }}>
                               {/*  placeType에 따라 다른 문자열을 출력 */}
                               {place.placeType === 1 && "나만의 장소 "}
                               {place.placeType === 2 && "관광명소 "}
                               {place.placeType === 3 && "숙소 "}
                               {place.placeType === 4 && "식당 "}
-                              {/*  장소명 출력 */}
-                              {` ${place.placeName}`}
                             </Text>
                             {/* 메모가 있으면 아래에 표시 */}
                             {place.memo ? (
@@ -655,8 +628,8 @@ const styles = StyleSheet.create({
     borderColor: "#ddd",
   },
   pinContainer: {
-    width: 35, // 핀의 크기
-    height: 35, // 핀의 크기
+    width: 25, // 핀의 크기
+    height: 25, // 핀의 크기
     borderRadius: 20, // 핀을 동그랗게
     justifyContent: "center", // 가운데 정렬
     alignItems: "center", // 가운데 정렬
@@ -666,12 +639,13 @@ const styles = StyleSheet.create({
     flex: 1, // 장소 정보가 핀 옆에 맞게 배치되도록
   },
   pinText: {
-    fontSize: 16,
+    fontSize: 13,
     color: "#ffffff",
     fontWeight: "bold",
   },
   placeText: {
-    fontSize: 14,
+    fontSize: 16,
+    fontWeight: "bold",
     marginBottom: 4,
   },
   noPlaceText: {

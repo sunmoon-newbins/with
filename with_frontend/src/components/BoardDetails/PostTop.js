@@ -1,15 +1,8 @@
 import React from "react";
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-  SafeAreaView,
-} from "react-native";
+import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native"; // 네비게이션 훅 가져오기
 
-const PostTop = ({ image, title, description }) => {
+const PostTop = ({ image, title, description, currentMember, maxMember }) => {
   const navigation = useNavigation(); // 네비게이션 객체 가져오기
 
   return (
@@ -29,11 +22,14 @@ const PostTop = ({ image, title, description }) => {
           />
         </TouchableOpacity>
       </View>
-
       {/* 내용 영역 */}
       <View style={styles.content}>
         <Text style={styles.title}>{title}</Text>
+        <Text
+          style={styles.memberCount}
+        >{`${currentMember} / ${maxMember}`}</Text>
         <Text style={styles.description}>{description}</Text>
+        <View style={styles.horizontalLine} />
       </View>
     </View>
   );
@@ -71,12 +67,23 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     fontWeight: "bold",
-    marginVertical: 20,
+    // marginVertical: 20,
   },
   description: {
     fontSize: 16,
     color: "#555", // 약간 먹색
     lineHeight: 24,
+  },
+  horizontalLine: {
+    borderBottomColor: "#bbb", // 선의 색상
+    borderBottomWidth: 0.3, // 선의 두께
+    marginVertical: 10, // 수평선 위아래 여백
+    padding: 16,
+  },
+  memberCount: {
+    fontSize: 13,
+    marginBottom: 10,
+    opacity: 0.5,
   },
 });
 

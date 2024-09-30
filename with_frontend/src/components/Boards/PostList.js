@@ -14,6 +14,8 @@ const posts = [
     time: "8m ago",
     imageUrl: "", // ImageURL 로 하는데 일단 더미 사진으로 대체 https://example.com/game.png
     description: "안녕하세요 먼 곳에서 오느라 고생많으셨어요. 제가 소...",
+    currentMember: 5,
+    maxMember: 10,
   },
   {
     id: "2",
