@@ -35,6 +35,8 @@ const MainBoardWriteScreen = () => {
   const [plans, setPlans] = useState([]);
   console.log(JSON.stringify(plans, null, 2));
 
+  const navigation = useNavigation(); // 네비게이션 객체 가져오기
+
   // placeType 1 나만의장소
   // placeType 2 관광명소
   // placeType 3 숙소
@@ -208,18 +210,6 @@ const MainBoardWriteScreen = () => {
       setSelectedDay(null); // 선택된 날짜 초기화
     }
   }, [latitude, longitude, myPlaceName, placeType]); // 날짜 변경될떄 또 실행되면 x
-
-  const navigation = useNavigation(); // 네비게이션 객체 가져오기
-
-  const handleShowMap = (plan) => {
-    setSelectedPlan(plan);
-    setMapVisible(true);
-  };
-
-  const handleHideMap = () => {
-    setMapVisible(false);
-    setSelectedPlan(null);
-  };
 
   // 날짜 선택 시 계획 목록을 초기화
   const handleDateChange = (newDates) => {
@@ -547,7 +537,21 @@ const MainBoardWriteScreen = () => {
           </ScrollView>
 
           {/*  작성 완료 버튼 */}
-          <LongButton title="작성 완료" />
+          <LongButton
+            title="작성 완료"
+            onPress={() => {
+              //
+              // 백엔드로 넘겨주는 ,, 함수 작성하고
+              // 값들 정리해서 넘겨주기
+              //
+
+              navigation.reset({
+                index: 0, // 스택에서 첫 번째 인덱스
+                routes: [{ name: "Home" }], // Home 탭으로 이동
+              });
+              // 홈탭에서 상세보기화면을 눌러서 막 보고있었더라도 홈에, initialRoutName 스크린 화면으로 감.
+            }}
+          />
         </View>
       </ScrollView>
     </>
