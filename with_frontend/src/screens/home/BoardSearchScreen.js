@@ -13,7 +13,8 @@ import { SafeAreaView } from "react-native-safe-area-context"; // 안전 영역�
 import SearchBar from "../../components/common/SearchBar";
 import RecentSearchItem from "../../components/common/RecentSearchItem";
 
-const recentSearches = ["서울", "부산", "제주", "아산", "충남", "경주"];
+// const recentSearches = ["서울", "부산", "제주", "아산", "충남", "경주"];
+// 최근검색 x
 
 function BoardSearchScreen() {
   const navigation = useNavigation();
@@ -63,14 +64,14 @@ function BoardSearchScreen() {
         </TouchableOpacity>
       </View>
       {/* 최근 검색어 컨테이너 */}
-      <View style={styles.recentSearchContainer}>
+      {/* <View style={styles.recentSearchContainer}>
         <Text style={styles.recentSearchTitle}>최근 검색</Text>
         <View style={styles.recentSearchItems}>
           {recentSearches.map((item, index) => (
             <RecentSearchItem key={index} text={item} />
           ))}
         </View>
-      </View>
+      </View> */}
     </SafeAreaView>
   );
 }
