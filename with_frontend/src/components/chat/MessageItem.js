@@ -5,7 +5,7 @@ import { View, Text, StyleSheet, Image } from "react-native";
 const MessageItem = ({ messageData }) => {
   // messageData 객체에서 필요한 데이터 추출
   const { isMyMessage, profileImage, nickname, time, message } = messageData;
-
+  console.log("메시지 렌더링", messageData);
   // 프로필 이미지 렌더링 함수
   const renderProfileImage = () => {
     if (!isMyMessage) {
