@@ -22,4 +22,11 @@
         )
         ORDER BY WRITE_DT DESC
     </select>
+
+    <select id="getNoticesByUserId" parameterType="String" resultType="notice">
+        SELECT *
+        FROM NOTICE
+        WHERE USER_NUM = #{userId}
+        ORDER BY NOTICE_DT DESC
+    </select>
 </mapper>
