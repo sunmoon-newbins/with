@@ -27,9 +27,19 @@ const MessageItem = ({ messageData }) => {
   // 메시지와 시간 렌더링 함수
   const renderMessageRow = () => (
     <View style={styles.messageRow}>
-      {/* 나의 메시지일 경우 시간 먼저, 상대 메시지일 경우 메시지 박스 먼저 */}
-      <MessageBox isMyMessage={isMyMessage} message={message} />
-      <Text style={styles.time}>{time}</Text>
+      {isMyMessage ? (
+        // 내 메시지일 경우: 시간 먼저, 메시지 박스 나중에
+        <>
+          <Text style={styles.time}>{time}</Text>
+          <MessageBox isMyMessage={isMyMessage} message={message} />
+        </>
+      ) : (
+        // 상대방 메시지일 경우: 메시지 박스 먼저, 시간 나중에
+        <>
+          <MessageBox isMyMessage={isMyMessage} message={message} />
+          <Text style={styles.time}>{time}</Text>
+        </>
+      )}
     </View>
   );
 

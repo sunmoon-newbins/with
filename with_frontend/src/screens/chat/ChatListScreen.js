@@ -21,6 +21,7 @@ const chatRooms = [
     message: "저도요!",
     time: "오전 7:32",
     headCount: "4",
+    image: "https://picsum.photos/800/600?random",
   },
   {
     boardIndex: 2, // 채팅방 아이디 ?
@@ -29,6 +30,7 @@ const chatRooms = [
     message: "좋아요!",
     time: "오후 10:31",
     headCount: "5",
+    image: "https://picsum.photos/800/600?random",
   },
   {
     boardIndex: 3, // 채팅방 아이디 ?
@@ -37,6 +39,7 @@ const chatRooms = [
     message: "좋아요!",
     time: "오후 10:31",
     headCount: "9",
+    image: "https://picsum.photos/800/600?random",
   },
   {
     boardIndex: 4, // 채팅방 아이디 ?
@@ -45,6 +48,7 @@ const chatRooms = [
     message: "좋아요!",
     time: "오후 10:31",
     headCount: "10",
+    image: "https://picsum.photos/800/600?random",
   },
   {
     boardIndex: 5, // 채팅방 아이디 ?
@@ -53,6 +57,7 @@ const chatRooms = [
     message: "좋아요!",
     time: "오후 10:31",
     headCount: "12",
+    image: "https://picsum.photos/800/600?random",
   },
 ];
 
@@ -84,6 +89,7 @@ function ChatListScreen() {
         time={item.time}
         name={item.name}
         headCount={item.headCount}
+        image={item.image}
       />
     </TouchableOpacity>
   );

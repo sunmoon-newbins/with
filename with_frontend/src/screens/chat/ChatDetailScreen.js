@@ -15,6 +15,8 @@ import { useRoute, useNavigation } from "@react-navigation/native";
 import MessageList from "../../components/chat/MessageList"; // MessageList 컴포넌트 가져오기
 import ChatTextInput from "../../components/chat/ChatTextInput"; // ChatTextInput 컴포넌트 가져오기
 
+const dummyImage = require("../../../assets/BoarderDummy.png");
+
 const ChatDetailScreen = () => {
   const route = useRoute();
   const navigation = useNavigation();
@@ -75,6 +77,51 @@ const ChatDetailScreen = () => {
       behavior={Platform.OS === "ios" ? "padding" : undefined} // iOS에서는 키보드가 올라올 때 입력창이 가려지지 않도록 패딩 추가
       keyboardVerticalOffset={0} // 헤더가 있을 경우 적절한 값으로 조정
     >
+      {/* 게시판 상세보기 */}
+
+      {/* 상세 게시글로 가기 */}
+      <TouchableOpacity onPress={() => {}}>
+        <View
+          style={{
+            marginTop: 10,
+            height: 60,
+            backgroundColor: "#F4F8FB",
+            marginHorizontal: 30,
+            marginBottom: 0,
+            borderRadius: 10,
+            flexDirection: "row", // 가로로 배치
+            alignItems: "center",
+            borderColor: "#CCC",
+            padding: 10,
+            borderWidth: 1,
+          }}
+        >
+          <Image
+            source={dummyImage}
+            style={{
+              width: 70,
+              height: 50,
+              resizeMode: "cover", // 이미지를 가득 채움
+              borderRadius: 5, // 이미지를 둥글게
+              marginRight: 10, // 이미지와 텍스트 사이 간격
+              paddingVertical: 10,
+            }}
+          />
+
+          <View style={{ flex: 1 }}>
+            <Text style={{ fontWeight: "bold" }}>게시판 상세보기</Text>
+
+            {/* 날짜 부분 */}
+            <View
+              style={{ flexDirection: "row", justifyContent: "space-between" }}
+            >
+              <Text style={{ opacity: 0.7 }}>작성자 젬마</Text>
+              <Text style={{ opacity: 0.7 }}>09.24 - 09.26</Text>
+            </View>
+          </View>
+        </View>
+      </TouchableOpacity>
+
       <View style={styles.messageListContainer}>
         <MessageList />
       </View>

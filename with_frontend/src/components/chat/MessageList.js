@@ -1,6 +1,4 @@
-// src/components/chat/MessageList.js
-
-import React from "react";
+import React, { useRef, useEffect } from "react"; // useRef와 useEffect 추가
 import { View, FlatList, StyleSheet, Text } from "react-native";
 import MessageItem from "./MessageItem"; // MessageItem 컴포넌트 가져오기
 
@@ -34,7 +32,7 @@ const messages = [
   {
     id: "4",
     nickname: "노홍철",
-    message: "하하하",
+    message: "그러면 어디서 ",
     time: "12:06",
     isMyMessage: false,
     profileImage: "https://via.placeholder.com/150",
@@ -42,7 +40,7 @@ const messages = [
   {
     id: "5",
     nickname: "노홍철",
-    message: "하하하",
+    message: "만나는게 좋을까요?",
     time: "12:07",
     isMyMessage: false,
     profileImage: "https://via.placeholder.com/150",
@@ -58,7 +56,7 @@ const messages = [
   {
     id: "7",
     nickname: "박명수",
-    message: "그만웃어ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ",
+    message: "음 우리집 앞에서 만나",
     time: "12:09",
     isMyMessage: false,
     profileImage: "https://via.placeholder.com/150",
@@ -66,7 +64,15 @@ const messages = [
   {
     id: "8",
     nickname: "박명수",
-    message: "그만웃어",
+    message: "알았어 ?!",
+    time: "12:09",
+    isMyMessage: false,
+    profileImage: "https://via.placeholder.com/150",
+  },
+  {
+    id: "9",
+    nickname: "박명수",
+    message: "몰랐어 ?!",
     time: "12:09",
     isMyMessage: false,
     profileImage: "https://via.placeholder.com/150",
@@ -74,13 +80,25 @@ const messages = [
 ];
 
 const MessageList = () => {
+  const flatListRef = useRef(null); // FlatList의 ref 생성
+
+  useEffect(() => {
+    if (flatListRef.current) {
+      flatListRef.current.scrollToEnd({ animated: true }); // 처음 로드 시 맨 아래로 스크롤
+    }
+  }, [messages]); // messages가 변경될 때마다 스크롤
+
   return (
     <View style={styles.container}>
       <FlatList
+        ref={flatListRef} // FlatList에 ref 추가
         data={messages}
         renderItem={({ item }) => <MessageItem messageData={item} />}
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.list}
+        onContentSizeChange={() =>
+          flatListRef.current.scrollToEnd({ animated: true })
+        } // 내용 크기 변경 시 스크롤
       />
     </View>
   );

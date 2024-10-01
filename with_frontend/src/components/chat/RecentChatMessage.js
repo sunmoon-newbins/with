@@ -1,43 +1,65 @@
 import React from "react";
 import { View, StyleSheet, Image, Text } from "react-native";
 
-function RecentChatMessage({ title, message, time, name, headCount }) {
+function RecentChatMessage({ title, message, time, name, headCount, image }) {
   return (
     <View style={styles.container}>
       {/* 기차표 모양의 배경 */}
       <View style={styles.chatBoxContainer}>
         <Image
-          source={require("../../../assets/chatBox.png")}
+          source={require("../../../assets/NewChatBox.png")}
           style={styles.ticketBackground}
           //   resizeMode="contain" // 이미지가 잘리지 않도록 contain 모드 사용
-          resizeMode="stretch"
+          resizeMode="contain"
         />
+        {/* 전체패딩줌 30 */}
         <View style={styles.contentContainer}>
           {/* 제목 텍스트 */}
-          <Text style={styles.title}>
-            {title} {headCount}
-          </Text>
+          {/* 제목 패딩 15 */}
+          <View
+            style={{
+              paddingBottom: 20,
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}
+          >
+            <Text style={styles.title}>{title}</Text>
+
+            <Text
+              style={{
+                opacity: 0.5,
+                paddingTop: 2,
+              }}
+            >
+              {headCount}
+            </Text>
+          </View>
 
           {/* 점선 */}
-          <Image
-            source={require("../../../assets/dottedLine.png")}
-            style={styles.dottedLine}
-            resizeMode="contain"
-          />
-          {/* 프로필 이미지와 메시지 */}
+
+          {/* 프로필 이미지와 메시지
+          메시지 뷰 패딩 두기 */}
           <View style={styles.messageRow}>
             <Image
               resizeMode="contain"
               source={{
-                uri: "https://cdn.builder.io/api/v1/image/assets/TEMP/ef7bd5e132db9a0e92833bd76fb8f6075ec7fd9865e6fca6a35e4ea80b38477a?placeholderIfAbsent=true&apiKey=ee8d539f9a3f4b379629704d1c6bfca3",
+                uri: image, // image 가 url 이기떄문에
               }}
               style={styles.userImage}
             />
             <View style={styles.textContainer}>
               <Text style={styles.username}>{name}</Text>
-              <Text style={styles.messageText}>{message}</Text>
+
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text style={styles.messageText}>{message}</Text>
+                <Text style={styles.time}>{time}</Text>
+              </View>
             </View>
-            <Text style={styles.time}>{time}</Text>
           </View>
         </View>
       </View>
@@ -48,25 +70,15 @@ function RecentChatMessage({ title, message, time, name, headCount }) {
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    paddingHorizontal: 10, // 양쪽 여백을 추가하여 잘리지 않게 조정
-    marginVertical: 10,
     alignItems: "center",
     justifyContent: "center",
   },
   chatBoxContainer: {
     width: "100%", // 부모 컨테이너의 너비에 맞추도록 설정
-    // aspectRatio: 4, // 기차표 모양을 유지하기 위한 비율 설정
+
     height: 120,
     position: "relative",
     borderRadius: 10, // 모서리를 둥글게 처리
-    backgroundColor: "#F4F8FB",
-    overflow: "hidden", // 경계선 밖의 내용을 숨김
-    shadowColor: "#000", // 그림자 색상
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25, // 그림자 불투명도
-    shadowRadius: 3.84, // 그림자 반경
-    elevation: 5, // 안드로이드에서의 그림자 높이
-    // marginHorizontal: -10, // 양쪽 여백을 음수로 설정하여 박스 밖으로 확장------------------------------------
   },
   ticketBackground: {
     position: "absolute",
@@ -79,13 +91,13 @@ const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
     justifyContent: "center",
-    padding: 10, // 컨텐츠의 안쪽 여백
+    padding: 30, // 컨텐츠의 안쪽 여백
   },
   title: {
     fontSize: 16,
     fontWeight: "bold",
     color: "#5775CD",
-    marginBottom: 8,
+    // marginBottom: 8,
   },
   dottedLine: {
     width: "100%",
@@ -97,11 +109,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     width: "100%",
+    paddingBottom: 7,
   },
   userImage: {
     width: 40,
     height: 40,
-    borderRadius: 20,
+    borderRadius: 10,
   },
   textContainer: {
     flex: 1,
@@ -118,8 +131,8 @@ const styles = StyleSheet.create({
   },
   time: {
     fontSize: 12,
-    color: "#a0a0a0",
-    opacity: 0.6,
+    color: "#000000",
+    opacity: 0.5,
     textAlign: "right",
   },
 });
