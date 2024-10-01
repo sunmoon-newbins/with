@@ -1,5 +1,12 @@
+// 여행 일정참가하기 눌렀을 시
+// 채팅방 생성 ..
+// 일단 홈화면으로 이동,, 채팅바텀탭 위에 채팅방이 생성되었다고 표시..
+
+// 프로필 사진 눌렀을시 해당 프로필 상세화면으로 이동
+
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import React, { useState, useEffect } from "react";
+import { useNavigation } from "@react-navigation/native"; // 네비게이션 훅 추가
 import LongButton from "../common/LongButton";
 
 const PostBottom = ({
@@ -10,10 +17,14 @@ const PostBottom = ({
   heartCount,
   name,
   postId,
+  currentMember,
+  maxMember,
 }) => {
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(heartCount); // 초기값을 heartCount로 설정
+  const isFull = currentMember >= maxMember; // 조건: 멤버가 꽉 찼을 때
 
+  const navigation = useNavigation(); // 네비게이션 객체 가져오기
   // 좋아요 버튼 눌렀을 때 실행되는 함수
   const handleLikePress = () => {
     setIsLiked(!isLiked); // 좋아요 상태 토글
@@ -86,7 +97,24 @@ const PostBottom = ({
         </TouchableOpacity>
       </View>
 
-      <LongButton title="여행 일정 참가하기" />
+      {/* 해당 채팅방으로 화면이 넘어가져야함.  */}
+
+      <LongButton
+        title="여행 일정 참가하기"
+        onPress={
+          isFull
+            ? null // 비활성화된 경우 아무 동작 안함
+            : () => {
+                navigation.navigate("HomeScreen", {
+                  message: "채팅방이 생성되었습니다.",
+                }); // 활성화된 경우 홈 화면으로 이동
+                // 되면서 채팅 창위에
+                // 채팅방이 생성되었습니다.
+              }
+        }
+        buttonStyle={isFull ? styles.disabledButton : styles.activeButton} // 버튼 색상 설정
+        textStyle={isFull ? styles.disabledText : styles.activeText} // 텍스트 스타일 설정
+      />
     </View>
   );
 };
@@ -106,6 +134,12 @@ const styles = StyleSheet.create({
   postBottmText: {
     fontWeight: "800",
     opacity: 0.4,
+  },
+  disabledText: {
+    color: "lightgray", // 비활성화된 텍스트 색상
+  },
+  disabledButton: {
+    backgroundColor: "gray", // 비활성화된 버튼 색상
   },
 });
 

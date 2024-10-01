@@ -7,12 +7,13 @@ import ThreeTabBar from "../../components/Boards/ThreeTabBar";
 import SortButton from "../../components/Boards/SortButton";
 import PostList from "../../components/Boards/PostList";
 // import PostItem from "./PostItem";
-
+import Toast from "react-native-toast-message"; // Toast 임포트
 function HomeScreen() {
   const navigation = useNavigation();
   const route = useRoute();
-  const { searchQuery } = route.params || {}; // 파라미터에서 searchQuery 받아옴
+  const { searchQuery, message } = route.params || {}; // 파라미터에서 searchQuery 받아옴
 
+  console.log(message, "메시지");
   useEffect(() => {
     if (searchQuery) {
       console.log("검색어:", searchQuery); // 검색어가 전달된 경우 콘솔에 출력 (또는 다른 처리)
@@ -21,6 +22,18 @@ function HomeScreen() {
       // 검색한거 일단 postList에 넘겨주기
     }
   }, [searchQuery]);
+
+  useEffect(() => {
+    if (message) {
+      Toast.show({
+        type: "success",
+        text1: message, // 전달된 메시지를 표시
+        position: "bottom",
+        visibilityTime: 4000, // 메시지가 보일 시간 (밀리초)
+      });
+    }
+  }, [message]);
+
   return (
     <View style={styles.container}>
       <SearchButton />

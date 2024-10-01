@@ -100,6 +100,8 @@ const RouteDetailScreen = () => {
         heartCount={post.heartCount}
         name={post.name}
         postId={post.postId}
+        currentMember={post.currentMember} // 둘이 같으면 버튼 비활성화 .
+        maxMember={post.maxMember}
       />
 
       {/* 여기에 다른 컴포넌트와 정보도 추가 가능 */}
