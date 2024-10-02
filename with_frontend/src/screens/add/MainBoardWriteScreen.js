@@ -10,6 +10,10 @@ import {
   Modal,
 } from "react-native";
 
+import { launchImageLibrary } from "react-native-image-picker";
+// 사용자가 기기의 이미지 라이브러리에서 사진을 선택할 수 있게 해줍니다.
+//
+
 import ThreeTabButton from "../../components/Boards/ThreeTabButton";
 import InputTextField from "../../components/common/InputTextField";
 import DateRangePicker from "../../components/BoardCreate/DateRangePicker";
@@ -31,6 +35,8 @@ const MainBoardWriteScreen = () => {
     startDate: null,
     endDate: null,
   });
+
+  const [content, setContent] = useState(""); // 내용
 
   const [plans, setPlans] = useState([]);
   console.log(JSON.stringify(plans, null, 2));
@@ -166,7 +172,6 @@ const MainBoardWriteScreen = () => {
         )
     );
   };
-  // 👆 여기다 넣으면 돼!
 
   // 나머지 컴포넌트 로직...
 
@@ -305,6 +310,23 @@ const MainBoardWriteScreen = () => {
             value={title}
             onChangeText={setTitle}
             labelStyle={styles.label}
+          />
+
+          {/* <InputTextField
+            label="상세내용"
+            placeholder="여행에 대해 설명해주세요."
+            value={content}
+            onChangeText={setTitle}
+            labelStyle={styles.label}
+          /> */}
+
+          <Text style={styles.label}>상세 내용</Text>
+          <TextInput
+            style={[styles.memoInput, { backgroundColor: "#F4F8FB" }]}
+            multiline={true}
+            placeholder="여행에 대해 입력해주세요"
+            value={content}
+            onChangeText={setContent}
           />
 
           {/*  글 종류 선택 및 인원수 입력 */}
@@ -837,6 +859,14 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderWidth: 1,
     borderColor: "#ddd",
+  },
+  contentInput: {
+    width: "100%",
+    height: 100,
+    backgroundColor: "#F4F8FB",
+    padding: 10,
+    borderRadius: 10,
+    textAlignVertical: "top",
   },
 });
 
