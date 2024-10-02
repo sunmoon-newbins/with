@@ -35,7 +35,7 @@ const posts = [
 
 // 근데 그거 상태관리 아직안함..
 
-const PostList = ({ searchQuery }) => {
+const PostList = ({ searchQuery, data }) => {
   // searchQuery prop 받기
   const navigation = useNavigation(); // 네비게이션 훅 사용
 
@@ -45,10 +45,11 @@ const PostList = ({ searchQuery }) => {
   //   return post.title?.toLowerCase().includes(searchQuery.toLowerCase());
   // });
   console.log("잘 받아오나 : ", searchQuery);
+  console.log("{PostList} data ", data);
 
   return (
     <FlatList
-      data={posts} // renderItem 을 item -> postItem 으로
+      data={data} // renderItem 을 item -> postItem 으로
       renderItem={({ item }) => (
         <PostItem
           title={item.title}

@@ -12,15 +12,15 @@ export default function App() {
   const rememberMe = useStore((state) => state.rememberMe);
   const id = useStore((state) => state.id);
 
-  console.log("로그인", isLoggedIn, "자동로그인", rememberMe, "아이디", id);
+  console.log("app로그인", isLoggedIn, "자동로그인", rememberMe, "아이디", id);
   return (
     <NavigationContainer>
       {/* 여기 주석풀면 한번로그인하면 자동로그인. */}
 
-      {isLoggedIn && rememberMe ? (
+      {isLoggedIn ? (
         <BottomTabNavigator />
       ) : (
-        <MainStackNavigator />
+        <MainStackNavigator /> // 로그인
       )}
 
       {/* <MainStackNavigator /> */}
