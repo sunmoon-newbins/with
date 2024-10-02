@@ -8,6 +8,7 @@ import SortButton from "../../components/Boards/SortButton";
 import PostList from "../../components/Boards/PostList";
 // import PostItem from "./PostItem";
 import Toast from "react-native-toast-message"; // Toast 임포트
+
 import axios from "axios";
 import IPConfig from "../../configs/IPConfig.json";
 
@@ -16,7 +17,9 @@ function HomeScreen() {
   const route = useRoute();
   const { searchQuery, message } = route.params || {}; // 파라미터에서 searchQuery 받아옴
 
+
   const [postList, setPostList] = useState();
+
 
   console.log(message, "메시지");
   useEffect(() => {
@@ -29,6 +32,7 @@ function HomeScreen() {
   }, [searchQuery]);
 
   useEffect(() => {
+
     const fetchData = async () => {
       try {
         const response = await axios({
@@ -49,6 +53,7 @@ function HomeScreen() {
   }, []);
 
   useEffect(() => {
+
     if (message) {
       Toast.show({
         type: "success",

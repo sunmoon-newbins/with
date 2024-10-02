@@ -1,3 +1,4 @@
+
 // 일단 use State 로 관리해야함.
 
 // 리뷰 보낼 떄
@@ -10,6 +11,14 @@
 // 작성시간 (현재시간)
 // 을 보내줘야함
 
+// 모달  만족도 평가만 별점 누를 수 있게하고
+
+// 별점 리뷰 등록하기 모달 디자인 고치기
+
+// x 버튼 누르면 백엔드에 삭제 처리 보내기
+
+// 터쳐블 오파시티 터치하면 색채도 달라지는거 어떻게 못바꾸나 보기 .
+
 import {
   View,
   Text,
@@ -19,10 +28,14 @@ import {
   Modal,
   TouchableOpacity,
   TextInput,
+
+  Button,
+
   TouchableWithoutFeedback,
 } from "react-native";
 import React, { useState } from "react";
 import useStore from "../../components/user/useStore"; // 로그인한 사람 이름 .
+
 import { Rating } from "react-native-ratings";
 import LongButton from "../../components/common/LongButton";
 
@@ -55,10 +68,46 @@ const notifications = [
 ];
 
 const MyNotification = ({ navigation }) => {
+
+// import StarRating from "react-native-star-rating"; // 별점 라이브러리 추가
+import { Rating } from "react-native-ratings";
+// 알림 데이터
+const notifications = [
+  {
+    id: 1,
+    type: 1, // 만족도 평가 알림
+    postTitle: "부산여행 같이가요", // 게시글 제목
+    authorName: "이사벨라", // 작성자 이름
+    authorTalent: 4.4, // 작성자 달란트 (포인트)
+  },
+  {
+    id: 2,
+    type: 2, // 내가 받은 후기 알림
+    authorName: "이사벨라", // 후기를 보낸 사람
+    RecipientName: "소피아", // 로그인한 사용자 이름
+  },
+  {
+    id: 3,
+    type: 1, // 만족도 평가 알림
+    postTitle: "서울관광명소 뺑뺑이 여행", // 게시글 제목
+    authorName: "존", // 작성자 이름
+    authorTalent: 3.5, // 작성자 달란트
+  },
+  {
+    id: 4,
+    type: 2, // 내가 받은 후기 알림
+    authorName: "존", // 후기를 보낸 사람
+    RecipientName: "리사", // 로그인한 사용자 이름
+  },
+];
+
+const MyNotification = () => {
+
   const userName = useStore((state) => state.name);
   const [modalVisible, setModalVisible] = useState(false); // 모달 상태 관리
   const [selectedNotification, setSelectedNotification] = useState(null); // 선택된 알림
   const [rating, setRating] = useState(0); // 별점 상태 관리
+
 
   const handleNotificationPress = async (notification) => {
     setSelectedNotification(notification);
@@ -100,6 +149,11 @@ const MyNotification = ({ navigation }) => {
       await handleUpdateNotification(selectedNotification.id);
     }
     setModalVisible(false);
+
+  const handleNotificationPress = (notification) => {
+    setSelectedNotification(notification);
+    setModalVisible(true); // 모달 열기
+
   };
 
   return (
@@ -171,17 +225,23 @@ const MyNotification = ({ navigation }) => {
       ))}
 
       {/* 모달 */}
+
       {selectedNotification && selectedNotification.type === 1 && (
+
         <Modal
           animationType="slide"
           transparent={true}
           visible={modalVisible}
           onRequestClose={() => setModalVisible(false)}
         >
+
+          {/* ⭐여기서 모달 외부를 누르면 닫히도록 설정한 부분⭐ */}
+
           <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
             <View style={styles.modalContainer}>
               <TouchableWithoutFeedback>
                 <View style={styles.modalView}>
+
                   <Text
                     style={{
                       fontWeight: "bold",
@@ -190,6 +250,10 @@ const MyNotification = ({ navigation }) => {
                     }}
                   >
                     리뷰
+
+                  <Text style={{ fontWeight: "bold", fontSize: 18 }}>
+                    리뷰 등록하기
+
                   </Text>
                   <View style={styles.profileContainer}>
                     <Image
@@ -197,6 +261,7 @@ const MyNotification = ({ navigation }) => {
                       style={styles.profileImage}
                     />
                     <View>
+
                       <Text style={{ fontWeight: "bold", marginBottom: 5 }}>
                         {selectedNotification.authorName}
                       </Text>
@@ -213,6 +278,8 @@ const MyNotification = ({ navigation }) => {
                       minValue={1}
                       ratingCount={5}
                       imageSize={40}
+
+
                     />
                   </View>
                   <TextInput
@@ -220,7 +287,9 @@ const MyNotification = ({ navigation }) => {
                     placeholder="평점과 후기를 남겨주세요"
                   />
 
+
                   <LongButton title="확인" onPress={handleModalConfirm} />
+
                 </View>
               </TouchableWithoutFeedback>
             </View>
@@ -234,19 +303,23 @@ const MyNotification = ({ navigation }) => {
 const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
+
     justifyContent: "flex-end",
     alignItems: "center",
+
   },
   notificationBox: {
     padding: 10,
     marginBottom: 10,
     backgroundColor: "#F4F8FB",
+
     borderRadius: 8,
     elevation: 1,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
+
   },
   mentBox: {
     backgroundColor: "#FFFFFF",
@@ -264,10 +337,12 @@ const styles = StyleSheet.create({
     height: 30,
   },
   modalView: {
+
     width: "100%",
     backgroundColor: "white",
     padding: 20,
     borderTopLeftRadius: 20,
+
     borderTopRightRadius: 20,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
@@ -287,14 +362,19 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   starContainer: {
+
     marginTop: -10,
     flexDirection: "row",
     marginBottom: 10,
+
   },
   reviewInput: {
     width: "100%",
     height: 100,
+
     backgroundColor: "#F4F8FB",
+
+
     padding: 10,
     borderRadius: 10,
     textAlignVertical: "top",
