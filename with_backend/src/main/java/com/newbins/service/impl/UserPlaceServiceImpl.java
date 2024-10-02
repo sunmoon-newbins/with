@@ -31,7 +31,8 @@ public class UserPlaceServiceImpl implements UserPlaceService {
         } catch(Exception e){
             log.error("[addMyPlace] add MyPlace failed, error = {}", e);
         }
-        return new Place().toDTO(placeMapper.getMyPlace(userId, place.getPlaceName()));
+//        return new Place().toDTO(placeMapper.getMyPlace(userId, place.getPlaceName()));
+        return null;
     }
 
     @Override
@@ -57,10 +58,10 @@ public class UserPlaceServiceImpl implements UserPlaceService {
 
         // RouteEntity를 Route로 변환하여 List로 반환
         List<Place> myPlaces = new ArrayList<>();
-        for (MyPlaceEntity entity : myPlaceEntities) {
-            Place myPlace = new Place();
-            myPlaces.add(myPlace.toDTO(entity)); // Route 클래스에 정의된 toDTO() 메서드 사용
-        }
+//        for (MyPlaceEntity entity : myPlaceEntities) {
+//            Place myPlace = new Place();
+//            myPlaces.add(myPlace.toDTO(entity)); // Route 클래스에 정의된 toDTO() 메서드 사용
+//        }
         return myPlaces;
     }
 }

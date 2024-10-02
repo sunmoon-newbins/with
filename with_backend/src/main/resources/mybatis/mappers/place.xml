@@ -50,4 +50,5 @@
         FROM MY_PLACE
         WHERE PLACE_NAME LIKE CONCAT('%', #{placeName}, '%')
     </select>
+
 </mapper>
