@@ -22,4 +22,19 @@
         )
         ORDER BY WRITE_DT DESC
     </select>
+
+    <insert id="setReview" parameterType="map">
+        insert into review(
+            route_num,
+            user_num,
+            dalant,
+            content
+        )
+        values(
+            #{review.routeId},
+            #{userId},
+            #{review.dalant},
+            #{review.content}
+        )
+    </insert>
 </mapper>

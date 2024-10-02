@@ -34,4 +34,18 @@ public class UserReviewServiceImpl implements UserReviewService {
         }
         return reviewList;
     }
+
+    @Override
+    public void writeReview(String userId, Review review) {
+        try{
+            int insertRows = reviewMapper.setReview(userId, review);
+            if(insertRows > 0){
+                log.info("[writeReview] successful write review");
+            } else {
+                log.warn("[writeReview] no insert review");
+            }
+        } catch(Exception e){
+            log.error("[writeReview] failed write review");
+        }
+    }
 }
