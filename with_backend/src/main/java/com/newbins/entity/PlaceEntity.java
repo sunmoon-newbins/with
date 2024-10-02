@@ -33,4 +33,8 @@ public class PlaceEntity {
     private String institutionNm;   // 관리기관명
     private String referenceDate;   // 데이터기준일자
     private String instt_code;      // 제공기관코드
+
+    public Date getAppnDate() {
+        return null;
+    }
 }

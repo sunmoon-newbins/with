@@ -17,5 +17,7 @@
         <typeAlias alias="chattingRoomList" type="com.newbins.entity.ChattingRoomEntity"/>
         <typeAlias alias="message" type="com.newbins.entity.MessageEntity"/>
         <typeAlias alias="review" type="com.newbins.entity.ReviewEntity"/>
+        <typeAlias alias="routePlace" type="com.newbins.dto.RoutePlace"/>
+        <typeAlias alias="routePlaceEntity" type="com.newbins.entity.RoutePlaceEntity"/>
     </typeAliases>
 </configuration>
