@@ -6,7 +6,7 @@
     <select id="getNoticesByUserId" parameterType="String" resultType="notice">
         SELECT *
         FROM NOTICE
-        WHERE USER_NUM = #{userId}
+        WHERE USER_NUM = #{userId} AND READ_AT = FALSE
         ORDER BY NOTICE_DT DESC
     </select>
 </mapper>
