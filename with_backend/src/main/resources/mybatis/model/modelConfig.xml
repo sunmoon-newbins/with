@@ -18,5 +18,7 @@
         <typeAlias alias="message" type="com.newbins.entity.MessageEntity"/>
         <typeAlias alias="review" type="com.newbins.entity.ReviewEntity"/>
         <typeAlias alias="notice" type="com.newbins.entity.NoticeEntity"/>
+        <typeAlias alias="routePlace" type="com.newbins.dto.RoutePlace"/>
+        <typeAlias alias="routePlaceEntity" type="com.newbins.entity.RoutePlaceEntity"/>
     </typeAliases>
 </configuration>

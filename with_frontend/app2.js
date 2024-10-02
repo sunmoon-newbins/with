@@ -43,17 +43,17 @@ const App = () => {
   );
 
   return (
-    // <GestureHandlerRootView style={{ flex: 1 }}>
+    <GestureHandlerRootView style={{ flex: 1 }}>
       {/* 수정 부분 */}
       <SafeAreaView style={styles.container}>
         <FlatList
           data={data}
-          keyExtractor={(item) => item.id}  // 그냥 키전달 
+          keyExtractor={(item) => item.id} // 그냥 키전달
           renderItem={renderItem}
           ItemSeparatorComponent={() => <View style={styles.separator} />}
         />
       </SafeAreaView>
-    // </GestureHandlerRootView>
+    </GestureHandlerRootView>
   );
 };
 

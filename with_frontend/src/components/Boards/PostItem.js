@@ -3,7 +3,16 @@ import React from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import Style from "../../configs/Style.json";
 
-const PostItem = ({ title, author, time, imageUrl, description, onPress }) => {
+const PostItem = ({
+  title,
+  author,
+  time,
+  imageUrl,
+  description,
+  onPress,
+  currentMember,
+  maxMember,
+}) => {
   // 로컬 기본 이미지 경로 설정
   const defaultImage = require("../../../assets/BoarderDummy.png"); // 기본 이미지 설정
   const defaultImage_profile = require("../../../assets/Sopia.png"); // 기본 이미지 설정
@@ -28,7 +37,14 @@ const PostItem = ({ title, author, time, imageUrl, description, onPress }) => {
         style={styles.postImage}
       />
       <Text style={styles.description}>{description}</Text>
-      <Text style={styles.time}>{time}</Text>
+
+      <View style={{ flexDirection: "row" }}>
+        {/* 뷰 내부 컴포넌트 가로로 배치 */}
+        <Text style={styles.time}>{time}</Text>
+        <Text
+          style={[styles.time, { flex: 1, textAlign: "right" }]}
+        >{`${currentMember} / ${maxMember}`}</Text>
+      </View>
     </TouchableOpacity>
   );
 };
