@@ -34,19 +34,4 @@ public class UserReviewServiceImpl implements UserReviewService {
         }
         return reviewList;
     }
-
-    @Override
-    public List<Notice> getMyNotices(String userId) {
-        List<Notice> noticeList = new ArrayList<>();
-        try{
-            List<NoticeEntity> noticeEntities = reviewMapper.getNoticesByUserId(userId);
-            log.info("[getMyNotice] successful get my notices");
-            for(NoticeEntity noticeEntity : noticeEntities){
-                noticeList.add(new Notice().toDTO(noticeEntity));
-            }
-        }catch(Exception e){
-            log.info("[getMyNotice] failed get my notices");
-        }
-        return noticeList;
-    }
 }

@@ -1,5 +1,6 @@
 package com.newbins.controller.users;
 
+import com.newbins.service.UserNoticeService;
 import com.newbins.service.UserReviewService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserNoticeController {
 
     @Autowired
-    private UserReviewService userReviewService;
+    private UserNoticeService userNoticeService;
 
     // 나의 알림
     @GetMapping
     public void getMyNotices(@PathVariable("user_id") String userId){
-        userReviewService.getMyNotices(userId);
+        userNoticeService.getMyNotices(userId);
     }
 }

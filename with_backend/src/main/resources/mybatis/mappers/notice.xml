@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newbins.mapper.NoticeMapper">
+    <select id="getNoticesByUserId" parameterType="String" resultType="notice">
+        SELECT *
+        FROM NOTICE
+        WHERE USER_NUM = #{userId}
+        ORDER BY NOTICE_DT DESC
+    </select>
+</mapper>

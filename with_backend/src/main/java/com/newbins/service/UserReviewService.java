@@ -7,5 +7,4 @@ import java.util.List;
 
 public interface UserReviewService {
     List<Review> getMyReviews(String userId);
-    List<Notice> getMyNotices(String userId);
 }
