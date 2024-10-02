@@ -1,6 +1,9 @@
 package com.newbins.service.impl;
 
+import com.newbins.dto.RoutePlace;
 import com.newbins.entity.RouteEntity;
+import com.newbins.entity.RoutePlaceEntity;
+import com.newbins.mapper.RoutePlaceMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,8 @@ public class RouteServiceImpl implements RouteService {
 
     @Autowired
     private RouteMapper routeMapper;
+    @Autowired
+    private RoutePlaceMapper routePlaceMapper;
 
     @Override
     public void createRoute(Route route) {
@@ -62,6 +67,18 @@ public class RouteServiceImpl implements RouteService {
             routes.add(route.toDTO(entity)); // Route 클래스에 정의된 toDTO() 메서드 사용
         }
         return routes;
+    }
+
+    @Override
+    public List<RoutePlace> getRoutePlace(String routeNum) {
+        List<RoutePlaceEntity> routePlaceEntities = routePlaceMapper.getRoutePlaceByRouteNum(routeNum);
+        // RoutePlaceEntity를 RoutePlace로 변환하여 List로 반환
+        List<RoutePlace> routePlaces = new ArrayList<>();
+        for (RoutePlaceEntity entity : routePlaceEntities) {
+            RoutePlace routePlace = new RoutePlace();
+            routePlaces.add(routePlace.toDTO(entity)); // Route 클래스에 정의된 toDTO() 메서드 사용
+        }
+        return routePlaces;
     }
 
     public List<Route> getRoutes(String userNum) {

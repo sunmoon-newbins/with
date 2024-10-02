@@ -103,6 +103,7 @@ const ChatDetailScreen = () => {
   const { users, messages, title, currentUserCount, picture, routeId } =
     route.params; // Id는 필요시 백엔드 통신에 사용
 
+  console.log("더미데이터 ", messages);
   // useLayoutEffect를 사용하여 네비게이션 옵션을 설정
   useLayoutEffect(() => {
     navigation.setOptions({

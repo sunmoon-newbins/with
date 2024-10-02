@@ -1,6 +1,8 @@
 package com.newbins.service.impl;
 
+import com.newbins.dto.Notice;
 import com.newbins.dto.Review;
+import com.newbins.entity.NoticeEntity;
 import com.newbins.entity.ReviewEntity;
 import com.newbins.mapper.ReviewMapper;
 import com.newbins.service.UserReviewService;

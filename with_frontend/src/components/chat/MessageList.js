@@ -7,7 +7,7 @@ import MessageItem from "./MessageItem"; // MessageItem 컴포넌트 가져오�
 const MessageList = ({ messages }) => {
   const flatListRef = useRef(null); // FlatList의 ref 생성
 
-  // console.log("메시지리스트", messages);
+  console.log("메시지리스트", messages);
   useEffect(() => {
     if (flatListRef.current) {
       flatListRef.current.scrollToEnd({ animated: true }); // 처음 로드 시 맨 아래로 스크롤
