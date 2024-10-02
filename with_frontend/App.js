@@ -1,48 +1,32 @@
-import React, { useState } from "react";
-import { Button, Image, View, StyleSheet } from "react-native";
-import { launchImageLibrary } from "react-native-image-picker";
+import React, { useEffect } from "react";
+import "react-native-gesture-handler";
 
-const App = () => {
-  const [imageUri, setImageUri] = useState(null);
+import useStore from "./src/components/user/useStore"; // zustand
+import Toast from "react-native-toast-message"; // Toast 임포트
+import { NavigationContainer } from "@react-navigation/native";
+import MainStackNavigator from "./src/navigations/MainStackNavigator"; // 경로에 맞게 import
+import BottomTabNavigator from "./src/navigations/BottomTabNavigator";
 
-  // 이미지 선택 함수
-  const pickImage = () => {
-    const options = {
-      mediaType: "photo",
-    };
+export default function App() {
+  const isLoggedIn = useStore((state) => state.isLoggedIn);
+  const rememberMe = useStore((state) => state.rememberMe);
+  const id = useStore((state) => state.id);
 
-    launchImageLibrary(options, (response) => {
-      if (response.didCancel) {
-        console.log("사용자가 이미지 선택을 취소했습니다.");
-      } else if (response.errorCode) {
-        console.log("에러 발생: ", response.errorCode);
-      } else if (response.assets && response.assets.length > 0) {
-        const uri = response.assets[0].uri;
-        setImageUri(uri); // 선택된 이미지의 URI를 상태로 저장
-      }
-    });
-  };
-
+  console.log("app로그인", isLoggedIn, "자동로그인", rememberMe, "아이디", id);
   return (
-    <View style={styles.container}>
-      <Button title="이미지 선택" onPress={pickImage} />
-      {imageUri && <Image source={{ uri: imageUri }} style={styles.image} />}
-    </View>
+    <NavigationContainer>
+      {/* 여기 주석풀면 한번로그인하면 자동로그인. */}
+
+      {isLoggedIn ? (
+        <BottomTabNavigator />
+      ) : (
+        <MainStackNavigator /> // 로그인
+      )}
+
+      {/* <MainStackNavigator /> */}
+      {/* 개발중 */}
+
+      <Toast ref={(ref) => Toast.setRef(ref)} />
+    </NavigationContainer>
   );
-};
-
-// 스타일
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  image: {
-    width: 300,
-    height: 300,
-    marginTop: 20,
-  },
-});
-
-export default App;
+}

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
@@ -8,10 +8,15 @@ import SortButton from "../../components/Boards/SortButton";
 import PostList from "../../components/Boards/PostList";
 // import PostItem from "./PostItem";
 import Toast from "react-native-toast-message"; // Toast 임포트
+import axios from "axios";
+import IPConfig from "../../configs/IPConfig.json";
+
 function HomeScreen() {
   const navigation = useNavigation();
   const route = useRoute();
   const { searchQuery, message } = route.params || {}; // 파라미터에서 searchQuery 받아옴
+
+  const [postList, setPostList] = useState();
 
   console.log(message, "메시지");
   useEffect(() => {
@@ -22,6 +27,26 @@ function HomeScreen() {
       // 검색한거 일단 postList에 넘겨주기
     }
   }, [searchQuery]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios({
+          method: "get",
+          url: IPConfig.IP + "/routes",
+          headers: { "Content-Type": "application/json" },
+        });
+
+        if (response.data) {
+          setPostList(response.data);
+        }
+      } catch (error) {
+        console.log("데이터 가져오기 실패", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   useEffect(() => {
     if (message) {
@@ -43,7 +68,7 @@ function HomeScreen() {
           <ThreeTabBar />
         </View>
       </View>
-      <PostList searchQuery={searchQuery} />
+      <PostList searchQuery={searchQuery} data={postList} />
     </View>
   );
 }

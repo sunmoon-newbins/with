@@ -7,22 +7,23 @@ const useStore = create(
   persist(
     (set) => ({
       // 초기 상태 설정 (더미 데이터)
-      id: "123",
-      password: "123",
+      id: "",
+      userId: "",
       name: "홍길동",
       birth: "1990-01-01",
-      profile: "profile description",
+      profile: null,
       country: "KOR",
       nickname: "길동이",
       language: "KOR",
+
       isLoggedIn: false, // 기본값 false
       rememberMe: false, //
+
       // 둘다 트루면 로그인 된상태로 계속 앱 켜짐.
 
       // 상태 업데이트 함수들
+      setUserId: (userId) => set({ userId }),
       setId: (id) => set({ id }),
-
-      setPassword: (password) => set({ password }),
       setName: (name) => set({ name }),
       setBirth: (birth) => set({ birth }),
       setProfile: (profile) => set({ profile }),
@@ -33,6 +34,18 @@ const useStore = create(
         set((state) => ({ rememberMe: !state.rememberMe })),
       login: () => set({ isLoggedIn: true }),
       // logout: () => set({ isLoggedIn: false, userId: "", password: "" }),
+
+      setLogin: (user) => {
+        set({
+          userId: user.userId,
+          name: user.name,
+          Birth: user.birth,
+          Profile: user.profile,
+          Country: user.country,
+          Nickname: user.nickname,
+          Language: user.language,
+        });
+      },
 
       logout: async () => {
         // AsyncStorage 데이터 삭제

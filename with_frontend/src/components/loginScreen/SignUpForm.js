@@ -7,7 +7,7 @@ import IPconfig from "../../configs/IPConfig.json";
 import InputTextField from "../common/InputTextField"; // InputTextField 컴포넌트 경로를 적절히 설정하세요.
 import DatePickerInputField from "./DatePickerInputField"; // 새로 만든 DatePickerInputField 컴포넌트
 import CountryDropdownInputField from "./CountryDropdownInputField"; // 새로 만든 CountryDropdownInputField 컴포넌트
-
+import LanguageButtons from "./LanguageButtons";
 const SignUpForm = () => {
   const navigation = useNavigation();
 
@@ -21,6 +21,11 @@ const SignUpForm = () => {
   const [profile, setProfile] = useState(""); // 처음 프로필은 안만듦.
   const [country, setCountry] = useState("");
   const [language, setLanguage] = useState("");
+
+  const idRegex = /^[a-zA-Z0-9]{1,16}$/;
+  const passwordRegex = /^[a-zA-Z0-9!@#$%^&*]{12,}$/;
+  const nameRegex = /^[ㄱ-힣a-zA-Z]*$/;
+  const emailRegex = /^[\w.%+-]+@[\w.-]+\.[a-zA-Z]{2,}$/;
 
   const handleSignUp = async () => {
     const url = IPconfig.IP + `/users/signup`;
@@ -38,9 +43,11 @@ const SignUpForm = () => {
     };
 
     try {
-      console.log(JSON.stringify(signUpData));
+      console.log(
+        "{SignUpForm} handleSignup / signUpData = ",
+        JSON.stringify(signUpData)
+      );
 
-      console.log("서버 요청 시작");
       const response = await fetch(url, {
         method: "POST",
         headers: {
@@ -140,6 +147,7 @@ const SignUpForm = () => {
       <TouchableOpacity style={styles.loginButton} onPress={handleSignUp}>
         <Text style={styles.loginButtonText}>회원가입</Text>
       </TouchableOpacity>
+      <LanguageButtons />
     </View>
   );
 };
