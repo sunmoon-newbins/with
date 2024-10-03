@@ -3,6 +3,7 @@ import { persist, createJSONStorage } from "zustand/middleware";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // zustand store 생성
+
 const useStore = create(
   persist(
     (set) => ({
@@ -11,9 +12,9 @@ const useStore = create(
       userId: "",
       name: "홍길동",
       birth: "1990-01-01",
-      profile: null,
+      profile: "https://randomuser.me/api/portraits/men/20.jpg",
       country: "KOR",
-      nickname: "길동이",
+      nickname: "자기소개입니다",
       language: "KOR",
 
       isLoggedIn: false, // 기본값 false
@@ -36,14 +37,15 @@ const useStore = create(
       // logout: () => set({ isLoggedIn: false, userId: "", password: "" }),
 
       setLogin: (user) => {
+        // 로그인하면 모든정보 넘겨줌
         set({
           userId: user.userId,
           name: user.name,
-          Birth: user.birth,
-          Profile: user.profile,
-          Country: user.country,
-          Nickname: user.nickname,
-          Language: user.language,
+          birth: user.birth,
+          profile: user.profile,
+          country: user.country,
+          nickname: user.nickname,
+          language: user.language,
         });
       },
 

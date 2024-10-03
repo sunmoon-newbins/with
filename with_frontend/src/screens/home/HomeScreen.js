@@ -17,9 +17,7 @@ function HomeScreen() {
   const route = useRoute();
   const { searchQuery, message } = route.params || {}; // 파라미터에서 searchQuery 받아옴
 
-
   const [postList, setPostList] = useState();
-
 
   console.log(message, "메시지");
   useEffect(() => {
@@ -32,7 +30,6 @@ function HomeScreen() {
   }, [searchQuery]);
 
   useEffect(() => {
-
     const fetchData = async () => {
       try {
         const response = await axios({
@@ -45,7 +42,7 @@ function HomeScreen() {
           setPostList(response.data);
         }
       } catch (error) {
-        console.log("데이터 가져오기 실패", error);
+        console.log("데이터 가져오기 실패3", error);
       }
     };
 
@@ -53,7 +50,6 @@ function HomeScreen() {
   }, []);
 
   useEffect(() => {
-
     if (message) {
       Toast.show({
         type: "success",

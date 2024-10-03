@@ -15,7 +15,7 @@ const ChatNavigator = ({ navigation, route }) => {
     const routeName = getFocusedRouteNameFromRoute(route);
     if (routeName === "ChatDetailNavigator") {
       // chatDetailScreen 에서 바꿈
-      navigation.setOptions({ tabBarStyle: { display: "none" } });
+      navigation.setOptions({ tabBarStyle: { display: "none" } }); // 바텀탭바 안보이게 , ,
     } else {
       navigation.setOptions({ tabBarStyle: { display: "flex" } });
     }

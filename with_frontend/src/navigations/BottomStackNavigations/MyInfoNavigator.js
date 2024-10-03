@@ -15,7 +15,7 @@ const MyInfoNavigator = () => {
       <Stack.Screen
         name="MyInfoScreen"
         component={MyInfoScreen}
-        options={{ title: "내 정보" }} // 게시판 메인화면
+        options={{ headerShown: false }} // 게시판 메인화면
       />
       <Stack.Screen
         name="MyRouteBoardScreen"

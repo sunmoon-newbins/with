@@ -11,89 +11,20 @@ import {
   Platform,
 } from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
+import { io } from "socket.io-client";
 
 import MessageList from "../../components/chat/MessageList"; // MessageList 컴포넌트 가져오기
 import ChatTextInput from "../../components/chat/ChatTextInput"; // ChatTextInput 컴포넌트 가져오기
+import IPConfig from "../../configs/IPConfig.json";
+
+import useStore from "../../components/user/useStore";
 
 const dummyImage = require("../../../assets/BoarderDummy.png");
 
-const messages = [
-  {
-    id: "1",
-    nickname: "유재석",
-    message: "저도요!",
-    time: "12:05",
-    isMyMessage: false,
-    profileImage: "https://via.placeholder.com/150",
-  },
-  {
-    id: "2",
-    nickname: "나",
-    message: "같이 여행가고싶어요우",
-    time: "12:05",
-    isMyMessage: true,
-    profileImage: "https://via.placeholder.com/150",
-  },
-  {
-    id: "3",
-    nickname: "유재석",
-    message: "좋은 생각이네요!",
-    time: "12:06",
-    isMyMessage: false,
-    profileImage: "https://via.placeholder.com/150",
-  },
-  // 추가 메시지 더미 데이터
-  {
-    id: "4",
-    nickname: "노홍철",
-    message: "그러면 어디서 ",
-    time: "12:06",
-    isMyMessage: false,
-    profileImage: "https://via.placeholder.com/150",
-  },
-  {
-    id: "5",
-    nickname: "노홍철",
-    message: "만나는게 좋을까요?",
-    time: "12:07",
-    isMyMessage: false,
-    profileImage: "https://via.placeholder.com/150",
-  },
-  {
-    id: "6",
-    nickname: "노홍철",
-    message: "하하하",
-    time: "12:08",
-    isMyMessage: false,
-    profileImage: "https://via.placeholder.com/150",
-  },
-  {
-    id: "7",
-    nickname: "박명수",
-    message: "음 우리집 앞에서 만나",
-    time: "12:09",
-    isMyMessage: false,
-    profileImage: "https://via.placeholder.com/150",
-  },
-  {
-    id: "8",
-    nickname: "박명수",
-    message: "알았어 ?!",
-    time: "12:09",
-    isMyMessage: false,
-    profileImage: "https://via.placeholder.com/150",
-  },
-  {
-    id: "9",
-    nickname: "박명수",
-    message: "몰랐어 ?!",
-    time: "12:09",
-    isMyMessage: false,
-    profileImage: "https://via.placeholder.com/150",
-  },
-];
-
 const ChatDetailScreen = () => {
+  const userId = useStore((state) => state.userId);
+  console.log("{ChatDetailScreen} userId :", userId);
+
   const route = useRoute();
   const navigation = useNavigation();
   console.log(
@@ -103,11 +34,29 @@ const ChatDetailScreen = () => {
   const { users, messages, title, currentUserCount, picture, routeId } =
     route.params; // Id는 필요시 백엔드 통신에 사용
 
-  console.log("더미데이터 ", messages);
   // useLayoutEffect를 사용하여 네비게이션 옵션을 설정
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerTitle: () => <Text style={styles.headerText}>{title} 4</Text>, // headerTitle을 함수로 설정하여 <Text> 컴포넌트 사용
+      headerTitle: () => (
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Text style={styles.headerText}>{title}</Text>
+          <Text
+            style={[
+              styles.headerText,
+              { paddingLeft: 10, display: "Block", marginTop: 4 },
+            ]}
+          >
+            {currentUserCount}
+          </Text>
+        </View>
+      ), // headerTitle을 함수로 설정하여 <Text> 컴포넌트 사용
 
       headerLeft: () => (
         <TouchableOpacity
@@ -220,7 +169,7 @@ const ChatDetailScreen = () => {
       </TouchableOpacity>
 
       <View style={styles.messageListContainer}>
-        <MessageList messages={messages} />
+        <MessageList messages={messages} users={users} />
       </View>
       <View style={styles.chatInputContainer}>
         <ChatTextInput onSendMessage={addMessage} />
