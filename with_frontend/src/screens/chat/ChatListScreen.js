@@ -65,12 +65,13 @@ function ChatListScreen({ navigation }) {
           "{ChatListScreen} handleChatDetailScreen / response.data = ",
           response.data
         );
-
+        console.log("item = ", item);
         navigation.navigate("ChatDetailNavigator", {
           screen: "ChatDetailScreen",
           params: {
             users: response.data.users,
             messages: response.data.messages,
+            chattingId: item.chattingRoomId,
             title: item.title,
             currentUserCount: item.currentUserCount,
             picture: item.picture,
@@ -98,11 +99,11 @@ function ChatListScreen({ navigation }) {
       <RecentChatMessage
         // index={item.index} //  이거는 넣어줘야되나? 렌더링 되는게 아니기떄문에
         title={item.title}
-        message={item.message}
-        time={item.time}
-        name={item.name}
+        message={item.content}
+        time={"시간 넘겨줘얗 ㅏㅁ"}
+        name={item.userName}
         headCount={item.currentUserCount}
-        image={item.image}
+        image={item.picture}
       />
     </TouchableOpacity>
   );

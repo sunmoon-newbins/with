@@ -1,6 +1,6 @@
 // src/screens/ChatDetailScreen.js
 
-import React, { useLayoutEffect, useEffect } from "react";
+import React, { useLayoutEffect, useEffect, useState } from "react";
 import {
   View,
   Image,
@@ -22,8 +22,8 @@ import useStore from "../../components/user/useStore";
 const dummyImage = require("../../../assets/BoarderDummy.png");
 
 const ChatDetailScreen = () => {
+  const [socket, setSocket] = useState();
   const userId = useStore((state) => state.userId);
-  console.log("{ChatDetailScreen} userId :", userId);
 
   const route = useRoute();
   const navigation = useNavigation();
@@ -31,8 +31,16 @@ const ChatDetailScreen = () => {
     "{ChatDetailScreen} route.params : ",
     JSON.stringify(route.params)
   );
-  const { users, messages, title, currentUserCount, picture, routeId } =
-    route.params; // Id는 필요시 백엔드 통신에 사용
+  const {
+    users,
+    messages,
+    title,
+    currentUserCount,
+    picture,
+    routeId,
+    chattingId,
+  } = route.params; // Id는 필요시 백엔드 통신에 사용
+  const [messageList, setMessageList] = useState(messages);
 
   // useLayoutEffect를 사용하여 네비게이션 옵션을 설정
   useLayoutEffect(() => {
@@ -81,40 +89,41 @@ const ChatDetailScreen = () => {
     });
   }, [navigation, title]); // 네비게이션이나 제목이 바뀔 때 마다 헤더 타이틀이 바뀜. 저 타이틀로 , 그러니까 목록에서 선택한 제목이 헤더로 딸려옴
 
-  // 여기서부터
   useEffect(() => {
-    const parentNavigation = navigation.getParent();
-    // console.log(parentNavigation);
+    const newSocket = new WebSocket(
+      IPConfig.IP + `/users/${userId}/chatting/${chattingId}/ws`
+    );
 
-    if (parentNavigation) {
-      parentNavigation.setOptions({
-        tabBarStyle: { display: "none" },
-      });
-    }
+    newSocket.onmessage = function (event) {
+      // JSON 문자열을 객체로 변환
+      const parsedData = JSON.parse(event.data);
 
-    return () => {
-      if (parentNavigation) {
-        parentNavigation.setOptions({
-          tabBarStyle: { display: "flex" },
-        });
-      }
+      const newMessage = {
+        // 새로운 메시지
+        content: parsedData.content,
+        sendDate: parsedData.sendDate,
+        unreadCount: parsedData.unreadCount,
+        userId: parsedData.userId,
+      };
+
+      setMessageList((prevMessageList) => [...prevMessageList, newMessage]); // 원래 메시지 리스트에 추가한다
     };
-  }, [navigation]);
-  // 여기까지  바텀탭안보이게하려함.
+    setSocket(newSocket); // useState 웹소켓 넣고
+  }, []);
+
+  const sendMessage = async (message) => {
+    try {
+      if (socket) {
+        socket.send(message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   // 새로운 메시지 추가 함수
   const addMessage = (newMessage) => {
-    const newMessageObject = {
-      id: (messages.length + 1).toString(),
-      nickname: "나",
-      message: newMessage,
-      time: new Date().toLocaleTimeString(),
-      isMyMessage: true,
-      profileImage: "https://via.placeholder.com/150",
-    };
-    // setMessages([...messages, newMessageObject]); // 메시지 리스트에 새 메시지 추가
-
-    // 그냥 백엔드에 지금 로그인한 아이디와 이름, time 갖고와서 뿌려주기
+    sendMessage(newMessage);
   };
 
   return (
@@ -169,7 +178,7 @@ const ChatDetailScreen = () => {
       </TouchableOpacity>
 
       <View style={styles.messageListContainer}>
-        <MessageList messages={messages} users={users} />
+        <MessageList messages={messageList} users={users} />
       </View>
       <View style={styles.chatInputContainer}>
         <ChatTextInput onSendMessage={addMessage} />

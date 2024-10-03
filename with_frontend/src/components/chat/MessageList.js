@@ -7,8 +7,6 @@ import MessageItem from "./MessageItem"; // MessageItem 컴포넌트 가져오�
 const MessageList = ({ messages, users }) => {
   const flatListRef = useRef(null); // FlatList의 ref 생성
 
-  console.log("메시지리스트", messages);
-
   // messages가 없거나 빈 배열인 경우 처리
   if (!messages || messages.length === 0) {
     return <Text>메시지가 없습니다.</Text>; // 메시지가 없을 경우

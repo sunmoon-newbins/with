@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
   messageContent: {
     maxWidth: "75%", // 메시지 박스의 최대 너비 설정
     marginTop: 20, // 프로필 이미지보다 약간 아래에 위치하도록 설정
-    alignItems: "flex-end",
+    alignItems: "flex-start",
   },
   nickname: {
     fontSize: 14,
