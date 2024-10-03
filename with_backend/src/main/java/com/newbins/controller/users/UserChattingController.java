@@ -31,6 +31,7 @@ public class UserChattingController {
     @GetMapping("/{chatting_id}")
     public Chatting getChatting(@PathVariable("user_id") String userId,
                                 @PathVariable("chatting_id") String chattingId){
+        log.info("[getChatting] chattingId = {}, userId = {}", chattingId, userId);
         return userChattingService.getChattingRoomInfo(chattingId, userId);
     }
 

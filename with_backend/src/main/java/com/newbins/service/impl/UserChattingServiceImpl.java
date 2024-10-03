@@ -59,11 +59,11 @@ public class UserChattingServiceImpl implements UserChattingService {
 
     @Override
     public Chatting getChattingRoomInfo(String chattingId, String userId) {
-        List<Message> messageList = null;
-        List<User> userList = null;
+        List<Message> messageList = new ArrayList<>();
+        List<User> userList = new ArrayList<>();
         try{
             List<MessageEntity> messageEntities = chattingMapper.getMessages(chattingId, userId);
-            log.info("[getChattingRoomInfo] successful getMessages");
+            log.info("[getChattingRoomInfo] successful getMessages, messageEntities = {}", messageEntities);
             if(messageEntities != null){
                 for(MessageEntity messageEntity : messageEntities){
                     messageList.add(new Message().toDTO(messageEntity));
@@ -71,13 +71,13 @@ public class UserChattingServiceImpl implements UserChattingService {
             }
 
             List<UsersEntity> usersEntities = chattingMapper.getChattingUsers(chattingId);
-            log.info("[getChattingRoomInfo] successful getChattingUsers");
+            log.info("[getChattingRoomInfo] successful getChattingUsers, usersEntities = {}", usersEntities);
             for(UsersEntity usersEntity : usersEntities){
                 userList.add(new User().toDTO(usersEntity));
             }
 
         } catch(Exception e){
-            log.error("[getChattingRoomInfo] failed");
+            log.error("[getChattingRoomInfo] failed", e);
         }
         return new Chatting().builder()
                 .messages(messageList)
