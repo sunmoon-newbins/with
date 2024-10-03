@@ -11,6 +11,8 @@ import {
 } from "react-native";
 
 import { launchImageLibrary } from "react-native-image-picker";
+import * as ImagePicker from "expo-image-picker"; // expo-image-picker 라이브러리
+
 // 사용자가 기기의 이미지 라이브러리에서 사진을 선택할 수 있게 해줍니다.
 //
 
@@ -83,7 +85,7 @@ const MainBoardWriteScreen = () => {
   // 4개를 받아서 해당 날짜에 저장.
 
   const [selectedDay, setSelectedDay] = useState(null); // 선택된 날짜 상태
-
+  const [selectedImage, setSelectedImage] = useState(null); // 선택한 이미지 저장 상태
   //  지도 보기 상태 관리
   const [mapVisible, setMapVisible] = useState(false); // 처음엔 안보이게 .
   //  선택된 계획 상태 관리
@@ -171,6 +173,35 @@ const MainBoardWriteScreen = () => {
               : plan
         )
     );
+  };
+
+  const pickImage = async () => {
+    // 카메라 롤 사용 권한 요청
+    let permissionResult =
+      await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (permissionResult.granted === false) {
+      alert("카메라 롤 사용 권한이 필요합니다.");
+      return;
+    }
+
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3], // 직사각형
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      console.log(
+        "{MainBoardWriteScreen} PickImage / result.assets[0].uri",
+        result.assets[0].uri
+      );
+
+      setSelectedImage(result.assets[0].uri); // 선택한 이미지의 URI를 상태에 저장
+    } else {
+      console.log("Image picker cancelled");
+    }
   };
 
   // 나머지 컴포넌트 로직...
@@ -304,6 +335,23 @@ const MainBoardWriteScreen = () => {
       <ScrollView>
         <View style={styles.container}>
           {/* 제목 입력 필드 */}
+          <Text style={styles.label}>대표 사진</Text>
+
+          <TouchableOpacity onPress={pickImage}>
+            {/* 😀 이미지가 없을 때 기본 동그란 이미지 보여주기 */}
+            {selectedImage ? (
+              <Image
+                source={{ uri: selectedImage }}
+                style={styles.profileImage}
+              />
+            ) : (
+              <Image
+                source={require("../../../assets/defaultProfile.png")}
+                style={styles.profileImage}
+              />
+            )}
+          </TouchableOpacity>
+
           <InputTextField
             label="제목"
             placeholder="제목을 입력하시오."
@@ -327,6 +375,7 @@ const MainBoardWriteScreen = () => {
             placeholder="여행에 대해 입력해주세요"
             value={content}
             onChangeText={setContent}
+            placeholderTextColor="#9094B8"
           />
 
           {/*  글 종류 선택 및 인원수 입력 */}
@@ -818,6 +867,8 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
     textAlignVertical: "top", // TextInput을 상단 정렬
+    fontSize: 16,
+    // color: "#0B1527",
   },
   modalButtons: {
     flexDirection: "row",
@@ -867,6 +918,12 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     textAlignVertical: "top",
+  },
+  profileImage: {
+    width: 200, // 😀 동그란 프로필 이미지
+    height: 150,
+    borderRadius: 10,
+    resizeMode: "contain",
   },
 });
 

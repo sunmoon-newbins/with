@@ -16,6 +16,8 @@ import * as ImagePicker from "expo-image-picker"; // expo-image-picker 라이브
 import LanguageButtons from "../../components/LoginScreen/LanguageButtons";
 import useStore from "../../components/user/useStore";
 
+// 유저아이디한테  별점만 받아오면 됨.
+
 // userId: user.userId,
 //           name: user.name,
 //           Birth: user.birth,
@@ -27,18 +29,17 @@ import useStore from "../../components/user/useStore";
 const { width: screenWidth } = Dimensions.get("window"); // 화면 너비 가져오기
 
 const MyInfoScreen = ({ navigation }) => {
-  const [starRating, setStarRating] = useState(); // db에서 이사람 별점만 ,, 갖고옴.
+  // const [starRating, setStarRating] = useState(); // db에서 이사람 별점만 ,, 갖고옴.
   const name = useStore((state) => state.name);
   const nickname = useStore((state) => state.nickname);
   const birth = useStore((state) => state.birth);
 
   // 현재 연도에서 나이를 빼서 태어난 연도 계산
   const birthYear = new Date().getFullYear() - birth;
-  // 😀 useStore를 통해 logout 함수를 가져옴
+
   const logout = useStore((state) => state.logout); // 로그아웃
   const Profile = useStore((state) => state.Profile); // 이미지 설명 ??
   const country = useStore((state) => state.country);
-
   const language = useStore((state) => state.language);
 
   console.log(
@@ -46,7 +47,7 @@ const MyInfoScreen = ({ navigation }) => {
     name,
     nickname,
     birth,
-    Profile,
+    Profile, // null
     country,
     language
   );
@@ -75,15 +76,15 @@ const MyInfoScreen = ({ navigation }) => {
   const [selectedImage, setSelectedImage] = useState(null); // 선택한 이미지 저장 상태
 
   const [modalVisible, setModalVisible] = useState(false);
-  const users = [
-    {
-      id: 1,
-      name: "침착맨",
-      age: 25,
-      country: "스페인",
-      rating: 2.5, // 별점
-    },
-  ];
+  // const users = [
+  //   {
+  //     id: 1,
+  //     name: "침착맨",
+  //     age: 25,
+  //     country: "스페인",
+  //     rating: 2.5, // 별점
+  //   },
+  // ];
 
   // 이미지 선택 함수
   const pickImage = async () => {
@@ -126,7 +127,7 @@ const MyInfoScreen = ({ navigation }) => {
   };
 
   // 별점 비율로 변환 (최대 별점 5점이므로 0~1 사이의 값으로 변환)
-  const ratingPercentage = users[0].rating / 5;
+  const ratingPercentage = 2.5 / 5;
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -160,7 +161,7 @@ const MyInfoScreen = ({ navigation }) => {
             <Text style={styles.userName}>{nickname}</Text>
             {/* 닉네임인데, 자기소개로  */}
             <Text style={styles.userDetails}>만 {age}세</Text>
-            <Text style={styles.userDetails}>{users[0].country}</Text>
+            <Text style={styles.userDetails}>{country}</Text>
           </View>
         </View>
 
@@ -179,7 +180,7 @@ const MyInfoScreen = ({ navigation }) => {
             />
             {/* Progress Bar 위에 별과 숫자를 겹쳐서 표시 */}
             <View style={styles.ratingOverlay}>
-              <Text style={styles.ratingText}>⭐ {users[0].rating}</Text>
+              <Text style={styles.ratingText}>⭐ 2.5</Text>
             </View>
           </View>
         </View>
@@ -332,7 +333,7 @@ const styles = StyleSheet.create({
   menuItem: {
     backgroundColor: "#F4F8FB",
     paddingVertical: 15,
-    paddingHorizontal: 20,
+    paddingHorizontal: 15,
     borderRadius: 10,
     marginBottom: 10,
     flexDirection: "row",

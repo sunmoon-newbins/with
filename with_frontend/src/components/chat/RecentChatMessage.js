@@ -57,7 +57,7 @@ function RecentChatMessage({ title, message, time, name, headCount, image }) {
                   flexDirection: "row",
                   justifyContent: "space-between",
                   borderWidth: 1,
-                  maxWidth: "100%",
+                  maxWidth: "50%",
                   overflow: "hidden", //
                 }}
               >

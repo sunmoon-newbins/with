@@ -25,14 +25,14 @@ export default function App() {
     <NavigationContainer>
       {/* 여기 주석풀면 한번로그인하면 자동로그인. */}
 
-      {isLoggedIn ? (
+      {/* {isLoggedIn ? (
         <BottomTabNavigator />
       ) : (
         <MainStackNavigator /> // 로그인
-      )}
+      )} */}
 
       {/* <MainStackNavigator /> */}
-      {/* <BottomTabNavigator /> */}
+      <BottomTabNavigator />
       {/* 개발중 */}
 
       <Toast ref={(ref) => Toast.setRef(ref)} />
