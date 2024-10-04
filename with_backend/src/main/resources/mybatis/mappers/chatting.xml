@@ -170,4 +170,19 @@
         FROM CHATTING
         WHERE ROUTE_NUM = #{routeId}
     </select>
+
+    <select id="getChattingWriterInfo" parameterType="String" resultType="map">
+        SELECT
+            ROUTE_NUM,
+            USER_NUM,
+            PICTURE,
+            START_DATE,
+            END_DATE
+        FROM ROUTE
+        WHERE ROUTE_NUM = (
+            SELECT ROUTE_NUM
+            FROM CHATTING
+            WHERE CHATTING_NUM = #{chattingId}
+        )
+    </select>
 </mapper>

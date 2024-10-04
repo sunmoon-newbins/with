@@ -11,6 +11,10 @@ import java.util.List;
 @Builder
 @ToString
 public class Chatting {
+    private String routeId;
+    private String writeName;
+    private String date;
+    private String picture;
     private List<User> users;
     private List<Message> messages;
 }

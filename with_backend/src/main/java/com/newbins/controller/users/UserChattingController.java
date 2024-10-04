@@ -32,7 +32,9 @@ public class UserChattingController {
     public Chatting getChatting(@PathVariable("user_id") String userId,
                                 @PathVariable("chatting_id") String chattingId){
         log.info("[getChatting] chattingId = {}, userId = {}", chattingId, userId);
-        return userChattingService.getChattingRoomInfo(chattingId, userId);
+        Chatting chatting =  userChattingService.getChattingRoomInfo(chattingId, userId);
+        log.info("[getChatting] chatting = {}", chatting);
+        return chatting;
     }
 
     // 채팅방 나가기

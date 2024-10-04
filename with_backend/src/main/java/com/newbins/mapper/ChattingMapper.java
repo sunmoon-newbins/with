@@ -20,4 +20,5 @@ public interface ChattingMapper {
     MessageEntity getMessageById(long messageId);
     void updateChattingUserLeaveDT(String chattingId, String userId);
     String getChattingIdByRouteId(String routeId);
+    Map<String, Object> getChattingWriterInfo(String chattingId);
 }
