@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newbins.mapper.RoutePlaceMapper">
+
+    <select id="getRoutePlaceByRouteNum" resultType="routePlaceEntity">
+    SELECT
+    ROUTE_DATE,
+    PLACE_SEQUENCE,
+    ROUTE_NUM,
+    PLACE_NUM,
+    MY_PLACE_NUM,
+    MEMO
+    FROM ROUTE_PLACE
+    WHERE ROUTE_NUM = #{routeNum}
+    </select>
+</mapper>

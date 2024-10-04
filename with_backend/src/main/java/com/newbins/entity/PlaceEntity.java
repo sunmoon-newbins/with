@@ -36,4 +36,7 @@ public class PlaceEntity {
     private String referenceDate;   // 데이터기준일자
     private String insttCode;      // 제공기관코드
 
+    public Date getAppnDate() {
+        return null;
+    }
 }

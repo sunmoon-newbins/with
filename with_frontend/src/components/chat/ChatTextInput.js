@@ -7,12 +7,21 @@ import {
   Image,
 } from "react-native";
 
-const ChatTextInput = () => {
+const ChatTextInput = ({ onSendMessage }) => {
   const defaultIcon = require("../../../assets/SendButtonDefault.png");
   const sendIcon = require("../../../assets/sendButtonFill.png");
 
   // 입력된 텍스트를 저장하는 state
   const [message, setMessage] = useState("");
+
+  // 메시지 전송 함수
+  const handleSend = () => {
+    if (message.trim().length > 0) {
+      // 메시지가 비어있지 않으면
+      onSendMessage(message.trim()); // 상위 컴포넌트로 메시지를 전달
+      setMessage(""); // 메시지 입력창 초기화
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -23,9 +32,11 @@ const ChatTextInput = () => {
           placeholderTextColor="#999" // 플레이스홀더 텍스트 색상
           value={message} // 입력된 텍스트
           onChangeText={(text) => setMessage(text)} // 텍스트가 바뀔 때마다 state 업데이트
+          onSubmitEditing={handleSend} // 엔터를 누르면 메시지 전송
+          returnKeyType="send" // 키보드의 엔터 버튼을 'Send'로 변경
         />
       </View>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={handleSend}>
         {/* 텍스트가 없을 때는 기본 아이콘, 있을 때는 비행기 아이콘 */}
         <Image
           source={

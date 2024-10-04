@@ -1,5 +1,6 @@
 package com.newbins.controller.users;
 
+import com.newbins.dto.MyPlace;
 import com.newbins.dto.Place;
 import com.newbins.service.UserPlaceService;
 import lombok.extern.slf4j.Slf4j;
@@ -23,10 +24,10 @@ public class UserPlaceController {
     }
     // 나만의 장소 추가
     @PostMapping
-    public Place addMyPlace(@PathVariable("user_id") String userId,
+    public MyPlace addMyPlace(@PathVariable("user_id") String userId,
                            @RequestBody Place place){
         log.info("[addMyPlace] before addMyPlace, userId = {}", userId);
-        Place myAddedPlace = userPlaceService.addMyPlace(userId, place);
+        MyPlace myAddedPlace = userPlaceService.addMyPlace(userId, place);
         log.info("[addMyPlace] after myAddedPlace = {}", myAddedPlace);
         return myAddedPlace;
 

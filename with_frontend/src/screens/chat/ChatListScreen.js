@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -10,17 +10,24 @@ import {
 
 import { useNavigation } from "@react-navigation/native";
 import RecentChatMessage from "../../components/chat/RecentChatMessage";
-import useStore from "../../components/user/useStore";
+import axios from "axios";
+
 //  여기에서 어떤 채팅방들이 있는지 알 수 있어야하고 ,  ( ID , 글제목, 인원수 ) 그냥 ID , 글제목, 인원수 글 Id 만알면  해당 채팅방 정보 다 갖고올 수 있을텐데.
 // 가장 최신 채팅 글의 닉네임, 메시지, 시간
+
+import IPConfig from "../../configs/IPConfig.json";
+import useStore from "../../components/user/useStore";
 const chatRooms = [
   {
     boardIndex: 1, // 채팅방 아이디 ?
+
     name: "유재석",
     title: "서울 여행 루트 추천해요",
     message: "저도요!",
     time: "오전 7:32",
     headCount: "4",
+    image: "https://picsum.photos/800/600?random",
+
   },
   {
     boardIndex: 2, // 채팅방 아이디 ?
@@ -29,6 +36,8 @@ const chatRooms = [
     message: "좋아요!",
     time: "오후 10:31",
     headCount: "5",
+    image: "https://picsum.photos/800/600?random",
+
   },
   {
     boardIndex: 3, // 채팅방 아이디 ?
@@ -37,6 +46,8 @@ const chatRooms = [
     message: "좋아요!",
     time: "오후 10:31",
     headCount: "9",
+    image: "https://picsum.photos/800/600?random",
+
   },
   {
     boardIndex: 4, // 채팅방 아이디 ?
@@ -45,6 +56,7 @@ const chatRooms = [
     message: "좋아요!",
     time: "오후 10:31",
     headCount: "10",
+    image: "https://picsum.photos/800/600?random",
   },
   {
     boardIndex: 5, // 채팅방 아이디 ?
@@ -53,6 +65,8 @@ const chatRooms = [
     message: "좋아요!",
     time: "오후 10:31",
     headCount: "12",
+    image: "https://picsum.photos/800/600?random",
+
   },
 ];
 
@@ -60,6 +74,64 @@ function ChatListScreen() {
   const navigation = useNavigation();
 
   const userName = useStore((state) => state.name);
+  const userId = useStore((state) => state.userId);
+
+  const [chatList, setChatList] = useState([]);
+
+  useEffect(() => {
+    // 채팅방 리스트 가져오는 함수
+    const fetchData = async () => {
+      try {
+        const response = await axios({
+          method: "get",
+          url: IPConfig.IP + `/users/${userId}/chatting`,
+          headers: { "Content-Type": "application/json" },
+        });
+
+        if (response.data) {
+          console.log(
+            "{ChatListScreen} fetchData / response.data = ",
+            response.data
+          );
+          setChatList(response.data);
+        }
+      } catch (error) {
+        console.log("데이터 가져오기 실패", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const handleChatDetailScreen = async (item) => {
+    try {
+      const response = await axios({
+        method: "get",
+        url: IPConfig.IP + `/users/${userId}/chatting/${item.chattingRoomId}`,
+        headers: { "Content-Type": "application/json" },
+      });
+
+      if (response.data) {
+        console.log(
+          "{ChatListScreen} handleChatDetailScreen / response.data = ",
+          response.data
+        );
+        navigation.navigate("ChatDetailNavigator", {
+          screen: "ChatDetailScreen",
+          params: {
+            users: response.data.users,
+            messages: response.data.messages,
+            title: item.title,
+            currentUserCount: item.currentUserCount,
+            picture: item.picture,
+            routeId: item.routeId,
+          },
+        });
+      }
+    } catch (error) {
+      console.log("데이터 가져오기 실패", error);
+    }
+  };
 
   // 렌더 아이템을 이렇게 묶어주면 눌렀을때 해당 스크린으로 넘어가게 된다.
   const renderItem = ({ item }) => (
@@ -70,11 +142,7 @@ function ChatListScreen() {
         //   title: item.title,
         //   Id: item.boardIndex,
         // })
-
-        navigation.navigate("ChatDetailNavigator", {
-          screen: "ChatDetailScreen",
-          params: { title: item.title, Id: item.boardIndex },
-        })
+        handleChatDetailScreen(item)
       }
     >
       <RecentChatMessage
@@ -83,7 +151,8 @@ function ChatListScreen() {
         message={item.message}
         time={item.time}
         name={item.name}
-        headCount={item.headCount}
+        headCount={item.currentUserCount}
+        image={item.image}
       />
     </TouchableOpacity>
   );
@@ -101,7 +170,7 @@ function ChatListScreen() {
         </View>
       </View>
       <FlatList
-        data={chatRooms}
+        data={chatList}
         renderItem={renderItem}
         keyExtractor={(item, index) => index.toString()}
         contentContainerStyle={styles.list}

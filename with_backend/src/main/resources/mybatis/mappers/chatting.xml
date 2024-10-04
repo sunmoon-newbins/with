@@ -110,7 +110,7 @@
         where user_num in (
             select user_num
             from chatting_user
-            where chatting_num = '9761e272-7c1d-11ef-95ee-bc0358927c36'
+            where chatting_num = #{chattingId}
         )
     </select>
 

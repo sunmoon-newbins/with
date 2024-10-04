@@ -33,7 +33,6 @@ const SignUpScreen = () => {
       <ScrollView contentContainerStyle={styles.scrollContentContainer}>
         <View style={styles.contentContainer}>
           <SignUpForm />
-          <LanguageButtons />
         </View>
       </ScrollView>
     </View>

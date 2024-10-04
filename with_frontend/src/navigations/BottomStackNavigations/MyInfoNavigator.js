@@ -5,7 +5,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import MyInfoScreen from "../../screens/myInfo/MyInfoScreen";
 import MyRouteBoardScreen from "../../screens/myInfo/MyRouteBoardScreen";
 import MyReview from "../../screens/myInfo/MyReview";
-import MyNoitification from "../../screens/myInfo/MyNoitification";
+import MyNotification from "../../screens/myInfo/MyNotification";
 
 const Stack = createStackNavigator();
 
@@ -28,8 +28,8 @@ const MyInfoNavigator = () => {
         options={{ title: "받은 후기" }}
       />
       <Stack.Screen
-        name="MyNoitification"
-        component={MyNoitification}
+        name="MyNotification"
+        component={MyNotification}
         options={{ title: "알림" }}
       />
     </Stack.Navigator>

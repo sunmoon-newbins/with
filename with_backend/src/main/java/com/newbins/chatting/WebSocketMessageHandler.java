@@ -1,6 +1,8 @@
 package com.newbins.chatting;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.newbins.dto.Message;
 import com.newbins.service.UserChattingService;
 import com.newbins.service.UserService;
@@ -35,9 +37,9 @@ public class WebSocketMessageHandler extends TextWebSocketHandler {
         ChatRoom chatRoom = chatRoomService.getOrCreateChatRoom(chattingId);
         chatRoom.addSession(session);
 
-        if(userChattingService.enterTheChatting(chattingId, userId)){
-            session.sendMessage(new TextMessage(userService.getUser(userId).getName()+"님이 입장했습니다."));
-        }
+//        if(userChattingService.enterTheChatting(chattingId, userId)){
+//            session.sendMessage(new TextMessage(userService.getUser(userId).getName()+"님이 입장했습니다."));
+//        }
     }
 
     // 메시지 수신 시 실행
@@ -48,6 +50,9 @@ public class WebSocketMessageHandler extends TextWebSocketHandler {
         String chattingId = (String) attributes.get("chattingId");
 
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule()); // LocalDateTime 처리 모듈 추가
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS); // ISO 형식으로 직렬화
+
         Message messageObj = userChattingService.sendMessage(chattingId, userId, message.getPayload());
 
         ChatRoom chatRoom = chatRoomService.getOrCreateChatRoom(chattingId);

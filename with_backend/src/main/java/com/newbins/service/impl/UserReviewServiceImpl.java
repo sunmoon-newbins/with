@@ -1,7 +1,10 @@
 package com.newbins.service.impl;
 
+import com.newbins.dto.Notice;
 import com.newbins.dto.Review;
+import com.newbins.entity.NoticeEntity;
 import com.newbins.entity.ReviewEntity;
+import com.newbins.mapper.NoticeMapper;
 import com.newbins.mapper.ReviewMapper;
 import com.newbins.service.UserReviewService;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +21,9 @@ public class UserReviewServiceImpl implements UserReviewService {
     @Autowired
     private ReviewMapper reviewMapper;
 
+    @Autowired
+    private NoticeMapper noticeMapper;
+
     @Override
     public List<Review> getMyReviews(String userId) {
         List<Review> reviewList = new ArrayList<>();
@@ -31,5 +37,20 @@ public class UserReviewServiceImpl implements UserReviewService {
             log.error("[getMyReviews] failed get reviews");
         }
         return reviewList;
+    }
+
+    @Override
+    public void writeReview(String userId, Review review) {
+        try{
+            int insertRows = reviewMapper.setReview(userId, review);
+            if(insertRows > 0){
+                log.info("[writeReview] successful write review");
+                noticeMapper.setNotice(userId, review.getRouteId());
+            } else {
+                log.warn("[writeReview] no insert review");
+            }
+        } catch(Exception e){
+            log.error("[writeReview] failed write review");
+        }
     }
 }

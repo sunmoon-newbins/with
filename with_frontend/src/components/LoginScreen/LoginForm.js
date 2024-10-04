@@ -1,33 +1,58 @@
 // screens/LoginScreen.js
-import React, { useEffect } from "react";
-import { View, TouchableOpacity, StyleSheet, Text } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, TouchableOpacity, StyleSheet, Text, Alert } from "react-native";
 import useStore from "../user/useStore"; // zustand 스토어 가져오기
 import InputTextField from "../common/InputTextField"; // InputTextField 컴포넌트 경로를 적절히 설정하세요.
 import { useNavigation } from "@react-navigation/native";
+import IPconfig from "../../configs/IPConfig.json";
 
+import axios from "axios";
 const LoginScreen = () => {
   const navigation = useNavigation();
   // console.log("왜네비게이션이 ", navigation); // navigation이 undefined인지 확인
   // zustand 스토어에서 상태와 업데이트 함수를 가져옴
-  const {
-    id,
-    password,
-    rememberMe,
-    setId,
-    setPassword,
-    toggleRememberMe,
-    login,
-  } = useStore(); // 로그인할 때 이거 다 저장하면 , 아이디, 비밀번호를 zustand 에서 계속 쓸 수 있음.
+  const { id, rememberMe, setId, toggleRememberMe, login, setLogin } =
+    useStore(); // 로그인할 때 이거 다 저장하면 , 아이디, 비밀번호를 zustand 에서 계속 쓸 수 있음.
   // 그러니 여기서만 setId setPassword 할것.
 
-  const handleLogin = () => {
-    if (id && password) {
-      // 로그인 로직 (여기서는 간단하게 처리)
-      // if 아이디 비번이 있다면 백엔드에 있다면~~
-      // 근데 보안이 정말 취약할것 같긴한데용,,
+  const [password, setPassword] = useState("");
 
-      login(); // 상태를 로그인 상태로 변경
-      // navigation.replace("Home"); // 로그인 후 홈 화면으로 이동 자동으로 바뀜 app.js 에서 .
+  const handleLogin = async () => {
+    if (id && password) {
+      try {
+        const response = await axios({
+          method: "post",
+          url: IPconfig.IP + `/users/login`,
+          headers: { "Content-Type": "application/json" },
+          data: {
+            id: id,
+            password: password,
+          },
+        });
+        console.log(
+          "{LoginFOrm} : handleLogin / response.data = ",
+          response.data
+        );
+        if (response.data) {
+          if (response.data != null) {
+            setLogin(response.data);
+            login();
+          }
+        } else {
+          Alert.alert(
+            "로그인 실패",
+            "아이디 또는 비밀번호가 존재하지 않습니다.",
+            [
+              {
+                text: "확인",
+              },
+            ]
+          );
+          return;
+        }
+      } catch (error) {
+        console.log(error);
+      }
     } else {
       alert("아이디와 비밀번호를 입력해주세요.");
     }

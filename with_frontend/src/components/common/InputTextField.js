@@ -42,8 +42,9 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     color: "#0B1527",
+
+    borderColor: "#ccc",
     borderWidth: 1,
-    borderColor: "#E8E8E8", // InputTextField의 input과 동일한 border 색상
   },
 });
 

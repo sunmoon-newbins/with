@@ -10,11 +10,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 @ToString
-public class MessageEntity {
-    private long message_num;
-    private String chatting_num;
+public class NoticeEntity {
+    private long notice_num;
     private String user_num;
+    private String title;
     private String content;
-    private int unread_count;
-    private LocalDateTime send_dt;
+    private int notice_type;
+    private LocalDateTime notice_dt;
+    private String route_num;
 }
