@@ -91,7 +91,10 @@ const ChatDetailScreen = () => {
         <TouchableOpacity
           onPress={() => {
             // users 값을 route.params로 설정 후 드로어 열기
-
+            console.log("{ChatDetailScreen}, headerRight / users :", users);
+            navigation.navigate("ChatDetailNavigator", {
+              users: users, // users 데이터를 route.params로 넘김
+            });
             navigation.openDrawer(); // 드로어 열기
           }}
         >
