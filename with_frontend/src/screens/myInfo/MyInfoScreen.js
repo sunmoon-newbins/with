@@ -33,7 +33,9 @@ const MyInfoScreen = ({ navigation, screenUserId }) => {
 
   const userId = useStore((state) => state.userId);
 
-  const myScreen = screenUserId == userId; //  나의 화면이면  true
+  // screenUserId == userId; //  나의 화면이면  true
+
+  const [myScreen, setMyScreen] = useState(false);
 
   //
   const name = useStore((state) => state.name);

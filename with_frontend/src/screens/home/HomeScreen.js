@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, useWindowDimensions } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
 import SearchButton from "../../components/common/SearchButton";
-import ThreeTabBar from "../../components/Boards/ThreeTabBar";
 import SortButton from "../../components/Boards/SortButton";
 import PostList from "../../components/Boards/PostList";
 // import PostItem from "./PostItem";
 import Toast from "react-native-toast-message"; // Toast 임포트
+import ThreeTabButton from "../../components/Boards/ThreeTabButton";
 
 import axios from "axios";
 import IPConfig from "../../configs/IPConfig.json";
 
 function HomeScreen() {
+  const { width } = useWindowDimensions(); // 화면의 너비를 가져옴
   const navigation = useNavigation();
   const route = useRoute();
   const { searchQuery, message } = route.params || {}; // 파라미터에서 searchQuery 받아옴
+  const [activeIndex, setActiveIndex] = useState(0);
 
   const [postList, setPostList] = useState([]);
 
@@ -34,12 +36,15 @@ function HomeScreen() {
       try {
         const response = await axios({
           method: "get",
-          url: IPConfig.IP + "/routes",
+          url: IPConfig.IP + `/routes?state=${activeIndex}&sortType=${0}`,
           headers: { "Content-Type": "application/json" },
         });
 
         if (response.data) {
-          console.log("{HomeScreen} / useEffect / fetchData ", response.data);
+          console.log(
+            "{HomeScreen} / useEffect / fetchData ",
+            response.data.length
+          );
           setPostList(response.data);
         }
       } catch (error) {
@@ -48,7 +53,7 @@ function HomeScreen() {
     };
 
     fetchData();
-  }, []);
+  }, [activeIndex]);
 
   useEffect(() => {
     if (message) {
@@ -61,13 +66,29 @@ function HomeScreen() {
     }
   }, [message]);
 
+  const tabs = [
+    { title: "전체", isActive: activeIndex === 0 },
+    { title: "소개", isActive: activeIndex === 1 },
+    { title: "모집", isActive: activeIndex === 2 },
+  ];
+
   return (
     <View style={styles.container}>
       <SearchButton />
       <View style={styles.OneRow}>
         <SortButton />
         <View style={styles.tabBarWrapper}>
-          <ThreeTabBar />
+          <View style={[styles.tabContainer, { maxWidth: width * 0.8 }]}>
+            {tabs.map((tab, index) => (
+              <ThreeTabButton
+                key={index}
+                title={tab.title}
+                isActive={tab.isActive}
+                // 버튼을 클릭하면 activeIndex를 현재 인덱스로 변경
+                onPress={() => setActiveIndex(index)}
+              />
+            ))}
+          </View>
         </View>
       </View>
       <PostList searchQuery={searchQuery} data={postList} />
@@ -90,6 +111,12 @@ const styles = StyleSheet.create({
   tabBarWrapper: {
     flexDirection: "row",
     justifyContent: "flex-end",
+  },
+  tabContainer: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    justifyContent: "space-between", // 탭을 화면에 맞게 분배
+    gap: 13,
   },
 });
 

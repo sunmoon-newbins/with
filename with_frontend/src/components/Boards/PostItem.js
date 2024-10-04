@@ -15,12 +15,6 @@ const PostItem = ({
   currentMember,
   maxMember,
 }) => {
-  console.log(
-    "{PostItem} / profileImage , routeImage :",
-    profileImage,
-    " , ",
-    routeImage
-  );
   // 시간 차이를 계산하는 함수
   const formatTimeDifference = (time) => {
     const now = new Date(); // 현재 시간

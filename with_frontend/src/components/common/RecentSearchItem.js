@@ -2,7 +2,6 @@ import React from "react";
 import { View, StyleSheet, Text } from "react-native";
 
 import style from "../../configs/Style.json";
-import ThreeTabBar from "../../components/Boards/ThreeTabBar";
 function RecentSearchItem({ text }) {
   return (
     <View style={styles.container}>

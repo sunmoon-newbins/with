@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { View, StyleSheet, ActivityIndicator } from "react-native";
 
 import PostList from "../../components/Boards/PostList";
-import ThreeTabBar from "../../components/Boards/ThreeTabBar";
 
 function HeartBoardScreen() {
   const [likedPosts, setLikedPosts] = useState([]); // 좋아요 누른 게시글 데이터를 저장할 상태
@@ -55,15 +54,13 @@ function HeartBoardScreen() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.tabBarWrapper}>
-        <ThreeTabBar />
-      </View>
+      <View style={styles.tabBarWrapper}></View>
 
       {/* 로딩 중일 때 로딩 인디케이터 표시 */}
       {loading ? (
         <ActivityIndicator size="large" color="#0000ff" />
       ) : (
-        <PostList posts={likedPosts} /> // 좋아요 누른 게시글만 PostList에 전달
+        <PostList data={likedPosts} /> // 좋아요 누른 게시글만 PostList에 전달
       )}
     </View>
   );

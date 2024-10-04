@@ -45,7 +45,7 @@ const PostList = ({ searchQuery, data }) => {
   //   return post.title?.toLowerCase().includes(searchQuery.toLowerCase());
   // });
   console.log("잘 받아오나 : ", searchQuery);
-  console.log("{PostList} data ", data);
+  console.log("{PostList} data Length : ", data.length);
 
   return (
     <FlatList
