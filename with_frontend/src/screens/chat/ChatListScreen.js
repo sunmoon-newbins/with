@@ -65,7 +65,6 @@ function ChatListScreen({ navigation }) {
           "{ChatListScreen} handleChatDetailScreen / response.data = ",
           response.data
         );
-        console.log("item = ", response.data);
         navigation.navigate("ChatDetailNavigator", {
           screen: "ChatDetailScreen",
           params: {
@@ -74,8 +73,12 @@ function ChatListScreen({ navigation }) {
             chattingId: item.chattingRoomId,
             title: item.title,
             currentUserCount: item.currentUserCount,
-            picture: item.picture,
-            routeId: item.routeId,
+
+            picture: response.data.picture,
+            routeId: response.data.routeId,
+            startDate: response.data.startDate, // 시작
+            endDate: response.data.endDate, // 종료
+            writerName: response.data.writerName, // 글 작가
           },
         });
       }
@@ -100,10 +103,10 @@ function ChatListScreen({ navigation }) {
         // index={item.index} //  이거는 넣어줘야되나? 렌더링 되는게 아니기떄문에
         title={item.title}
         message={item.content}
-        time={"오후 11:20"} //
+        time={item.sendDate} //
         name={item.userName}
         headCount={item.currentUserCount}
-        image={item.picture}
+        image={item.profile}
       />
     </TouchableOpacity>
   );

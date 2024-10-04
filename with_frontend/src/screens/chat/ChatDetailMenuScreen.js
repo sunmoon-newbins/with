@@ -62,12 +62,12 @@ const ChatDetailMenuScreen = ({ navigation }) => {
       {/* 사용자 목록 */}
       {users.map((user) => (
         <TouchableOpacity
-          key={user.id}
+          key={user.userId}
           style={styles.userContainer}
           onPress={() =>
             navigation.navigate(
               "유저아이디 갖고서!! 내정보 네비게이션을 갖다 붙이기  ㅎㅎㅎ ",
-              { userId: user.id }
+              { userId: user.userId }
             )
           } // 새로운 화면으로 navigate 유저 아이디갖고서는 ,,
         >

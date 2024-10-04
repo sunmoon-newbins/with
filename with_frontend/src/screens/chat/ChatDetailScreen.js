@@ -39,6 +39,12 @@ const ChatDetailScreen = () => {
     picture,
     routeId,
     chattingId,
+
+    startDate,
+    endDate,
+    writerName,
+
+    // 시작 , 종료, 작가
   } = route.params; // Id는 필요시 백엔드 통신에 사용
   const [messageList, setMessageList] = useState(messages);
 
@@ -82,7 +88,13 @@ const ChatDetailScreen = () => {
       ),
 
       headerRight: () => (
-        <TouchableOpacity onPress={() => navigation.openDrawer()}>
+        <TouchableOpacity
+          onPress={() => {
+            // users 값을 route.params로 설정 후 드로어 열기
+
+            navigation.openDrawer(); // 드로어 열기
+          }}
+        >
           <Image
             source={require("../../../assets/chatMenu.png")}
             style={styles.headerIcon}
@@ -138,7 +150,11 @@ const ChatDetailScreen = () => {
       {/* 게시판 상세보기 */}
 
       {/* 상세 게시글로 가기 */}
-      <TouchableOpacity onPress={() => {}}>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate("RouteDetailScreen");
+        }}
+      >
         <View
           style={{
             marginTop: 10,
@@ -154,17 +170,27 @@ const ChatDetailScreen = () => {
             borderWidth: 1,
           }}
         >
-          <Image
-            source={dummyImage}
+          <View
             style={{
-              width: 70,
-              height: 50,
-              resizeMode: "cover", // 이미지를 가득 채움
-              borderRadius: 5, // 이미지를 둥글게
-              marginRight: 10, // 이미지와 텍스트 사이 간격
-              paddingVertical: 10,
+              width: "20%",
+              height: "90%",
+              marginRight: 10,
+              backgroundColor: "lightgray",
+              alignItems: "center", // 가로
+              justifyContent: "center",
             }}
-          />
+          >
+            {picture ? (
+              <Image
+                source={{ uri: picture }} // imageUrl이 없으면 로컬 이미지 사용
+                style={{ width: "100%", height: "100%" }}
+              />
+            ) : (
+              <Text style={{ fontSize: 6, color: "gray" }}>
+                이미지가 없습니다.
+              </Text>
+            )}
+          </View>
 
           <View style={{ flex: 1 }}>
             <Text style={{ fontWeight: "bold" }}>게시판 상세보기</Text>
@@ -173,9 +199,11 @@ const ChatDetailScreen = () => {
             <View
               style={{ flexDirection: "row", justifyContent: "space-between" }}
             >
-              <Text style={{ opacity: 0.7 }}>작성자{}</Text>
+              <Text style={{ opacity: 0.7 }}>작성자{writerName}</Text>
               {/* roo */}
-              <Text style={{ opacity: 0.7 }}>09.24 - 09.26{}</Text>
+              <Text style={{ opacity: 0.7 }}>
+                {startDate} - {endDate}
+              </Text>
             </View>
           </View>
         </View>

@@ -42,13 +42,23 @@ function RecentChatMessage({ title, message, time, name, headCount, image }) {
           {/* 프로필 이미지와 메시지
           메시지 뷰 패딩 두기 */}
           <View style={styles.messageRow}>
-            <Image
-              resizeMode="contain"
-              source={{
-                uri: image, // image 가 url 이기떄문에
-              }}
-              style={styles.userImage}
-            />
+            {image ? (
+              <Image
+                resizeMode="contain"
+                source={{
+                  uri: image, // image 가 url 이기떄문에
+                }}
+                style={styles.userImage}
+              />
+            ) : (
+              <View>
+                <Image
+                  source={require("../../../assets/defaultProfile.png")}
+                  style={styles.userImage}
+                />
+              </View>
+            )}
+
             <View style={styles.textContainer}>
               <Text style={styles.username}>{name}</Text>
 
@@ -128,9 +138,11 @@ const styles = StyleSheet.create({
     paddingBottom: 7,
   },
   userImage: {
+    marginTop: 10,
     width: 40,
     height: 40,
-    borderRadius: 10,
+    borderRadius: 20,
+    borderWidth: 1,
   },
   textContainer: {
     marginTop: 10,
