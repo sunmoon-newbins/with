@@ -17,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.socket.TextMessage;
 
 import java.math.BigInteger;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -84,9 +86,11 @@ public class UserChattingServiceImpl implements UserChattingService {
             log.error("[getChattingRoomInfo] failed", e);
         }
         return chatting.builder()
-                .routeId((String) writerInfo.get("route_num"))
-                .writeName((String) writerInfo.get("user_num"))
-                .picture((String) writerInfo.get("picture"))
+                .routeId((String) writerInfo.get("ROUTE_NUM"))
+                .writerName((String) writerInfo.get("NAME"))
+                .picture((String) writerInfo.get("PICTURE"))
+                .startDate(((Timestamp) writerInfo.get("START_DATE")).toLocalDateTime())  // 변환
+                .endDate(((Timestamp) writerInfo.get("END_DATE")).toLocalDateTime())
                 .messages(messageList)
                 .users(userList)
                 .build();

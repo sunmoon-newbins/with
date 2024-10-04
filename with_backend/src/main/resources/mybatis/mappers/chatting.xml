@@ -16,13 +16,20 @@
             WHERE CHATTING_NUM IN (select CHATTING_NUM from CHATTING_ROOM_NUMS)
         ),
         latest_messages AS ( -- 최신 메시지
-            select *
+            select
+                SUBQUERY.content,
+                SUBQUERY.chatting_num,
+                SUBQUERY.send_dt,
+                u.name,
+                u.profile
             from(SELECT
-                     m.content,
-                     m.chatting_num,
-                     m.user_num,
-                     ROW_NUMBER() OVER (PARTITION BY m.chatting_num ORDER BY m.send_dt DESC) AS rn
-                 FROM message m) as subquery
+                    m.content,
+                    m.chatting_num,
+                    m.user_num,
+                    m.send_dt,
+                    ROW_NUMBER() OVER (PARTITION BY m.chatting_num ORDER BY m.send_dt DESC) AS rn
+                FROM message m) as SUBQUERY
+            left join users u on (SUBQUERY.user_num = u.user_num)
             where rn = 1
         ),
         current_users as ( -- 각 채팅방 별 현재 유저 수
@@ -40,8 +47,10 @@
             cu.current_user_count,
             r.state,
             r.picture,
-            (select name from users where user_num = lm.user_num) as name,
-            lm.content
+            lm.profile,
+            lm.name,
+            lm.content,
+            lm.send_dt
         from chattings c
             left join route r on(c.route_num = r.route_num)
             left join latest_messages lm on(c.chatting_num = lm.chatting_num)
@@ -105,13 +114,43 @@
 
     <select id="getChattingUsers" parameterType="String" resultType="users">
         -- 채팅방 유저들의 정보 가져오기
-        select *
-        from users
-        where user_num in (
-            select user_num
-            from chatting_user
-            where chatting_num = #{chattingId}
+        WITH users AS (
+            SELECT
+                u.user_num,
+                u.name,
+                u.birth,
+                u.profile,
+                u.COUNTRY,
+                u.NICKNAME,
+                u.LANGUAGES,
+                u.CREATE_DATE
+            FROM users u
+            WHERE u.user_num IN (
+                SELECT cu.user_num
+                FROM chatting_user cu
+                WHERE cu.chatting_num = #{chattingId}
+            )
+        ),
+        route_avg_dalant AS (
+            SELECT
+                r.user_num,
+                AVG(re.DALANT) AS avg_dalant
+            FROM route r
+            LEFT JOIN review re ON r.route_num = re.ROUTE_NUM
+            GROUP BY r.user_num
         )
+        SELECT
+            u.user_num,
+            u.name,
+            u.birth,
+            u.profile,
+            u.COUNTRY,
+            u.NICKNAME,
+            u.LANGUAGES,
+            u.CREATE_DATE,
+            COALESCE(rad.avg_dalant, 0) AS avg_dalant -- DALANT 평균이 없을 경우 0을 반환
+        FROM users u
+        LEFT JOIN route_avg_dalant rad ON u.user_num = rad.user_num;
     </select>
 
     <insert id="setMessage" parameterType="map" useGeneratedKeys="true" keyProperty="messageId">
@@ -173,12 +212,12 @@
 
     <select id="getChattingWriterInfo" parameterType="String" resultType="map">
         SELECT
-            ROUTE_NUM,
-            USER_NUM,
-            PICTURE,
-            START_DATE,
-            END_DATE
-        FROM ROUTE
+            R.ROUTE_NUM,
+            (SELECT NAME FROM USERS U WHERE U.USER_NUM = R.USER_NUM) AS NAME,
+            R.PICTURE,
+            R.START_DATE,
+            R.END_DATE
+        FROM ROUTE R
         WHERE ROUTE_NUM = (
             SELECT ROUTE_NUM
             FROM CHATTING

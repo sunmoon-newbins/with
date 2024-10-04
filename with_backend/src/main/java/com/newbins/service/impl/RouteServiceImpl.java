@@ -40,18 +40,18 @@ public class RouteServiceImpl implements RouteService {
 
     @Override
     public List<Route> getRoutes(int state, String sortType) {
-        //조건으로 status 넣고, 정렬 sortType
-        log.info("[getRoutes] : state = {}, sortType = {}", state, sortType);
-        // MyBatis Mapper를 호출하여 RouteEntity 목록을 받아옵니다.
-        List<RouteEntity> routeEntities = routeMapper.getRoutes(state, sortType);
-
-        // RouteEntity를 Route로 변환하여 List로 반환
         List<Route> routes = new ArrayList<>();
-        for (RouteEntity entity : routeEntities) {
-            Route route = new Route();
-            routes.add(route.toDTO(entity)); // Route 클래스에 정의된 toDTO() 메서드 사용
+        // MyBatis Mapper를 호출하여 RouteEntity 목록을 받아옵니다.
+        try{
+            List<RouteEntity> routeEntities = routeMapper.getRoutes(state, sortType);
+            log.info("[getRoutes] successful getRoutes, routeEntities = {}", routeEntities);
+            for (RouteEntity entity : routeEntities) {
+                routes.add(new Route().toDTO(entity)); // Route 클래스에 정의된 toDTO() 메서드 사용
+            }
+        } catch (Exception e){
+            log.error("[getRoutes] failed getRoutes", e);
         }
-
+        // RouteEntity를 Route로 변환하여 List로 반환
         return routes;
     }
 

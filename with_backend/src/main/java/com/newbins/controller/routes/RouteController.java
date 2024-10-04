@@ -21,7 +21,7 @@ public class RouteController {
     // 소개, 모집, 전체 게시글 보기
     @GetMapping
     public List<Route> getRoutes(@RequestParam(defaultValue = "0") int state,
-                                                @RequestParam(required = false) String sortType){
+                                 @RequestParam(required = false) String sortType){
         log.info("[getRoutes] : state = {}, sortType = {}", state, sortType);
         return routeService.getRoutes(state, sortType);
     }

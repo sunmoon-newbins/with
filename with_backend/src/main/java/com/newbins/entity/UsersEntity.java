@@ -21,4 +21,5 @@ public class UsersEntity {
     private String nickname;
     private String languages;
     private Date create_date;
+    private double avg_dalant;
 }
