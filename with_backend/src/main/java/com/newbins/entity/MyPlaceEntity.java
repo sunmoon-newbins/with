@@ -14,7 +14,7 @@ public class MyPlaceEntity {
     private long place_num;     // 장소 번호
     private String user_num;    // 회원 번호
     private String place_name;  // 장소명
-    private byte place_type;    // 장소 타입
+    private String place_type;    // 장소 타입
     private String road_address;// 도로명주소
     private String address;     // 주소
     private double latitude;    // 위도

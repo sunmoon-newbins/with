@@ -8,5 +8,5 @@ import java.util.List;
 @Service
 public interface PlaceService {
     public List<Place> searchPlaces(String placeName);
-
+    public void savePlacesFromApi();
 }
