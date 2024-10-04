@@ -42,6 +42,9 @@ const ChatDetailScreen = () => {
   } = route.params; // Id는 필요시 백엔드 통신에 사용
   const [messageList, setMessageList] = useState(messages);
 
+  //  방장 이름
+  //  시작일 - 종료일
+
   // useLayoutEffect를 사용하여 네비게이션 옵션을 설정
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -170,8 +173,9 @@ const ChatDetailScreen = () => {
             <View
               style={{ flexDirection: "row", justifyContent: "space-between" }}
             >
-              <Text style={{ opacity: 0.7 }}>작성자 젬마</Text>
-              <Text style={{ opacity: 0.7 }}>09.24 - 09.26</Text>
+              <Text style={{ opacity: 0.7 }}>작성자{}</Text>
+              {/* roo */}
+              <Text style={{ opacity: 0.7 }}>09.24 - 09.26{}</Text>
             </View>
           </View>
         </View>

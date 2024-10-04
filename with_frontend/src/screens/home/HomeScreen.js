@@ -17,7 +17,7 @@ function HomeScreen() {
   const route = useRoute();
   const { searchQuery, message } = route.params || {}; // 파라미터에서 searchQuery 받아옴
 
-  const [postList, setPostList] = useState();
+  const [postList, setPostList] = useState([]);
 
   console.log(message, "메시지");
   useEffect(() => {
@@ -39,6 +39,7 @@ function HomeScreen() {
         });
 
         if (response.data) {
+          console.log("{HomeScreen} / useEffect / fetchData ", response.data);
           setPostList(response.data);
         }
       } catch (error) {

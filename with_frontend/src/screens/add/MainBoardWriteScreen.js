@@ -187,7 +187,7 @@ const MainBoardWriteScreen = () => {
 
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
+      allowsEditing: true, // 자르기허락하냐
       aspect: [4, 3], // 직사각형
       quality: 1,
     });
@@ -297,6 +297,33 @@ const MainBoardWriteScreen = () => {
     // 숫자만 허용하고 빈 문자열도 허용
     if (/^\d*$/.test(text)) {
       setNumberOfPeople(text);
+    }
+  };
+
+  const uploadImage = async (uri) => {
+    // 사진갖고온 uri 넣고 FormData 로 변환을 해서
+    let formData = new FormData(); //
+    formData.append("file", {
+      uri: uri,
+      name: "image.jpg",
+      type: "image/jpeg",
+    });
+
+    try {
+      const response = await fetch("YOUR_SERVER_ENDPOINT", {
+        method: "POST",
+        body: formData,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      const responseData = await response.json();
+      console.log("Image uploaded successfully:", responseData);
+      // 이 URL을  요청,, 서버에서 aws 스토리지에 저장 ??
+      return responseData.imageUrl;
+    } catch (error) {
+      console.error("Error uploading image:", error);
     }
   };
 

@@ -120,11 +120,13 @@ const styles = StyleSheet.create({
   messageBox: {
     padding: 10,
     borderRadius: 10,
-    maxWidth: "100%",
+    maxWidth: "90%",
+    // overflow: "hidden",
   },
   myMessageBox: {
     backgroundColor: "#5775CD",
     alignSelf: "flex-end",
+    maxWidth: "80%",
   },
   otherMessageBox: {
     backgroundColor: "#fff",

@@ -9,7 +9,9 @@ const MessageList = ({ messages, users }) => {
 
   // messages가 없거나 빈 배열인 경우 처리
   if (!messages || messages.length === 0) {
-    return <Text>메시지가 없습니다.</Text>; // 메시지가 없을 경우
+    return (
+      <Text style={{ textAlign: "center" }}>채팅방에 메시지가 없습니다</Text>
+    ); // 메시지가 없을 경우
   }
 
   useEffect(() => {

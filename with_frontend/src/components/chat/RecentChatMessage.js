@@ -21,7 +21,7 @@ function RecentChatMessage({ title, message, time, name, headCount, image }) {
               paddingBottom: 7,
               flexDirection: "row",
               justifyContent: "space-between",
-              borderWidth: 1,
+              // borderWidth: 1,
               borderColor: "red",
             }}
           >
@@ -56,12 +56,19 @@ function RecentChatMessage({ title, message, time, name, headCount, image }) {
                 style={{
                   flexDirection: "row",
                   justifyContent: "space-between",
-                  borderWidth: 1,
-                  maxWidth: "50%",
+                  // borderWidth: 1,
+                  maxWidth: "100%",
                   overflow: "hidden", //
+                  borderColor: "yellow",
                 }}
               >
-                <Text style={styles.messageText}>{message}</Text>
+                <Text
+                  style={[styles.messageText, { maxWidth: "70%" }]}
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                >
+                  {message}
+                </Text>
                 <Text style={styles.time}>{time}</Text>
               </View>
             </View>
@@ -77,7 +84,7 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
-    borderWidth: 1,
+    // borderWidth: 1,
   },
   chatBoxContainer: {
     width: "100%", // 부모 컨테이너의 너비에 맞추도록 설정
@@ -98,7 +105,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     padding: 30, // 컨텐츠의 안쪽 여백
-    borderWidth: 1,
+    // borderWidth: 1,
   },
   title: {
     fontSize: 16,
@@ -112,7 +119,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   messageRow: {
-    borderWidth: 1,
+    // borderWidth: 1,
     borderColor: "green",
     flexDirection: "row",
     alignItems: "center",
@@ -126,19 +133,25 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   textContainer: {
+    marginTop: 10,
     flex: 1,
     marginLeft: 10,
     justifyContent: "center",
+    borderColor: "orange",
+    // borderWidth: 1,
+    maxHeight: " 70%",
   },
   username: {
     fontWeight: "bold",
     fontSize: 14,
-    marginBottom: 3,
+    // marginTop: 10,
+    // paddingTop: 10,
+    // marginBottom: 3,
   },
   messageText: {
     fontSize: 13,
     maxWidth: "70%",
-    maxHeight: "80%",
+    maxHeight: "100%",
   },
   time: {
     fontSize: 12,

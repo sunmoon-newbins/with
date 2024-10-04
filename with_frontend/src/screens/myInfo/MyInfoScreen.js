@@ -28,8 +28,14 @@ import useStore from "../../components/user/useStore";
 
 const { width: screenWidth } = Dimensions.get("window"); // 화면 너비 가져오기
 
-const MyInfoScreen = ({ navigation }) => {
+const MyInfoScreen = ({ navigation, screenUserId }) => {
   // const [starRating, setStarRating] = useState(); // db에서 이사람 별점만 ,, 갖고옴.
+
+  const userId = useStore((state) => state.userId);
+
+  const myScreen = screenUserId == userId; //  나의 화면이면  true
+
+  //
   const name = useStore((state) => state.name);
   const nickname = useStore((state) => state.nickname);
   const birth = useStore((state) => state.birth);
@@ -133,10 +139,11 @@ const MyInfoScreen = ({ navigation }) => {
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.header}>
         <Text style={styles.title}>내 정보</Text>
-
-        <TouchableOpacity onPress={handleLogout}>
-          <Text style={styles.title}>로그아웃</Text>
-        </TouchableOpacity>
+        {myScreen && (
+          <TouchableOpacity onPress={handleLogout}>
+            <Text style={styles.title}>로그아웃</Text>
+          </TouchableOpacity>
+        )}
       </View>
       <View style={styles.container}>
         <View style={styles.profileContainer}>
@@ -207,16 +214,19 @@ const MyInfoScreen = ({ navigation }) => {
           <Text style={styles.menuText}>받은 후기</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.menuItem}
-          onPress={() => navigation.navigate("MyNotification")}
-        >
-          <Image
-            source={require("../../../assets/alramIcon.png")} // 여기에 alarm.png 경로를 입력
-            style={styles.icon} // 스타일 적용
-          />
-          <Text style={styles.menuText}>알림</Text>
-        </TouchableOpacity>
+        {myScreen && (
+          <TouchableOpacity
+            style={styles.menuItem}
+            onPress={() => navigation.navigate("MyNotification")}
+          >
+            <Image
+              source={require("../../../assets/alramIcon.png")} // 여기에 alarm.png 경로를 입력
+              style={styles.icon} // 스타일 적용
+            />
+            <Text style={styles.menuText}>알림</Text>
+          </TouchableOpacity>
+        )}
+
         <LanguageButtons />
 
         {/* 로그아웃 모달 */}
