@@ -1,5 +1,6 @@
 package com.newbins.service.impl;
 
+import com.newbins.dto.MyPlace;
 import com.newbins.dto.Place;
 import com.newbins.dto.Route;
 import com.newbins.entity.MyPlaceEntity;
@@ -24,15 +25,14 @@ public class UserPlaceServiceImpl implements UserPlaceService {
 
 
     @Override
-    public Place addMyPlace(String userId, Place place) {
+    public MyPlace addMyPlace(String userId, Place place) {
         try{
             placeMapper.setMyPlace(userId, place);
             log.info("[addMyPlace] add MyPlace successfull");
         } catch(Exception e){
-            log.error("[addMyPlace] add MyPlace failed, error = {}", e);
+            log.error("[addMyPlace] add MyPlace failed", e);
         }
-//        return new Place().toDTO(placeMapper.getMyPlace(userId, place.getPlaceName()));
-        return null;
+        return new MyPlace().toDTO(placeMapper.getMyPlace(userId, place.getPlaceName()));
     }
 
     @Override

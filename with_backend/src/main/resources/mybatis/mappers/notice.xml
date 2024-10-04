@@ -9,4 +9,28 @@
         WHERE USER_NUM = #{userId} AND READ_AT = FALSE
         ORDER BY NOTICE_DT DESC
     </select>
+
+    <insert id="setNotice" parameterType="String">
+        INSERT INTO NOTICE(
+            USER_NUM,
+            TITLE,
+            CONTENT,
+            NOTICE_TYPE,
+            ROUTE_NUM
+        )
+        VALUES (
+            (SELECT USER_NUM FROM USERS WHERE USER_NUM = (SELECT USER_NUM FROM ROUTE WHERE ROUTE_NUM = #{routeId})), -- TARGET USER_NUM
+            CONCAT(
+                (SELECT NAME FROM USERS WHERE USER_NUM = #{userId}), "님께서 후기를 보냈습니다."
+            ),
+            CONCAT(
+                (SELECT NAME FROM USERS WHERE USER_NUM = (SELECT USER_NUM FROM ROUTE WHERE ROUTE_NUM = #{routeId})),
+                "님과 함께한 여행 후기를 보냈습니다.\N",
+                (SELECT NAME FROM USERS WHERE USER_NUM = (SELECT USER_NUM FROM ROUTE WHERE ROUTE_NUM = #{routeId})),
+                "님께서 준비한 여행일정에 대한 후기를 확인하세요."
+            ),
+            2,
+            #{routeId}
+        );
+    </insert>
 </mapper>

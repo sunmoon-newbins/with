@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface UserReviewService {
     List<Review> getMyReviews(String userId);
+
+    void writeReview(String userId, Review review);
 }

@@ -13,4 +13,5 @@ public interface UserMapper {
     String findById(String id);
     void setUser(User user);
     void updateProfileByUserId(User user);
+    UsersEntity getUserByIdPassword(String id, String password);
 }

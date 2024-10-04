@@ -24,7 +24,9 @@ public class UserReviewController {
 
     // 알림 클릭 후 리뷰 쓰기
     @PostMapping
-    public void setReview(@PathVariable("user_id") String userId){
-
+    public void setReview(@PathVariable("user_id") String userId,
+                          @RequestBody Review review){
+        log.info("[setReview] userId = {}, review = {}", userId, review);
+        userReviewService.writeReview(userId, review);
     }
 }

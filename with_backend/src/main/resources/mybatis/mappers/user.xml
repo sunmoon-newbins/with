@@ -55,4 +55,16 @@
         WHERE USER_NUM = #{userId}
     </update>
 
+    <select id="getUserByIdPassword" parameterType="String" resultType="users">
+        SELECT
+             USER_NUM,
+             NAME,
+             BIRTH,
+             PROFILE,
+             COUNTRY,
+             NICKNAME,
+             LANGUAGES
+        FROM USERS
+        WHERE ID = #{id} AND PASSWORD = #{password}
+    </select>
 </mapper>

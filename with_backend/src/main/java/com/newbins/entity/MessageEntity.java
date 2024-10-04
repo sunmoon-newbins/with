@@ -2,7 +2,7 @@ package com.newbins.entity;
 
 import lombok.*;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 @Setter
 @Getter
@@ -16,5 +16,5 @@ public class MessageEntity {
     private String user_num;
     private String content;
     private int unread_count;
-    private Date send_dt;
+    private LocalDateTime send_dt;
 }
