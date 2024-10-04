@@ -32,6 +32,7 @@
         WHERE USER_NUM = #{userId}
           AND PLACE_NAME = #{placeName}
     </select>
+  
     <select id="getMyPlaces" resultType="myPlace">
         SELECT *
         FROM MY_PLACE
@@ -50,5 +51,13 @@
         FROM MY_PLACE
         WHERE PLACE_NAME LIKE CONCAT('%', #{placeName}, '%')
     </select>
-
+  
+    <insert id="insertPlace" parameterType="place">
+        INSERT INTO place (TRRSRTNM, TRRSRTSE, RDNMADR, LNMADR, LATITUDE, LONGITUDE, AR,
+                           CNVNNCFCLTY, STAYNGINFO, MVMAMSMTFCLTY, RECRTCLTURFCLTY, HOSPITALITYFCLTY, SPORTFCLTY,
+                           APPN_DATE, ACEPTNCCO, PRKPLCECO, TRRSRTINTRCN, PHONENUMBER, INSTITUTIONNM, REFERENCE_DATE, INSTT_CODE)
+        VALUES (#{trrsrtNm}, #{trrsrtSe}, #{rdnmadr}, #{lnmadr}, #{latitude}, #{longitude}, #{ar},
+                #{cnvnncFclty}, #{stayngInfo}, #{mvmAmsmtFclty}, #{recrtClturFclty}, #{hospitalityFclty}, #{sportFclty},
+                #{appnDate}, #{aceptncCo}, #{prkplceCo}, #{trrsrtIntrcn}, #{phoneNumber}, #{institutionNm}, #{referenceDate}, #{insttCode});
+    </insert>
 </mapper>

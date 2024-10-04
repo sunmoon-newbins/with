@@ -15,8 +15,8 @@ import java.sql.Date;
 public class Place implements Convertible<PlaceEntity, Place> {
     private long placeNum;    // 장소 번호
     private String placeName;   // 관광지명, 장소명
-    private byte placeType;     // 관광지 구분
-    private String roadAddress; // 소재지도로명주소
+    private String placeType;     // 관광지 구분
+    private String roadAddress; // 소재지도록명주소
     private String address;     // 소재지지번주소
     private double latitude;    // 위도
     private double longitude;   // 경도
@@ -37,7 +37,6 @@ public class Place implements Convertible<PlaceEntity, Place> {
     @Override
     public Place toDTO(PlaceEntity entity) {
         return this.builder()
-                .placeNum(entity.getPlace_num())
                 .placeName(entity.getTrrsrtNm())
                 .placeType(entity.getTrrsrtSe())
                 .roadAddress(entity.getRdnmadr())

@@ -20,6 +20,5 @@
         <typeAlias alias="reviewDto" type="com.newbins.dto.Review"/>
         <typeAlias alias="notice" type="com.newbins.entity.NoticeEntity"/>
         <typeAlias alias="routePlace" type="com.newbins.dto.RoutePlace"/>
-        <typeAlias alias="routePlaceEntity" type="com.newbins.entity.RoutePlaceEntity"/>
     </typeAliases>
 </configuration>

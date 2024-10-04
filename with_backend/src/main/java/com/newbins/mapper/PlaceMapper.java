@@ -15,5 +15,5 @@ public interface PlaceMapper {
     List<MyPlaceEntity> getMyPlaces(@Param("userId")String userId);
     int deleteMyPlace(@Param("userId")String userId, @Param("placeId")long placeId);
     List<PlaceEntity> getPlaces(@Param("placeName")String placeName);
-    void insertPlace(Place place);
+    void insertPlace(PlaceEntity placeEntity);
 }

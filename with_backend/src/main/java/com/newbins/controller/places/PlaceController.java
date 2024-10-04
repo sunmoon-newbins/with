@@ -17,10 +17,11 @@ public class PlaceController {
     @Autowired
     PlaceService placeService;
 
-    // 장소 추가 눌렀을 때
-    @GetMapping
-    public void getPlaces(){
-
+    // openAPI 가져오는 기능
+    @GetMapping("/savePlaces")
+    public void savePlaces(){
+        placeService.savePlacesFromApi();
+        log.info("[savePlaces] : Data saved successfully");
     }
 
     // 장소 검색
