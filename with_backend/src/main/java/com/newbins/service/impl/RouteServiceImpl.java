@@ -83,11 +83,11 @@ public class RouteServiceImpl implements RouteService {
         return routePlaces;
     }
 
-    public List<Route> getRoutes(String userNum) {
+    public List<Route> getRoutes(String userId) {
         //조건으로 status 넣고, 정렬 sortType
-        log.info("[getRoutes] : userNum = {}", userNum);
+        log.info("[getRoutes] : userId = {}", userId);
         // MyBatis Mapper를 호출하여 RouteEntity 목록을 받아옵니다.
-        List<RouteEntity> routeEntities = routeMapper.getRouteByUserNum(userNum);
+        List<RouteEntity> routeEntities = routeMapper.getRouteByUserNum(userId);
 
         // RouteEntity를 Route로 변환하여 List로 반환
         List<Route> routes = new ArrayList<>();
