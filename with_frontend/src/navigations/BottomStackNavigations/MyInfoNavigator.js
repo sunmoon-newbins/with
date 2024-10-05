@@ -6,6 +6,7 @@ import MyInfoScreen from "../../screens/myInfo/MyInfoScreen";
 import MyRouteBoardScreen from "../../screens/myInfo/MyRouteBoardScreen";
 import MyReview from "../../screens/myInfo/MyReview";
 import MyNotification from "../../screens/myInfo/MyNotification";
+import PublicWifiPlaceScreen from "../../screens/myInfo/PublicWifiPlaceScreen";
 
 const Stack = createStackNavigator();
 
@@ -26,6 +27,11 @@ const MyInfoNavigator = ({ route }) => {
         initialParams={{ user }} // userId를 초기 파라미터로 전달
         // 여기서 하는거 아닌가 ?
         // 로그인한 아이디
+      />
+      <Stack.Screen
+        name="PublicWifiPlaceScreen"
+        component={PublicWifiPlaceScreen}
+        options={{ headerShown:false}}
       />
       <Stack.Screen
         name="MyRouteBoardScreen"
