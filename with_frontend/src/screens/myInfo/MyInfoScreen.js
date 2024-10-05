@@ -173,6 +173,17 @@ const MyInfoScreen = ({ route }) => {
 
         <TouchableOpacity
           style={styles.menuItem}
+          onPress={() => navigation.navigate("PublicWifiPlaceScreen")}
+        >
+          <Image
+            source={require("../../../assets/blackwifi.png")} // 경로를 실제 이미지 파일 경로로 변경
+            style={styles.icon} // 스타일 적용
+          />
+          <Text style={styles.menuText}>공공와이파이</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.menuItem}
           onPress={() => navigation.navigate("MyRouteBoardScreen")}
         >
           <Image
