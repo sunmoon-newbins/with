@@ -27,8 +27,7 @@ function HeartBoardScreen() {
           title: "3박 4일동안 나만 아는 부산 핫플레이스",
           author: "김정동",
           time: "8m ago",
-          imageUrl:
-            "https://search.pstatic.net/sunny/?src=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1723942699823-956bb643857d%3Ffm%3Djpg%26q%3D60%26w%3D3000%26ixlib%3Drb-4.0.3%26ixid%3DM3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDE4fHx8ZW58MHx8fHx8&type=sc960_832", // 로컬 이미지로 대체 가능
+          imageUrl: "https://search.pstatic.net/sunny/?src=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1723942699823-956bb643857d%3Ffm%3Djpg%26q%3D60%26w%3D3000%26ixlib%3Drb-4.0.3%26ixid%3DM3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDE4fHx8ZW58MHx8fHx8&type=sc960_832", // 로컬 이미지로 대체 가능
           description: "부산 하면 바다, 바다하면 해운대와 서면 같이 서핑...",
         },
         {
@@ -36,8 +35,7 @@ function HeartBoardScreen() {
           title: "4일 동안 부산에서 배를 타고 떠나는 여행",
           author: "로라",
           time: "15m ago",
-          imageUrl:
-            "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyNDAzMTlfMjgw%2FMDAxNzEwNzkxMTIxNjQ1.KCXGHo1y0il0ejAm8MAyyiCtddwrr2LMlzzYleZuQAUg.TKp9cdARlt91ySzxxLhxaxQxaUGWZ4LHoPN3ME03HlEg.JPEG%2FIMG_4430.JPG&type=l340_165", // 로컬 이미지로 대체 가능
+          imageUrl: "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyNDAzMTlfMjgw%2FMDAxNzEwNzkxMTIxNjQ1.KCXGHo1y0il0ejAm8MAyyiCtddwrr2LMlzzYleZuQAUg.TKp9cdARlt91ySzxxLhxaxQxaUGWZ4LHoPN3ME03HlEg.JPEG%2FIMG_4430.JPG&type=l340_165", // 로컬 이미지로 대체 가능
           description:
             "나는 멋진 부산에서 15년 동안 살았습니다. 배를 타고 부산을 즐겨보자...",
         },
@@ -46,9 +44,9 @@ function HeartBoardScreen() {
           title: "뉴진스코드 in 부산 여행 코스",
           author: "킴민지",
           time: "15m ago",
-          imageUrl:
-            "https://search.pstatic.net/common/?src=http%3A%2F%2Fpost.phinf.naver.net%2FMjAyMzExMDNfMjg5%2FMDAxNjk4OTkyNjE1ODcx.vJGNyyErGwt9FWwmrMXP1lSNfiM-X92_M8-GkC8d7wIg.Zs0ilSHgV3AK5BHIN6dkifFfrKhN-LaGgk4YMqMPr28g.PNG%2FIGC8czNmthjFAOvtGO1dmSZB4CfM.jpg&type=a340", // 로컬 이미지로 대체 가능
-          description: "뉴진스가 갔던곳 가보고 싶으신분 컴컴...",
+          imageUrl: "https://search.pstatic.net/common/?src=http%3A%2F%2Fpost.phinf.naver.net%2FMjAyMzExMDNfMjg5%2FMDAxNjk4OTkyNjE1ODcx.vJGNyyErGwt9FWwmrMXP1lSNfiM-X92_M8-GkC8d7wIg.Zs0ilSHgV3AK5BHIN6dkifFfrKhN-LaGgk4YMqMPr28g.PNG%2FIGC8czNmthjFAOvtGO1dmSZB4CfM.jpg&type=a340", // 로컬 이미지로 대체 가능
+          description:
+            "뉴진스가 갔던곳 가보고 싶으신분 컴컴...",
         },
       ];
       setLikedPosts(dummyLikedPosts); // 더미 데이터를 상태에 저장

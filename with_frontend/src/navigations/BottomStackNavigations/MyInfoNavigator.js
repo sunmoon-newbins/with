@@ -36,7 +36,8 @@ const MyInfoNavigator = ({ route }) => {
       <Stack.Screen
         name="MyRouteBoardScreen"
         component={MyRouteBoardScreen}
-        options={{ title: "게시한 루트" }}
+        options={{ headerShown:false}}
+        initialParams={{ user }}
       />
       <Stack.Screen
         name="MyReview"
