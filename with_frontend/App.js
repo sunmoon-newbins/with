@@ -35,7 +35,7 @@ export default function App() {
       {/* <BottomTabNavigator /> */}
       {/* 개발중 */}
 
-      <Toast ref={(ref) => Toast.setRef(ref)} />
+      {/* <Toast ref={(ref) => Toast.setRef(ref)} /> */}
     </NavigationContainer>
   );
 }

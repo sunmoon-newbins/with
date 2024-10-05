@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -15,6 +15,7 @@ import * as Progress from "react-native-progress"; // progress bar 라이브러�
 import * as ImagePicker from "expo-image-picker"; // expo-image-picker 라이브러리
 import LanguageButtons from "../../components/LoginScreen/LanguageButtons";
 import useStore from "../../components/user/useStore";
+import { useNavigation } from "@react-navigation/native";
 
 // 유저아이디한테  별점만 받아오면 됨.
 
@@ -28,38 +29,12 @@ import useStore from "../../components/user/useStore";
 
 const { width: screenWidth } = Dimensions.get("window"); // 화면 너비 가져오기
 
-const MyInfoScreen = ({ navigation, screenUserId }) => {
-  // const [starRating, setStarRating] = useState(); // db에서 이사람 별점만 ,, 갖고옴.
-
+const MyInfoScreen = ({ route }) => {
+  const navigation = useNavigation();
+  // route.params에서 screenUser 데이터를 받아옴
+  const screenUser = route.params.user; // 안전하게 받을 수 있도록 설정
   const userId = useStore((state) => state.userId);
-
-  // screenUserId == userId; //  나의 화면이면  true
-
-  const [myScreen, setMyScreen] = useState(false);
-
-  //
-  const name = useStore((state) => state.name);
-  const nickname = useStore((state) => state.nickname);
-  const birth = useStore((state) => state.birth);
-
-  // 현재 연도에서 나이를 빼서 태어난 연도 계산
-  const birthYear = new Date().getFullYear() - birth;
-
-  const logout = useStore((state) => state.logout); // 로그아웃
-  const Profile = useStore((state) => state.Profile); // 이미지 설명 ??
-  const country = useStore((state) => state.country);
-  const language = useStore((state) => state.language);
-
-  console.log(
-    "{MyInfoScreen} zustand user : ",
-    name,
-    nickname,
-    birth,
-    Profile, // null
-    country,
-    language
-  );
-
+  const myScreen = screenUser.userId == userId;
   // 별점만 백엔드에서 userId 주고 갖고옴, , ,
 
   // 생년월일을 기준으로 나이를 계산하는 함수
@@ -79,7 +54,8 @@ const MyInfoScreen = ({ navigation, screenUserId }) => {
     return age;
   };
 
-  const age = calculateAge(birth);
+  // 화면에 표시할 사용자 정보 결정
+  const age = calculateAge(screenUser?.birth);
 
   const [selectedImage, setSelectedImage] = useState(null); // 선택한 이미지 저장 상태
 
@@ -149,6 +125,7 @@ const MyInfoScreen = ({ navigation, screenUserId }) => {
       </View>
       <View style={styles.container}>
         <View style={styles.profileContainer}>
+          {/* 여기에서 이미지 저장 하는거 해줘야할것같긴한데,,, , , , , , , ,,@@@@ @ @ @ @ */}
           <TouchableOpacity onPress={pickImage}>
             {/* 😀 이미지가 없을 때 기본 동그란 이미지 보여주기 */}
             {selectedImage ? (
@@ -165,12 +142,12 @@ const MyInfoScreen = ({ navigation, screenUserId }) => {
           </TouchableOpacity>
 
           <View style={styles.infoContainer}>
-            <Text style={styles.userTitle}>{name}</Text>
+            <Text style={styles.userTitle}>{screenUser?.name}</Text>
             {/* 참여자 이름 */}
-            <Text style={styles.userName}>{nickname}</Text>
+            <Text style={styles.userName}>{screenUser?.nickname}</Text>
             {/* 닉네임인데, 자기소개로  */}
             <Text style={styles.userDetails}>만 {age}세</Text>
-            <Text style={styles.userDetails}>{country}</Text>
+            <Text style={styles.userDetails}>{screenUser?.country}</Text>
           </View>
         </View>
 

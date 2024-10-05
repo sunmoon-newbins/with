@@ -1,71 +1,138 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  ScrollView,
+  Platform,
+  Linking,
+} from "react-native";
 
-const recommendScreen = () => {
+const apps = [
+  {
+    name: "배민",
+    description: "다양한 음식점 제공과 배달 주문",
+    image: require("../../../assets/baemin.png"), // 확장자를 정확하게 수정
+    appStoreUrl: "https://apps.apple.com/kr/app/id378084485", // App Store URL
+    playStoreUrl:
+      "https://play.google.com/store/apps/details?id=com.sampleapp&hl=ko", // Play Store URL
+  },
+  {
+    name: "네이버 지도",
+    description: "위치 정보와 대중교통 제공",
+    image: require("../../../assets/navermap.png"),
+    appStoreUrl: "https://apps.apple.com/kr/app/id311867728",
+    playStoreUrl:
+      "https://play.google.com/store/apps/details?id=com.nhn.android.nmap&hl=ko",
+  },
+  {
+    name: "카카오 T",
+    description: "대중 교통 호출 및 서비스 제공",
+    image: require("../../../assets/kakaoT.png"),
+    appStoreUrl: "https://apps.apple.com/kr/app/id981110422",
+    playStoreUrl:
+      "https://play.google.com/store/apps/details?id=com.sample.kakao.t",
+  },
+  {
+    name: "공공와이파이",
+    description: "무료 와이파이 위치 제공",
+    image: require("../../../assets/wifiIcon.png"),
+    appStoreUrl: "https://apps.apple.com/kr/app/id1501468070",
+    playStoreUrl:
+      "https://play.google.com/store/search?q=%EA%B3%B5%EA%B3%B5%EC%99%80%EC%9D%B4%ED%8C%8C%EC%9D%B4%EC%9D%B4&c=apps&hl=ko",
+  },
+  {
+    name: "야놀자",
+    description: "여행 패키지 예약 제공",
+    image: require("../../../assets/yanolja.png"),
+    appStoreUrl: "https://apps.apple.com/kr/app/id436731843",
+    playStoreUrl:
+      "https://play.google.com/store/apps/details?id=com.cultsotry.yanolja.nativeapp&hl=ko",
+  },
+  {
+    name: "파파고",
+    description: "다양한 방식으로 번역 제공",
+    image: require("../../../assets/papago.png"),
+    appStoreUrl: "https://apps.apple.com/kr/app/id1147874819",
+    playStoreUrl:
+      "https://play.google.com/store/apps/details?id=com.naver.labs.translator&hl=ko",
+  },
+];
+
+const RecommendScreen = () => {
+  const onSelect = (app) => {
+    const url = Platform.OS === "ios" ? app.appStoreUrl : app.playStoreUrl;
+    Linking.openURL(url).catch((err) =>
+      console.error("스토어로 이동하는 중 오류가 발생했습니다.", err)
+    );
+  };
+
   return (
-    <View style={styles.container}>
-      <View style={styles.infoContainer}>
-        <Text style={styles.placeName}>앱 이름</Text>
-
-        <Text style={styles.placeType}>
-          {/* 상세설명 */}
-          상세설명
-        </Text>
-      </View>
-
-      <TouchableOpacity style={styles.selectButton} onPress={onSelect}>
-        <Text style={styles.selectButtonText}>선택</Text>
-      </TouchableOpacity>
-    </View>
+    <ScrollView style={styles.container}>
+      {apps.map((app, index) => (
+        <TouchableOpacity
+          key={index}
+          style={styles.appContainer}
+          onPress={() => onSelect(app)}
+        >
+          <Image source={app.image} style={styles.appImage} />
+          <View style={styles.infoContainer}>
+            <Text style={styles.appName}>{app.name}</Text>
+            <Text style={styles.appDescription}>{app.description}</Text>
+          </View>
+        </TouchableOpacity>
+      ))}
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row", // 가로로 정렬
-    alignItems: "center", // 수직 정렬
-    backgroundColor: "#F4F8FB", // 배경색 (하늘색 박스 느낌)
-    padding: 10, // 내부 여백
-    borderRadius: 10, // 모서리 둥글게
-    margin: 10, // 아래 여백
-    marginBottom: 0,
-
-    shadowColor: "#000", // 그림자 색상
-    shadowOffset: { width: 0, height: 2 }, // 그림자 위치
-    shadowOpacity: 0.1, // 그림자 불투명도
-    shadowRadius: 4, // 그림자 반경
-
+    flex: 1,
+    backgroundColor: "#F4F8FB",
+    padding: 16,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 16,
+  },
+  appContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#FFF",
+    padding: 10,
+    borderRadius: 10,
+    marginBottom: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
     borderWidth: 1,
     borderColor: "#ccc",
   },
+  appImage: {
+    width: 50,
+    height: 50,
+    resizeMode: "contain",
+    marginRight: 10,
+  },
   infoContainer: {
-    flex: 1, // 공간을 차지하게 설정
-    justifyContent: "center", // 수직 가운데 정렬
+    flex: 1,
+    justifyContent: "center",
   },
-  placeName: {
+  appName: {
     fontSize: 16,
-    fontWeight: "semi-bold",
+    fontWeight: "bold",
     color: "#000",
-    marginBottom: 4, // 장소명과 장소 타입 사이 간격
+    marginBottom: 4,
   },
-  placeType: {
+  appDescription: {
     fontSize: 14,
     color: "#666",
   },
-  selectButton: {
-    backgroundColor: "#FFF", // 버튼 배경색
-    borderColor: "#5079CB", // 테두리 색
-    borderWidth: 1, // 테두리 두께
-    borderRadius: 8, // 모서리 둥글게
-    paddingVertical: 6, // 버튼 위아래 패딩
-    paddingHorizontal: 12, // 버튼 좌우 패딩
-  },
-  selectButtonText: {
-    color: "#000000",
-    fontSize: 14,
-    fontWeight: "500",
-    // fontFamily: "Inter, sans-serif",
-    letterSpacing: 0.34,
-  },
 });
-export default recommendScreen;
+
+export default RecommendScreen;

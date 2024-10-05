@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, useWindowDimensions } from "react-native";
+import {
+  View,
+  StyleSheet,
+  useWindowDimensions,
+  TouchableOpacity,
+  Image,
+} from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
 import SearchButton from "../../components/common/SearchButton";
@@ -92,6 +98,29 @@ function HomeScreen() {
         </View>
       </View>
       <PostList searchQuery={searchQuery} data={postList} />
+
+      <TouchableOpacity
+        style={{
+          position: "absolute", // 절대 위치
+          top: "95%", // 화면 맨 위에서 10px 만큼 떨어짐
+          right: 10, // 화면 오른쪽 끝에 붙음
+          zIndex: 1000, // 다른 콘텐츠 위에 표시되도록 zIndex를 높게 설정
+
+          backgroundColor: "#fff", // 필요에 따라 추가
+          borderRadius: 30, // 둥근 버튼을 만들기 위해 추가 (선택 사항)
+        }}
+        onPress={() => {
+          navigation.navigate("recommendScreen");
+        }}
+      >
+        <Image
+          source={require("../../../assets/recommendIcon.png")}
+          style={{
+            width: 60,
+            height: 60,
+          }}
+        />
+      </TouchableOpacity>
     </View>
   );
 }

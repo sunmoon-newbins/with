@@ -11,17 +11,19 @@ const Stack = createStackNavigator();
 
 import useStore from "../../components/user/useStore";
 
-const MyInfoNavigator = () => {
+const MyInfoNavigator = ({ route }) => {
+  const user = route?.params?.user
+    ? route?.params?.user
+    : useStore((state) => state);
+  console.log("user = ", user);
   // 화면 누르면 로그인
-  // console.log("{MyinfoNavigatr userID}", userId);
-
   return (
     <Stack.Navigator initialRouteName="MyInfoScreen">
       <Stack.Screen
         name="MyInfoScreen"
         component={MyInfoScreen}
         options={{ headerShown: false }} // 게시판 메인화면
-        // initialParams={{ userId: userId }} // userId를 초기 파라미터로 전달
+        initialParams={{ user }} // userId를 초기 파라미터로 전달
         // 여기서 하는거 아닌가 ?
         // 로그인한 아이디
       />

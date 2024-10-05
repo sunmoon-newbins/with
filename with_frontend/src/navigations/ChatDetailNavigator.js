@@ -60,8 +60,8 @@ const ChatDetailNavigator = ({ route }) => {
       /> */}
 
       <Drawer.Screen
-        name="MyRouteBoardScreen"
-        component={MyRouteBoardScreen}
+        name="MyInfoNavigator"
+        component={MyInfoNavigator}
         options={{ headerShown: false }} // 드로어 화면에서는 자체적으로 헤더 사용
       />
     </Drawer.Navigator>
