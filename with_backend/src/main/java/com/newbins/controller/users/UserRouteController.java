@@ -13,15 +13,15 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping(value = "/users/{userNum}/routes")
+@RequestMapping(value = "/users/{userId}/routes")
 public class UserRouteController {
 
     @Autowired
     RouteService routeService;
     // 게시한 루트 보기
     @GetMapping
-    public List<Route> getMyRoutes(@PathVariable("userNum") String userNum){
-        return routeService.getRoutes(userNum);
+    public List<Route> getMyRoutes(@PathVariable("userId") String userId){
+        return routeService.getRoutes(userId);
     }
 
 }
