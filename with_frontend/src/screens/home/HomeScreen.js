@@ -114,7 +114,7 @@ function HomeScreen() {
         }}
       >
         <Image
-          source={require("../../../assets/recommendIcon.png")}
+          source={require("../../../assets/angel.png")}
           style={{
             width: 60,
             height: 60,
