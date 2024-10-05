@@ -20,7 +20,7 @@ public interface RouteMapper {
             @Param("endDate") Date endDate);
     RouteEntity getRouteByRouteNum(String routeNum);
     List<RouteEntity> getRoutes(@Param("state") int state, @Param("sortType") String sortType);
-    List<RouteEntity> getRouteByUserNum(@Param("userNum") String userNum);
+    List<RouteEntity> getRouteByUserNum(@Param("userId") String userId);
     List<RouteEntity> searchRoutes(@Param("title") String title, @Param("content") String content);
 
     String getlatestRouteNumByUserNum(String userId);

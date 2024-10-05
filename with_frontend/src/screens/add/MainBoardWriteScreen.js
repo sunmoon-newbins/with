@@ -10,6 +10,7 @@ import {
 	Modal,
 	Alert,
 } from "react-native";
+<<<<<<< HEAD
 import useStore from "../../components/user/useStore";
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
@@ -19,6 +20,11 @@ import {
 	uploadBytesResumable,
 	getDownloadURL,
 } from "firebase/storage";
+=======
+
+// import { firebaseConfig } from "../../configs/FirebaseConfig";
+
+>>>>>>> 07a8ba09a3c7ef5f7b47b4b472e2f1f6a7d5be82
 // 파이어 베이스 쓰려면 필요한 패키지들
 
 import { launchImageLibrary } from "react-native-image-picker";
@@ -42,10 +48,22 @@ import { firebaseConfig } from '../../configs/FirebaseConfig';
 import axios from "axios";
 
 const MainBoardWriteScreen = () => {
+<<<<<<< HEAD
 	const storageApp = initializeApp(firebaseConfig); // 파이어베이스 초기화
 	const storage = getStorage(storageApp); // 파이어베이스 스토리지 인스턴스 가져오기
 
 	const userId = useStore(state => state.userId);
+=======
+  //  상태 관리
+  // 제목, 글 종류, 인원수 등의 상태를 관리
+  const [title, setTitle] = useState(""); // 제목
+  const [activeTab, setActiveTab] = useState(1); // 글 종류
+  const [numberOfPeople, setNumberOfPeople] = useState(""); // 인원수
+  const [dates, setDates] = useState({
+    startDate: null,
+    endDate: null,
+  });
+>>>>>>> 07a8ba09a3c7ef5f7b47b4b472e2f1f6a7d5be82
 
 	const [title, setTitle] = useState(""); // 제목
 	const [activeTab, setActiveTab] = useState(1); // 글 종류

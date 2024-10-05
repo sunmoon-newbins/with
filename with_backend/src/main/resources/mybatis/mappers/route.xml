@@ -108,7 +108,11 @@
             START_DATE,
             END_DATE
         FROM ROUTE
-        WHERE USER_NUM = #{userNum}
+        WHERE USER_NUM IN (
+            SELECT
+                USER_NUM
+            FROM USERS
+            WHERE ID = #{userId})
     </select>
 
     <select id="getlatestRouteNumByUserNum" parameterType="String" resultType="String">

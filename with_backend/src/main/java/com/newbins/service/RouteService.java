@@ -10,7 +10,7 @@ public interface RouteService {
     void createRoute(String userId, WriteRoute writeRoute);
     Route getRoute(String routeNum);
     List<Route> getRoutes(int state, String sortType);
-    List<Route> getRoutes(String userNum);
+    List<Route> getRoutes(String userId);
     List<Route> searchRoutes(String title, String content);
     List<RoutePlace> getRoutePlace(String routeNum);
 }

@@ -18,8 +18,8 @@ public class UserRouteController {
     RouteService routeService;
     // 게시한 루트 보기
     @GetMapping
-    public List<Route> getMyRoutes(@PathVariable("userId") String userNum){
-        return routeService.getRoutes(userNum);
+    public List<Route> getMyRoutes(@PathVariable("userId") String userId){
+        return routeService.getRoutes(userId);
     }
 
     // 루트 게시판 작성

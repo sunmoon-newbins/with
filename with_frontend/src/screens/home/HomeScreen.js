@@ -5,6 +5,7 @@ import {
   useWindowDimensions,
   TouchableOpacity,
   Image,
+  Touchable,
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
@@ -14,6 +15,7 @@ import PostList from "../../components/Boards/PostList";
 // import PostItem from "./PostItem";
 import Toast from "react-native-toast-message"; // Toast 임포트
 import ThreeTabButton from "../../components/Boards/ThreeTabButton";
+import LongButton from "../../components/common/LongButton";
 
 import axios from "axios";
 import IPConfig from "../../configs/IPConfig.json";
@@ -98,6 +100,21 @@ function HomeScreen() {
           </View>
         </View>
       </View>
+
+      <LongButton
+        title="추천 어플"
+        buttonStyle={[
+          {
+            marginTop: 5,
+            backgroundColor: "#fff",
+            borderWidth: 1,
+            borderColor: "#5079CB",
+          },
+        ]}
+        textStyle={{ color: "black", fontSize: 16 }}
+        onPress={() => navigation.navigate("RecommendScreen")}
+      />
+
       <PostList searchQuery={searchQuery} data={routeList} />
 
       <TouchableOpacity
@@ -111,11 +128,11 @@ function HomeScreen() {
           borderRadius: 30, // 둥근 버튼을 만들기 위해 추가 (선택 사항)
         }}
         onPress={() => {
-          navigation.navigate("recommendScreen");
+          navigation.navigate("AngelNavigator", { screen: "AngelScreen" });
         }}
       >
         <Image
-          source={require("../../../assets/recommendIcon.png")}
+          source={require("../../../assets/angel.png")}
           style={{
             width: 60,
             height: 60,
