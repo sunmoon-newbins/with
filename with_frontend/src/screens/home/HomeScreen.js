@@ -17,6 +17,7 @@ import ThreeTabButton from "../../components/Boards/ThreeTabButton";
 
 import axios from "axios";
 import IPConfig from "../../configs/IPConfig.json";
+import routes_dummy from "../../../dummy_data/routes.json";
 
 function HomeScreen() {
   const { width } = useWindowDimensions(); // 화면의 너비를 가져옴
@@ -25,7 +26,7 @@ function HomeScreen() {
   const { searchQuery, message } = route.params || {}; // 파라미터에서 searchQuery 받아옴
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const [postList, setPostList] = useState([]);
+  const [routeList, setRouteList] = useState([]);
 
   console.log(message, "메시지");
   useEffect(() => {
@@ -49,9 +50,9 @@ function HomeScreen() {
         if (response.data) {
           console.log(
             "{HomeScreen} / useEffect / fetchData ",
-            response.data.length
+            response.data
           );
-          setPostList(response.data);
+          setRouteList(response.data);
         }
       } catch (error) {
         console.log("데이터 가져오기 실패3", error);
@@ -97,7 +98,7 @@ function HomeScreen() {
           </View>
         </View>
       </View>
-      <PostList searchQuery={searchQuery} data={postList} />
+      <PostList searchQuery={searchQuery} data={routeList} />
 
       <TouchableOpacity
         style={{

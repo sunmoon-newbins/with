@@ -60,12 +60,16 @@ const PostBottom = ({
   return (
     <View style={styles.container}>
       <View style={{ flexDirection: "row" }}>
-        <Image
-          source={{
-            uri: profileImage || "https://example.com/default-profile.png",
-          }}
-          style={styles.profileImage}
-        />
+        {profileImage ? (
+          <Image source={{ uri: profileImage }} style={styles.profileImage} />
+        ) : (
+          <View>
+            <Image
+              source={require("../../../assets/defaultProfile.png")}
+              style={styles.profileImage}
+            />
+          </View>
+        )}
 
         <View>
           <Text style={[styles.postBottmText, { paddingTop: 4 }]}>{name}</Text>

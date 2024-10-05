@@ -45,7 +45,7 @@ const PostList = ({ searchQuery, data }) => {
   //   return post.title?.toLowerCase().includes(searchQuery.toLowerCase());
   // });
   console.log("잘 받아오나 : ", searchQuery);
-  console.log("{PostList} data Length : ", data.length);
+  console.log("{routeList} data Length : ", data.length);
 
   return (
     <FlatList
@@ -62,10 +62,9 @@ const PostList = ({ searchQuery, data }) => {
           currentMember={item.currentMember}
           maxMember={item.participantCount}
           onPress={
-            () =>
-              navigation.navigate("RouteDetailScreen", {
-                postId: item.routeNum,
-              }) // PostDetailScreen으로 네비게이트
+            () => (
+              navigation.navigate("RouteDetailScreen", {routeId : item.routeNum})
+            )
           }
         />
       )}

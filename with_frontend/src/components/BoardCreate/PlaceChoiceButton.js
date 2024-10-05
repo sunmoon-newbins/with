@@ -2,7 +2,6 @@ import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
 function PlaceChoiceButton({ placeName, placeType, onSelect }) {
-  console.log("placetype 여기 어떻게들어오길래", placeType);
   return (
     <View style={styles.container}>
       <View style={styles.infoContainer}>

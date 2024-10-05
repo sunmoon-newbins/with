@@ -4,33 +4,30 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.newbins.mapper.RouteMapper">
 
-    <!-- ROUTE Insert with UUID in MariaDB -->
-    <insert id="createRoute">
-        <!-- MariaDB의 UUID 함수를 사용하여 ROUTE_NUM을 생성 -->
-        <selectKey keyProperty="routeNum" resultType="string" order="BEFORE">
-            SELECT REPLACE(UUID(), '-', '')
-        </selectKey>
-
-        INSERT INTO ROUTE (
-        ROUTE_NUM,
-        USER_NUM,
-        TITLE,
-        PARTICIPANT_COUNT,
-        STATE,
-        PICTURE,
-        CREATE_DATE,
-        START_DATE,
-        END_DATE
-        ) VALUES (
-        #{routeNum},
-        #{userNum},
-        #{title},
-        #{participantCount},
-        #{state},
-        #{picture},
-        #{createDate},
-        #{startDate},
-        #{endDate}
+    <insert id="createRoute" parameterType="map">
+        insert into route(
+            route_num,
+            user_num,
+            title,
+            participant_count,
+            state,
+            picture,
+            create_date,
+            start_date,
+            end_date,
+            content
+        )
+        values(
+            uuid(),
+            #{userId},
+            #{writeRoute.title},
+            #{writeRoute.participantCount},
+            #{writeRoute.routeType},
+            #{writeRoute.picture},
+            now(),
+            #{startDate},
+            #{endDate},
+            #{writeRoute.content}
         )
     </insert>
 
@@ -112,5 +109,13 @@
             END_DATE
         FROM ROUTE
         WHERE USER_NUM = #{userNum}
+    </select>
+
+    <select id="getlatestRouteNumByUserNum" parameterType="String" resultType="String">
+        SELECT ROUTE_NUM
+        FROM ROUTE
+        WHERE USER_NUM = #{userId}
+        ORDER BY CREATE_DATE DESC
+            LIMIT 1;
     </select>
 </mapper>

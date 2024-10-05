@@ -6,14 +6,20 @@ import com.newbins.entity.RouteEntity;
 import com.newbins.entity.RoutePlaceEntity;
 import com.newbins.mapper.RoutePlaceMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.newbins.mapper.RouteMapper;
 import com.newbins.dto.Route;
 import com.newbins.service.RouteService;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -25,12 +31,18 @@ public class RouteServiceImpl implements RouteService {
     private RoutePlaceMapper routePlaceMapper;
 
     @Override
-    public void createRoute(List<WriteRoute> writeRouteList) {
+    @Transactional
+    public void createRoute(String userId, WriteRoute writeRoute) {
         try{
-            routeMapper.createRoute(writeRouteList);
+            Date startDate = writeRoute.getPlanByDate().getFirst().getDate();
+            Date endDate = writeRoute.getPlanByDate().getLast().getDate();
+            routeMapper.createRoute(userId, writeRoute, startDate, endDate);
             log.info("[createRoute] successful createRoute");
+            String routeNum = routeMapper.getlatestRouteNumByUserNum(userId);
+            routePlaceMapper.setRoutePlace(routeNum, writeRoute.getPlanByDate());
+            log.info("[createRoute] successful setRoutePlace");
         } catch (Exception e){
-            log.error("[createRoute] failed createRoute");
+            log.error("[createRoute] failed createRoute", e);
         }
     }
 

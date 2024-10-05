@@ -12,11 +12,11 @@ import java.sql.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class MyPlace implements Convertible<MyPlaceEntity, MyPlace>{
+public class MyPlace implements Convertible<MyPlaceEntity, MyPlace> {
     private long placeNum;     // 장소 번호
     private String userNum;    // 회원 번호
     private String placeName;  // 장소명
-    private byte placeType;    // 장소 타입
+    private String placeType;    // 장소 타입
     private String roadAddress;// 도로명주소
     private String address;     // 주소
     private double latitude;    // 위도

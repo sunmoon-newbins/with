@@ -3,6 +3,7 @@ package com.newbins.dto;
 import lombok.*;
 
 import java.sql.Date;
+import java.util.List;
 
 @Builder
 @Setter
@@ -12,5 +13,5 @@ import java.sql.Date;
 @ToString
 public class PlanByDate {
     private Date date;
-    private WritePlace places;
+    private List<WritePlace> places;
 }

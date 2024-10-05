@@ -1,107 +1,64 @@
-import { View, Text, Image, ScrollView } from "react-native"; // ScrollView 추가
-import React from "react";
+import { View, Text, Image, ScrollView, ActivityIndicator } from "react-native"; // ScrollView 추가
+import React, { useEffect, useState } from "react";
+import { useRoute } from "@react-navigation/native";
 import PostTop from "../../components/BoardDetails/PostTop"; // 최상단 이미지, 제목, 설명
 import PostMiddle from "../../components/BoardDetails/PostMiddle";
 import PostBottom from "../../components/BoardDetails/PostBottom";
+import route_detail_dummy from "../../../dummy_data/routeDetail.json";
+import axios from "axios";
+import IPConfig from '../../configs/IPConfig.json';
 // day , 장소 , 메모
 
-const defaultImage = require("../../../assets/BoarderDummy.png");
+const RouteDetailScreen = (props) => {
+  const [routeInfo, setRouteInfo] = useState();
+  // const post = posts[0];
+  const { routeId } = props.route.params; // postId를 받아옴
 
-const profileImage = "https://randomuser.me/api/portraits/men/6.jpg";
 
-// 나관숙식 1234
+  const fetchData = async () => {
+    try {
+      const response = await axios({
+        method: "get",
+        url: IPConfig.IP + `/routes/${routeId}`,
+        headers: { "Content-Type": "application/json" },
+      });
 
-const posts = [
-  {
-    postId: "1", // 게시글 아이디
-    title: "바다 여행 루트 추천 해요",
-    name: "이사벨라", // 이름
-    image: defaultImage, // 사진
-    currentMember: 5,
-    maxMember: 10,
-    // 내용
-    description:
-      "안녕하세요 먼 곳에서 오느라 고생많으셨어요. 제가 소개해드릴 여행지는 요즘 mz 들이 많이가는 여행지에요. 한국에 오신걸 환영해요~~ 한국에 오시면 제가 회 사드릴게요~~",
+      if (response.data) {
+        setRouteInfo(response.data);
+        console.log("{RouteDetailScreen} useEffect / routeInfo = ", response.data);
+      }
+    } catch (error) {
+      console.log("데이터 가져오기 실패3", error);
+    }
+  };
 
-    // 밑에 들어갈것
+  useEffect(() => {
+    fetchData();
+  }, [props]);
 
-    profileImage: profileImage, // 프로필사진
-    authorTalent: 4.5, // 달란트
-    authorBoardCount: 3, // 게시글
-    hitCount: 11, // 조회수
-    heartCount: 1, // 좋아요
-    // 이름
-  },
-];
-
-const dummyPlans = [
-  {
-    // JSON  형식이 잘못됐나..
-    date: "2024-09-29", // 날짜 (YYYY-MM-DD 형식)
-    places: [
-      // 해당 날짜에 추가된 장소 목록
-      {
-        // 여기도 날짜 넣어놔야 ,., 헉
-        order: 1, // 장소 순서 (추가된 순서대로 1, 2, 3... 증가)
-        placeType: 1, // 장소 타입 (1: 나만의 장소)
-        placeName: "서울시청", // 장소명
-        latitude: 37.569195556037954,
-        longitude: 126.9764956086874,
-        addressName: "", // 장소의 주소명 (필요 시 추가)
-        memo: "이곳은 내가 좋아하는 조용한 장소", // 메모
-      },
-      {
-        order: 2, // 두 번째 장소
-        placeType: 2, // 장소 타입 (2: 관광명소)
-        placeName: "분수대", // 장소명
-        latitude: 37.56572191237293,
-        longitude: 126.97760537266731,
-        addressName: "서울시 중구 남대문로", // 장소의 주소명
-        memo: "", // 메모
-      },
-    ],
-  },
-  {
-    date: "2024-09-30", // 날짜 (YYYY-MM-DD 형식)
-    places: [
-      {
-        order: 1, // 장소 순서
-        placeType: 3, // 장소 타입 (3: 숙소)
-        placeName: "호텔신라", // 장소명
-        latitude: 37.5555,
-        longitude: 126.9999,
-        addressName: "서울특별시 중구 동호로 249", // 장소의 주소명
-        memo: "편안한 숙소", // 메모
-      },
-    ],
-  },
-];
-
-const RouteDetailScreen = () => {
-  const post = posts[0];
   return (
     <ScrollView style={{ flex: 1 }}>
       {/* ScrollView로 수정 */}
       <PostTop
-        image={post.image} // 변수들 넘겨줌 .
-        title={post.title}
-        description={post.description}
-        maxMember={post.maxMember}
-        currentMember={post.currentMember}
+        image={routeInfo?.picture} // 변수들 넘겨줌 .
+        title={routeInfo?.title}
+        description={routeInfo?.content}
+        maxMember={routeInfo?.participantCount}
+        currentMember={routeInfo?.currentMember}
       />
 
-      <PostMiddle plans={dummyPlans} />
+      <PostMiddle plans={routeInfo?.routeByDay} />
 
       <PostBottom
-        profileImage={post.profileImage}
-        authorTalent={post.authorTalent}
-        authorBoardCount={post.authorBoardCount}
-        hitCount={post.hitCount}
-        heartCount={post.heartCount}
-        name={post.name}
-        postId={post.postId}
-        currentMember={post.currentMember} // 둘이 같으면 버튼 비활성화 .
-        maxMember={post.maxMember}
+        profileImage={routeInfo?.profile}
+        authorTalent={routeInfo?.authorTalent}
+        authorBoardCount={routeInfo?.authorBoardCount}
+        hitCount={routeInfo?.hitCount}
+        heartCount={routeInfo?.heartCount}
+        name={routeInfo?.name}
+        routId={routeInfo?.routeId}
+        currentMember={routeInfo?.currentMember} // 둘이 같으면 버튼 비활성화 .
+        maxMember={routeInfo?.participantCount}
       />
 
       {/* 여기에 다른 컴포넌트와 정보도 추가 가능 */}

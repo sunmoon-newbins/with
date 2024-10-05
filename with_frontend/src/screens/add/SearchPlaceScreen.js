@@ -35,24 +35,7 @@ const initialSeoulSearchPlace = [
     placeName: "아산 호텔 ",
     latitude: 36.788836,
     longitude: 126.9971004,
-  },
-
-  // {
-  //   placeName: "남산타워",
-  //   placeType: "관광명소",
-  // },
-  // {
-  //   placeName: "롯데호텔",
-  //   placeType: "숙소",
-  // },
-  // {
-  //   placeName: "명동교자",
-  //   placeType: "식당",
-  // },
-  // {
-  //   placeName: "롯데월드",
-  //   placeType: "관광명소",
-  // },
+  }
 ];
 
 const initialMyPlace = [
@@ -60,25 +43,11 @@ const initialMyPlace = [
     address: "충남 아산시 선문대학교", // 찐주소,,  // 이 찐주소는 메인에 안뜨네,,
     placeName: "선문대학교", // 내가 칭한 주소
     placeType: 1, // 나만의장소 타입
+    placeNum : 4,
     latitude: 36.7989764,
     longitude: 127.0750025,
-  },
-  // {
-  //   placeName: "탕정 지중해마을",
-  //   placeType: "탕정에서 그나마 볼거리 있는 곳",
-  // },
-  // {
-  //   placeName: "아산 레일바이크",
-  //   placeType: "아산에서 그나마 자전거 탈수 있는 곳",
-  // },
-  // {
-  //   placeName: "아산 이순신체육관",
-  //   placeType: "운동장",
-  // },
-  // {
-  //   placeName: "배방초등학교 운동장",
-  //   placeType: "학교 운동장",
-  // },
+    memo:""
+  }
 ];
 
 function SearchPlaceScreen() {

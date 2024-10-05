@@ -27,8 +27,6 @@ const CustomDateRangePicker = ({ onDateChange }) => {
     onDateChange(newDates); // 상위 컴포넌트로 데이터 전달
   };
 
-  console.log("커스텀데이트", selectedDates.startDate, selectedDates.endDate);
-
   // 커스텀 버튼 함수
   const customButton = (onConfirm) => (
     <Button

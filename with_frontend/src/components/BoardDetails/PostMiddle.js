@@ -9,14 +9,14 @@ import React, { useState, useRef } from "react";
 import MapView, { Marker } from "react-native-maps";
 
 const PostMiddle = ({ plans }) => {
-  const [statePlans, setStatePlans] = useState(plans);
+  // const [statePlans, setStatePlans] = useState(plans);
   const mapRefs = useRef([]); // 각 MapView에 대해 별도의 ref 생성
 
-  console.log("제이슨", JSON.stringify(statePlans, null, 2)); // null을 전달하면 모든 속성을 변환
+  // console.log("제이슨", JSON.stringify(plans, null, 2)); // null을 전달하면 모든 속성을 변환
 
   return (
     <ScrollView>
-      {statePlans.map((item, index) => (
+      {plans?.map((item, index) => (
         <View key={index} style={styles.dateContainer}>
           {/* 날짜 표시 */}
           <Text style={styles.dateText}>{`Day ${index + 1} | ${
@@ -31,7 +31,7 @@ const PostMiddle = ({ plans }) => {
               }}
               style={styles.map}
               onLayout={() => {
-                if (item.places.length > 0) {
+                if (item.places && item.places.length > 0) {
                   const coordinates = item.places.map((place) => ({
                     latitude: place.latitude,
                     longitude: place.longitude,

@@ -27,21 +27,13 @@ public class RouteController {
         return routeService.getRoutes(state, sortType);
     }
 
-    // 루트 게시판 작성
-    @PostMapping
-    public void createRoute(@RequestBody List<WriteRoute> writeRouteList){
-
-        log.info("[createRoute] : route = {}", writeRouteList.toString());
-        routeService.createRoute(writeRouteList);
-    }
-
     // 루트 상세 보기
     @GetMapping("/{routeNum}")
     public Route getRoute(@PathVariable("routeNum") String routeNum){
         //route 1건 가지고 오기
         log.info("[getRoute] : routeNum = {}", routeNum);
         Route routeInfo = routeService.getRoute(routeNum);
-        log.info("[getRouteReturnValue] : routeNum = {}", routeInfo);
+        log.info("[getRouteReturnValue] : routeInfo = {}", routeInfo);
         return routeInfo;
     }
 

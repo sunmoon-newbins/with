@@ -1,0 +1,72 @@
+[
+    {
+        "author": "김정동",
+        "content": "3박 4일동안 나만 아는 부산 핫플레이스 같이 여행하고, 즐길 사람들을 모집합니다!",
+        "createDate": "2024-09-22T00:00:00",
+        "currentMember": 3,
+        "endDate": "2024-10-14T00:00:00",
+        "participantCount": 10,
+        "picture": "https://search.pstatic.net/sunny/?src=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1723942699823-956bb643857d%3Ffm%3Djpg%26q%3D60%26w%3D3000%26ixlib%3Drb-4.0.3%26ixid%3DM3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDE4fHx8ZW58MHx8fHx8&type=sc960_832",
+        "routeNum": "301",
+        "startDate": "2024-10-11T00:00:00",
+        "state": 1,
+        "title": "3박 4일 부산 여행",
+        "userProfile": null
+    },
+    {
+        "author": "Laura",
+        "content": "Join me for a 4-day adventure in Busan! Let's explore the best local spots together.",
+        "createDate": "2024-09-23T00:00:00",
+        "currentMember": 2,
+        "endDate": "2024-10-15T00:00:00",
+        "participantCount": 6,
+        "picture": "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyNDAzMTlfMjgw%2FMDAxNzEwNzkxMTIxNjQ1.KCXGHo1y0il0ejAm8MAyyiCtddwrr2LMlzzYleZuQAUg.TKp9cdARlt91ySzxxLhxaxQxaUGWZ4LHoPN3ME03HlEg.JPEG%2FIMG_4430.JPG&type=l340_165",
+        "routeNum": "302",
+        "startDate": "2024-10-12T00:00:00",
+        "state": 1,
+        "title": "4 Days Adventure in Busan",
+        "userProfile": null
+    },
+    {
+        "author": "Pedro",
+        "content": "¡Buscando compañeros para explorar Busan durante 4 días! ¡Vamos a descubrir los mejores lugares juntos!",
+        "createDate": "2024-09-24T00:00:00",
+        "currentMember": 4,
+        "endDate": "2024-10-16T00:00:00",
+        "participantCount": 8,
+        "picture": "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzAyMjJfMjEz%2FMDAxNjc3MDQwODM1MTkw._dmH-koMRc3fE9cTrbiKMkELjIB7Xmhgqwm9Da99OZ4g.OSjXRAx3gTucMp7x7-LNz6mZj3A8M593C8G_JgFYkf8g.JPEG.yonijung_%2FIMG_5905.JPG&type=a340",
+        "routeNum": "303",
+        "startDate": "2024-10-13T00:00:00",
+        "state": 1,
+        "title": "Explorando Busan por 4 días",
+        "userProfile": null
+    },
+    {
+        "author": "Marie",
+        "content": "Rejoignez-moi pour un voyage de 3 nuits à Busan ! Explorons les endroits cachés ensemble.",
+        "createDate": "2024-09-25T00:00:00",
+        "currentMember": 5,
+        "endDate": "2024-10-17T00:00:00",
+        "participantCount": 7,
+        "picture": "https://search.pstatic.net/common/?src=http%3A%2F%2Fpost.phinf.naver.net%2FMjAyMzExMDNfMjg5%2FMDAxNjk4OTkyNjE1ODcx.vJGNyyErGwt9FWwmrMXP1lSNfiM-X92_M8-GkC8d7wIg.Zs0ilSHgV3AK5BHIN6dkifFfrKhN-LaGgk4YMqMPr28g.PNG%2FIGC8czNmthjFAOvtGO1dmSZB4CfM.jpg&type=a340",
+        "routeNum": "304",
+        "startDate": "2024-10-14T00:00:00",
+        "state": 1,
+        "title": "Voyage de 3 nuits à Busan",
+        "userProfile": null
+    },
+    {
+        "author": "Wei",
+        "content": "寻找小伙伴，一起在釜山进行为期4天的旅行吧！让我们一起探索这个城市！",
+        "createDate": "2024-09-26T00:00:00",
+        "currentMember": 3,
+        "endDate": "2024-10-18T00:00:00",
+        "participantCount": 5,
+        "picture": "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyNDA4MTNfMTk5%2FMDAxNzIzNTI4OTE5MzAx.iW3TtWky7Jmy1TrJws3S0uKqAoHmOxdsl3X_iIFCbFog.8vRiH3ma3iybq779tuST6hWFlCrzpHwK0h3NsVEAXzIg.JPEG%2F%25C8%25AD%25B8%25E9_%25C4%25B8%25C3%25B3_2024-08-13_145626.jpg&type=a340",
+        "routeNum": "305",
+        "startDate": "2024-10-15T00:00:00",
+        "state": 1,
+        "title": "釜山4天之旅",
+        "userProfile": null
+    }
+]

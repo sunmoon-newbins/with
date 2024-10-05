@@ -155,7 +155,7 @@ const ChatDetailScreen = () => {
       {/* 상세 게시글로 가기 */}
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate("RouteDetailScreen");
+          navigation.navigate("RouteDetailScreen", {postId : routeId});
         }}
       >
         <View

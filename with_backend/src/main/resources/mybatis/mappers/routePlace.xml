@@ -5,14 +5,29 @@
 <mapper namespace="com.newbins.mapper.RoutePlaceMapper">
 
     <select id="getRoutePlaceByRouteNum" resultType="routePlaceEntity">
-    SELECT
-    ROUTE_DATE,
-    PLACE_SEQUENCE,
-    ROUTE_NUM,
-    PLACE_NUM,
-    MY_PLACE_NUM,
-    MEMO
-    FROM ROUTE_PLACE
-    WHERE ROUTE_NUM = #{routeNum}
+        SELECT
+            ROUTE_DATE,
+            PLACE_SEQUENCE,
+            ROUTE_NUM,
+            PLACE_NUM,
+            MY_PLACE_NUM,
+            MEMO
+        FROM ROUTE_PLACE
+        WHERE ROUTE_NUM = #{routeNum}
     </select>
+
+    <insert id="setRoutePlace" parameterType="map">
+        INSERT INTO route_place (route_date, place_sequence, route_num, place_num, my_place_num, memo)
+        VALUES
+        <foreach collection="planByDate" item="plan" separator=",">
+            <if test="plan.places != null and plan.places.size() > 0">
+                <foreach collection="plan.places" item="place" separator=",">
+                    <if test="place != null">
+                        (#{plan.date}, #{place.order}, #{routeNum}, #{place.placeNum}, #{place.myPlaceNum}, #{place.memo})
+                    </if>
+                </foreach>
+            </if>
+        </foreach>
+    </insert>
+
 </mapper>

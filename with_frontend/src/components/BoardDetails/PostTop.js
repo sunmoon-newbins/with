@@ -9,7 +9,7 @@ const PostTop = ({ image, title, description, currentMember, maxMember }) => {
     <View style={styles.container}>
       {/* 상단 이미지 영역 */}
       <View style={styles.imageContainer}>
-        <Image source={image} style={styles.image} />
+        <Image source={{uri: image}} style={styles.image} />
 
         {/* 뒤로가기 버튼 */}
         <TouchableOpacity

@@ -10,10 +10,12 @@ import lombok.*;
 @ToString
 public class WritePlace {
     private int order;
+    private long placeNum;
+    private long myPlaceNum;
     private String placeType;
     private String placeName;
     private double latitude;
     private double longitude;
-    private String addressName;
+    private String address;
     private String memo;
 }
