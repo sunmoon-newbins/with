@@ -18,7 +18,7 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import { initializeApp } from "firebase/app";
-import { firebaseConfig } from "../../configs/FirebaseConfig";
+// import { firebaseConfig } from "../../configs/FirebaseConfig";
 
 // 파이어 베이스 쓰려면 필요한 패키지들
 
