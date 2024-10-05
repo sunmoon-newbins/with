@@ -1,5 +1,6 @@
 package com.newbins.controller.routes;
 
+import com.newbins.dto.WriteRoute;
 import com.newbins.entity.RouteEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +29,10 @@ public class RouteController {
 
     // 루트 게시판 작성
     @PostMapping
-    public void createRoute(@RequestBody Route route){
+    public void createRoute(@RequestBody List<WriteRoute> writeRouteList){
 
-        log.info("[createRoute] : route = {}", route.toString());
-        routeService.createRoute(route);
+        log.info("[createRoute] : route = {}", writeRouteList.toString());
+        routeService.createRoute(writeRouteList);
     }
 
     // 루트 상세 보기

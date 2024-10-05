@@ -45,7 +45,8 @@
             PICTURE,
             CREATE_DATE,
             START_DATE,
-            END_DATE
+            END_DATE,
+            content
         FROM ROUTE
         WHERE ROUTE_NUM = #{routeNum}
     </select>
