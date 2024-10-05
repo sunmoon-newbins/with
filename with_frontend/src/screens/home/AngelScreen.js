@@ -9,10 +9,11 @@ import {
   FlatList,
 } from "react-native";
 
+import dummyMessages from "../../components/common/dummyMessage";
 // 1 이 챗봇
 
-// 더미 데이터
-const dummyMessages = [
+// 더미 데이터 맨처음 들어왔을 떄
+const dummyMessagesOne = [
   {
     userId: 1,
     content:
@@ -41,9 +42,16 @@ const dummyUsers = [
 ];
 
 // AngelScreen.js
-const AngelScreen = () => {
-  const [messageList, setMessageList] = useState(dummyMessages); // 더미 데이터로 초기화
+const AngelScreen = ({ route }) => {
+  const [messageList, setMessageList] = useState(dummyMessagesOne); // 더미 데이터로 초기화
   const [message, setMessage] = useState(""); // 입력 메시지 상태
+
+  useEffect(() => {
+    // route.params로 받은 주제에 따른 메시지 설정
+    if (route.params && route.params.selectedMessages) {
+      setMessageList(route.params.selectedMessages);
+    }
+  }, [route.params]);
 
   // FlatList 참조
   const flatListRef = useRef(null);

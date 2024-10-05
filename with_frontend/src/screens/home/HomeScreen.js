@@ -111,7 +111,7 @@ function HomeScreen() {
           },
         ]}
         textStyle={{ color: "black", fontSize: 16 }}
-        onPress={() => navigation.navigate("recommendScreen")}
+        onPress={() => navigation.navigate("RecommendScreen")}
       />
 
       <PostList searchQuery={searchQuery} data={postList} />
@@ -127,7 +127,7 @@ function HomeScreen() {
           borderRadius: 30, // 둥근 버튼을 만들기 위해 추가 (선택 사항)
         }}
         onPress={() => {
-          navigation.navigate("AngelScreen");
+          navigation.navigate("AngelNavigator", { screen: "AngelScreen" });
         }}
       >
         <Image
