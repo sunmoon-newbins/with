@@ -45,7 +45,7 @@ const PostList = ({ searchQuery, data }) => {
   //   return post.title?.toLowerCase().includes(searchQuery.toLowerCase());
   // });
   console.log("잘 받아오나 : ", searchQuery);
-  console.log("{PostList} data ", data);
+  console.log("{PostList} data Length : ", data.length);
 
   return (
     <FlatList
@@ -53,18 +53,23 @@ const PostList = ({ searchQuery, data }) => {
       renderItem={({ item }) => (
         <PostItem
           title={item.title}
+          type={item.state}
           author={item.author}
-          time={item.time}
-          imageUrl={item.imageUrl}
-          description={item.description}
+          time={item.createDate}
+          profileImage={item.userProfile} // 유저 이미지
+          routeImage={item.picture} // 게시글 섬네일 이미지
+          description={item.content}
           currentMember={item.currentMember}
-          maxMember={item.maxMember}
+          maxMember={item.participantCount}
           onPress={
-            () => navigation.navigate("RouteDetailScreen", { postId: item.id }) // PostDetailScreen으로 네비게이트
+            () =>
+              navigation.navigate("RouteDetailScreen", {
+                postId: item.routeNum,
+              }) // PostDetailScreen으로 네비게이트
           }
         />
       )}
-      keyExtractor={(item) => item.id}
+      keyExtractor={(item) => item.routeNum}
       contentContainerStyle={styles.listContainer}
     />
   );

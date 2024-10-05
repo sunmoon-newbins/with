@@ -8,9 +8,23 @@ import {
   ScrollView,
   Image,
   Modal,
+  Alert,
 } from "react-native";
 
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "firebase/storage";
+import { initializeApp } from "firebase/app";
+import { firebaseConfig } from "../../configs/FirebaseConfig";
+
+// 파이어 베이스 쓰려면 필요한 패키지들
+
 import { launchImageLibrary } from "react-native-image-picker";
+import * as ImagePicker from "expo-image-picker"; // expo-image-picker 라이브러리
+
 // 사용자가 기기의 이미지 라이브러리에서 사진을 선택할 수 있게 해줍니다.
 //
 
@@ -24,12 +38,16 @@ import { useRoute } from "@react-navigation/native";
 
 import MapView, { Marker } from "react-native-maps";
 import { Swipeable } from "react-native-gesture-handler"; //
+import IPConfig from "../../configs/IPConfig.json";
 
 const MainBoardWriteScreen = () => {
+  const storageApp = initializeApp(firebaseConfig); // 파이어베이스 초기화
+  const storage = getStorage(storageApp); // 파이어베이스 스토리지 인스턴스 가져오기
+
   //  상태 관리
   // 제목, 글 종류, 인원수 등의 상태를 관리
   const [title, setTitle] = useState(""); // 제목
-  const [activeTab, setActiveTab] = useState("모집"); // 글 종류
+  const [activeTab, setActiveTab] = useState(1); // 글 종류
   const [numberOfPeople, setNumberOfPeople] = useState(""); // 인원수
   const [dates, setDates] = useState({
     startDate: null,
@@ -83,7 +101,7 @@ const MainBoardWriteScreen = () => {
   // 4개를 받아서 해당 날짜에 저장.
 
   const [selectedDay, setSelectedDay] = useState(null); // 선택된 날짜 상태
-
+  const [selectedImage, setSelectedImage] = useState(null); // 선택한 이미지 저장 상태
   //  지도 보기 상태 관리
   const [mapVisible, setMapVisible] = useState(false); // 처음엔 안보이게 .
   //  선택된 계획 상태 관리
@@ -171,6 +189,35 @@ const MainBoardWriteScreen = () => {
               : plan
         )
     );
+  };
+
+  const pickImage = async () => {
+    // 카메라 롤 사용 권한 요청
+    let permissionResult =
+      await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (permissionResult.granted === false) {
+      alert("카메라 롤 사용 권한이 필요합니다.");
+      return;
+    }
+
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true, // 자르기허락하냐
+      aspect: [4, 3], // 직사각형
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      console.log(
+        "{MainBoardWriteScreen} PickImage / result.assets[0].uri",
+        result.assets[0].uri
+      );
+
+      setSelectedImage(result.assets[0].uri); // 선택한 이미지의 URI를 상태에 저장
+    } else {
+      console.log("Image picker cancelled");
+    }
   };
 
   // 나머지 컴포넌트 로직...
@@ -269,6 +316,123 @@ const MainBoardWriteScreen = () => {
     }
   };
 
+  const uploadImage = async (uri) => {
+    // 사진갖고온 uri 넣고 FormData 로 변환을 해서
+    let formData = new FormData(); //
+    formData.append("file", {
+      uri: uri,
+      name: "image.jpg",
+      type: "image/jpeg",
+    });
+
+    try {
+      const response = await fetch("YOUR_SERVER_ENDPOINT", {
+        method: "POST",
+        body: formData,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      const responseData = await response.json();
+      console.log("Image uploaded successfully:", responseData);
+      // 이 URL을  요청,, 서버에서 aws 스토리지에 저장 ??
+      return responseData.imageUrl;
+    } catch (error) {
+      console.error("Error uploading image:", error);
+    }
+  };
+
+  const handleRouteSubmit = async () => {
+    const url = IPConfig.IP + `/~~어쩌구`;
+    console.log(url);
+
+    // plans 데이터를 routeByDay 형태로 변환
+    const planByDate = plans.map((plan) => ({
+      date: plan.date, // 날짜
+      places: plan.places.map((place) => ({
+        order: place.order,
+        placeType:
+          place.placeType === 1
+            ? "나만의 장소"
+            : place.placeType === 2
+            ? "관광명소"
+            : place.placeType === 3
+            ? "숙소"
+            : "식당", // placeType에 따라 문자열 변환
+        placeName: place.placeName,
+        latitude: place.latitude,
+        longitude: place.longitude,
+        addressName: place.addressName || "", // 주소가 없을 경우 빈 문자열
+        // date: place.date, // 날짜
+        memo: place.memo || "", // 메모가 없을 경우 빈 문자열
+      })),
+    }));
+
+    const subMitData = {
+      picture: selectedImage, // 이미지
+      title, // 제목
+      content, // 상세내용
+      routeType: activeTab, // 소개 , 모집 // 소개가 1 , 모집이 2
+      participantCount: numberOfPeople, // 인원수
+      planByDate: planByDate, // 여행시작일, 여행마지막일, 장소
+    };
+
+    console.log("MainBoardWriteScreen} / submitData : 넘어가기전 ", subMitData);
+
+    try {
+      console.log(
+        "{MainBoardWriteScreen} handleRouteSubmit / subMitData : ",
+        JSON.stringify(subMitData)
+      );
+
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(subMitData), // 보냄
+      });
+      console.log("서버 응답 받음");
+
+      console.log("서버 응답 상태 코드:", response.status);
+      if (response.ok) {
+        const data = await response.json();
+        console.log("회원가입 성공:", data);
+
+        // 회원가입 성공 시 Alert 창 띄우기
+        Alert.alert(
+          "작성글 게시 성공",
+          "작성글 게시가 완료되었습니다. 홈화면으로 이동합니다.",
+          [
+            {
+              text: "확인",
+              onPress: () =>
+                navigation.reset({
+                  index: 0, // 스택에서 첫 번째 인덱스
+                  routes: [{ name: "Home" }], // Home 탭으로 이동
+                }),
+            },
+          ]
+        );
+      } else {
+        const errorData = await response.json();
+        console.error("게시글 작성 실패:", errorData);
+        Alert.alert(
+          "게시글 작성 실패",
+          "게시글 작성 실패했습니다. 다시 시도해주세요."
+        );
+      }
+    } catch (error) {
+      console.error("네트워크 오류!:", error);
+
+      Alert.alert(
+        "네트워크 오류",
+        "네트워크 오류가 발생했습니다. 다시 시도해주세요."
+      );
+    }
+  };
+
   return (
     <>
       <Modal
@@ -304,6 +468,23 @@ const MainBoardWriteScreen = () => {
       <ScrollView>
         <View style={styles.container}>
           {/* 제목 입력 필드 */}
+          <Text style={styles.label}>대표 사진</Text>
+
+          <TouchableOpacity onPress={pickImage}>
+            {/* 😀 이미지가 없을 때 기본 동그란 이미지 보여주기 */}
+            {selectedImage ? (
+              <Image
+                source={{ uri: selectedImage }}
+                style={styles.profileImage}
+              />
+            ) : (
+              <Image
+                source={require("../../../assets/defaultProfile.png")}
+                style={styles.profileImage}
+              />
+            )}
+          </TouchableOpacity>
+
           <InputTextField
             label="제목"
             placeholder="제목을 입력하시오."
@@ -327,6 +508,7 @@ const MainBoardWriteScreen = () => {
             placeholder="여행에 대해 입력해주세요"
             value={content}
             onChangeText={setContent}
+            placeholderTextColor="#9094B8"
           />
 
           {/*  글 종류 선택 및 인원수 입력 */}
@@ -339,13 +521,13 @@ const MainBoardWriteScreen = () => {
             <View style={styles.tabContainer}>
               <ThreeTabButton
                 title="소개"
-                isActive={activeTab === "소개"}
-                onPress={() => setActiveTab("소개")}
+                isActive={activeTab === 1}
+                onPress={() => setActiveTab(1)}
               />
               <ThreeTabButton
                 title="모집"
-                isActive={activeTab === "모집"}
-                onPress={() => setActiveTab("모집")}
+                isActive={activeTab === 2}
+                onPress={() => setActiveTab(2)}
               />
             </View>
 
@@ -562,10 +744,7 @@ const MainBoardWriteScreen = () => {
           <LongButton
             title="작성 완료"
             onPress={() => {
-              //
-              // 백엔드로 넘겨주는 ,, 함수 작성하고
-              // 값들 정리해서 넘겨주기
-              //
+              handleRouteSubmit();
 
               navigation.reset({
                 index: 0, // 스택에서 첫 번째 인덱스
@@ -818,6 +997,8 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
     textAlignVertical: "top", // TextInput을 상단 정렬
+    fontSize: 16,
+    // color: "#0B1527",
   },
   modalButtons: {
     flexDirection: "row",
@@ -867,6 +1048,13 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     textAlignVertical: "top",
+  },
+  profileImage: {
+    width: 200, // 😀 동그란 프로필 이미지
+    height: 150,
+    borderRadius: 10,
+    resizeMode: "contain",
+    marginBottom: 20,
   },
 });
 

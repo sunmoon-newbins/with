@@ -1,11 +1,13 @@
 import React from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
-
+import useStore from "../user/useStore";
 // 메시지 아이템 컴포넌트
-const MessageItem = ({ messageData }) => {
+const MessageItem = (params) => {
   // messageData 객체에서 필요한 데이터 추출
-  const { isMyMessage, profileImage, nickname, time, message } = messageData;
-
+  const messageData = params.messageData;
+  const userInfo = params.userInfo;
+  const userId = useStore((state) => state.userId);
+  const isMyMessage = userId == userInfo.userId;
 
   // console.log("메시지 렌더링", messageData);
 
@@ -13,7 +15,10 @@ const MessageItem = ({ messageData }) => {
   const renderProfileImage = () => {
     if (!isMyMessage) {
       return (
-        <Image source={{ uri: profileImage }} style={styles.profileImage} />
+        <Image
+          source={{ uri: "https://randomuser.me/api/portraits/men/3.jpg" }}
+          style={styles.profileImage}
+        />
       );
     }
     return null;
@@ -22,7 +27,7 @@ const MessageItem = ({ messageData }) => {
   // 닉네임 렌더링 함수
   const renderNickname = () => {
     if (!isMyMessage) {
-      return <Text style={styles.nickname}>{nickname}</Text>;
+      return <Text style={styles.nickname}>{userInfo.name}</Text>;
     }
     return null;
   };
@@ -33,14 +38,14 @@ const MessageItem = ({ messageData }) => {
       {isMyMessage ? (
         // 내 메시지일 경우: 시간 먼저, 메시지 박스 나중에
         <>
-          <Text style={styles.time}>{time}</Text>
-          <MessageBox isMyMessage={isMyMessage} message={message} />
+          <Text style={styles.time}>{messageData.sendDate}</Text>
+          <MessageBox isMyMessage={isMyMessage} message={messageData.content} />
         </>
       ) : (
         // 상대방 메시지일 경우: 메시지 박스 먼저, 시간 나중에
         <>
-          <MessageBox isMyMessage={isMyMessage} message={message} />
-          <Text style={styles.time}>{time}</Text>
+          <MessageBox isMyMessage={isMyMessage} message={messageData.content} />
+          <Text style={styles.time}>{messageData.sendDate}</Text>
         </>
       )}
     </View>
@@ -105,6 +110,7 @@ const styles = StyleSheet.create({
   messageContent: {
     maxWidth: "75%", // 메시지 박스의 최대 너비 설정
     marginTop: 20, // 프로필 이미지보다 약간 아래에 위치하도록 설정
+    alignItems: "flex-start",
   },
   nickname: {
     fontSize: 14,
@@ -114,10 +120,13 @@ const styles = StyleSheet.create({
   messageBox: {
     padding: 10,
     borderRadius: 10,
+    maxWidth: "90%",
+    // overflow: "hidden",
   },
   myMessageBox: {
     backgroundColor: "#5775CD",
     alignSelf: "flex-end",
+    maxWidth: "80%",
   },
   otherMessageBox: {
     backgroundColor: "#fff",
@@ -125,6 +134,7 @@ const styles = StyleSheet.create({
   },
   messageText: {
     fontSize: 16, // 모든 메시지의 기본 텍스트 크기
+    flexWrap: "wrap",
   },
   myMessageText: {
     color: "#fff", // 내가 보낸 메시지의 텍스트 색상

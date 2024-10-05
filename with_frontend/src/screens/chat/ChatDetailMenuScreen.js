@@ -8,32 +8,8 @@ import {
   Modal,
 } from "react-native";
 
-const ChatDetailMenuScreen = ({ navigation }) => {
+const ChatDetailMenuScreen = ({ navigation, users }) => {
   // 예시 사용자 데이터
-
-  const users = [
-    // 해당 채팅방의 ID 에 맞는 사용자들을 불러와야함,,
-    {
-      id: 1,
-      name: "빌게이츠",
-      avatar: "https://randomuser.me/api/portraits/men/1.jpg",
-    },
-    {
-      id: 2,
-      name: "해리포터",
-      avatar: "https://randomuser.me/api/portraits/men/2.jpg",
-    },
-    {
-      id: 3,
-      name: "일론머스크",
-      avatar: "https://randomuser.me/api/portraits/men/3.jpg",
-    },
-    {
-      id: 4,
-      name: "탄지로",
-      avatar: "https://randomuser.me/api/portraits/men/4.jpg",
-    },
-  ];
 
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -60,18 +36,32 @@ const ChatDetailMenuScreen = ({ navigation }) => {
       </View>
 
       {/* 사용자 목록 */}
-      {users.map((user) => (
+      {users?.map((user) => (
         <TouchableOpacity
-          key={user.id}
+          key={user.userId}
           style={styles.userContainer}
-          onPress={() =>
-            navigation.navigate(
-              "유저아이디 갖고서!! 내정보 네비게이션을 갖다 붙이기  ㅎㅎㅎ ",
-              { userId: user.id }
-            )
-          } // 새로운 화면으로 navigate 유저 아이디갖고서는 ,,
+          onPress={() => {
+            console.log("{ChatDetail} : ", user);
+            navigation.navigate("MyInfoNavigator", { user }); // MyInfoScreen으로 navigate하고, user를 params로 전달
+          }} // 새로운 화면으로 navigate 유저 아이디갖고서는 ,,
         >
-          <Image source={{ uri: user.avatar }} style={styles.avatar} />
+          <View>
+            {user.profile ? (
+              <Image
+                resizeMode="contain"
+                source={{
+                  uri: user.profile, // image 가 url 이기떄문에
+                }}
+                style={styles.userImage}
+              />
+            ) : (
+              <Image
+                source={require("../../../assets/defaultProfile.png")}
+                style={styles.userImage}
+              />
+            )}
+          </View>
+
           <Text style={styles.userName}>{user.name}</Text>
         </TouchableOpacity>
       ))}
@@ -122,6 +112,13 @@ const ChatDetailMenuScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  userImage: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    borderWidth: 1,
+    marginRight: 10,
+  },
   // 컨테이너 스타일
   container: {
     // flex: 1,

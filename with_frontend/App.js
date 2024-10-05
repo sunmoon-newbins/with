@@ -11,8 +11,16 @@ export default function App() {
   const isLoggedIn = useStore((state) => state.isLoggedIn);
   const rememberMe = useStore((state) => state.rememberMe);
   const id = useStore((state) => state.id);
+  const userId = useStore((state) => state.userId);
 
-  console.log("app로그인", isLoggedIn, "자동로그인", rememberMe, "아이디", id);
+  console.log(
+    "{App} isLoggedIn : ",
+    isLoggedIn,
+    ", rememberMe :",
+    rememberMe,
+    ", userId :",
+    userId
+  );
   return (
     <NavigationContainer>
       {/* 여기 주석풀면 한번로그인하면 자동로그인. */}
@@ -24,9 +32,10 @@ export default function App() {
       )}
 
       {/* <MainStackNavigator /> */}
+      {/* <BottomTabNavigator /> */}
       {/* 개발중 */}
 
-      <Toast ref={(ref) => Toast.setRef(ref)} />
+      {/* <Toast ref={(ref) => Toast.setRef(ref)} /> */}
     </NavigationContainer>
   );
 }

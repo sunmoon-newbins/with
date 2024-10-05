@@ -11,7 +11,11 @@ import WelcomeMessage from "../../components/LoginScreen/WelcomeMessage";
 import LoginForm from "../../components/LoginScreen/LoginForm";
 import LanguageButtons from "../../components/LoginScreen/LanguageButtons";
 
+import { useTranslation } from "react-i18next";
+
 const LoginScreen = () => {
+  const { t } = useTranslation();
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.headerContainer}>
@@ -20,7 +24,7 @@ const LoginScreen = () => {
           source={require("../../../assets/back.png")}
           style={styles.headerImage}
         >
-          <Text style={styles.headerText}>로그인</Text>
+          <Text style={styles.headerText}>{t("로그인")}</Text>
         </ImageBackground>
       </View>
       <View style={styles.contentContainer}>

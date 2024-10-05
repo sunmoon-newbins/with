@@ -4,20 +4,65 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import ChatDetailScreen from "../screens/chat/ChatDetailScreen";
 
 import ChatDetailMenuScreen from "../screens/chat/ChatDetailMenuScreen"; // 드로어 메뉴 화면
+import RouteDetailScreen from "../screens/home/RouteDetailScreen";
+import MyInfoScreen from "../screens/myInfo/MyInfoScreen";
+import MyNotification from "../screens/myInfo/MyNotification";
+import MyReview from "../screens/myInfo/MyReview";
+import MyRouteBoardScreen from "../screens/myInfo/MyRouteBoardScreen";
+import MyInfoNavigator from "./BottomStackNavigations/MyInfoNavigator";
 
 const Drawer = createDrawerNavigator();
 
-const ChatDetailNavigator = () => {
+const ChatDetailNavigator = ({ route }) => {
+  const { users } = route.params; // ChatDetailScreen에서 받은 users 데이터를 가져옴
   return (
     <Drawer.Navigator
       initialRouteName="ChatDetailScreen"
       screenOptions={{ drawerPosition: "right" }} // 드로어가 오른쪽에 위치하도록 설정
-      drawerContent={(props) => <ChatDetailMenuScreen {...props} />} // 드로어 메뉴 설정
+      drawerContent={(props) => (
+        <ChatDetailMenuScreen {...props} users={users} />
+      )} // 드로어 메뉴 설정
     >
       <Drawer.Screen
         name="ChatDetailScreen"
         component={ChatDetailScreen}
         options={{ headerShown: true }} // 드로어 화면에서는 자체적으로 헤더 사용
+      />
+
+      <Drawer.Screen
+        name="RouteDetailScreen"
+        component={RouteDetailScreen}
+        options={{ headerShown: false }} // 드로어 화면에서는 자체적으로 헤더 사용
+      />
+
+      {/* <Drawer.Screen
+        name="MyInfoScreen"
+        component={MyInfoScreen}
+        options={{ headerShown: false }} // 드로어 화면에서는 자체적으로 헤더 사용
+      />
+
+      <Drawer.Screen
+        name="MyNotification"
+        component={MyNotification}
+        options={{ headerShown: false }} // 드로어 화면에서는 자체적으로 헤더 사용
+      />
+
+      <Drawer.Screen
+        name="MyReview"
+        component={MyReview}
+        options={{ headerShown: false }} // 드로어 화면에서는 자체적으로 헤더 사용
+      />
+
+      <Drawer.Screen
+        name="MyRouteBoardScreen"
+        component={MyRouteBoardScreen}
+        options={{ headerShown: false }} // 드로어 화면에서는 자체적으로 헤더 사용
+      /> */}
+
+      <Drawer.Screen
+        name="MyInfoNavigator"
+        component={MyInfoNavigator}
+        options={{ headerShown: false }} // 드로어 화면에서는 자체적으로 헤더 사용
       />
     </Drawer.Navigator>
   );

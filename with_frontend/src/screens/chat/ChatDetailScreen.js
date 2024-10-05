@@ -1,6 +1,6 @@
 // src/screens/ChatDetailScreen.js
 
-import React, { useLayoutEffect, useEffect } from "react";
+import React, { useLayoutEffect, useEffect, useState } from "react";
 import {
   View,
   Image,
@@ -11,103 +11,69 @@ import {
   Platform,
 } from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
+import { io } from "socket.io-client";
 
 import MessageList from "../../components/chat/MessageList"; // MessageList 컴포넌트 가져오기
 import ChatTextInput from "../../components/chat/ChatTextInput"; // ChatTextInput 컴포넌트 가져오기
+import IPConfig from "../../configs/IPConfig.json";
+
+import useStore from "../../components/user/useStore";
 
 const dummyImage = require("../../../assets/BoarderDummy.png");
 
-const messages = [
-  {
-    id: "1",
-    nickname: "유재석",
-    message: "저도요!",
-    time: "12:05",
-    isMyMessage: false,
-    profileImage: "https://via.placeholder.com/150",
-  },
-  {
-    id: "2",
-    nickname: "나",
-    message: "같이 여행가고싶어요우",
-    time: "12:05",
-    isMyMessage: true,
-    profileImage: "https://via.placeholder.com/150",
-  },
-  {
-    id: "3",
-    nickname: "유재석",
-    message: "좋은 생각이네요!",
-    time: "12:06",
-    isMyMessage: false,
-    profileImage: "https://via.placeholder.com/150",
-  },
-  // 추가 메시지 더미 데이터
-  {
-    id: "4",
-    nickname: "노홍철",
-    message: "그러면 어디서 ",
-    time: "12:06",
-    isMyMessage: false,
-    profileImage: "https://via.placeholder.com/150",
-  },
-  {
-    id: "5",
-    nickname: "노홍철",
-    message: "만나는게 좋을까요?",
-    time: "12:07",
-    isMyMessage: false,
-    profileImage: "https://via.placeholder.com/150",
-  },
-  {
-    id: "6",
-    nickname: "노홍철",
-    message: "하하하",
-    time: "12:08",
-    isMyMessage: false,
-    profileImage: "https://via.placeholder.com/150",
-  },
-  {
-    id: "7",
-    nickname: "박명수",
-    message: "음 우리집 앞에서 만나",
-    time: "12:09",
-    isMyMessage: false,
-    profileImage: "https://via.placeholder.com/150",
-  },
-  {
-    id: "8",
-    nickname: "박명수",
-    message: "알았어 ?!",
-    time: "12:09",
-    isMyMessage: false,
-    profileImage: "https://via.placeholder.com/150",
-  },
-  {
-    id: "9",
-    nickname: "박명수",
-    message: "몰랐어 ?!",
-    time: "12:09",
-    isMyMessage: false,
-    profileImage: "https://via.placeholder.com/150",
-  },
-];
-
 const ChatDetailScreen = () => {
+  const [socket, setSocket] = useState();
+  const userId = useStore((state) => state.userId);
+
   const route = useRoute();
   const navigation = useNavigation();
   console.log(
     "{ChatDetailScreen} route.params : ",
     JSON.stringify(route.params)
   );
-  const { users, messages, title, currentUserCount, picture, routeId } =
-    route.params; // Id는 필요시 백엔드 통신에 사용
+  const {
+    users,
+    messages,
+    title,
+    currentUserCount,
+    picture,
+    routeId,
+    chattingId,
 
-  console.log("더미데이터 ", messages);
+    startDate,
+    endDate,
+    writerName,
+
+    // 시작 , 종료, 작가
+  } = route.params; // Id는 필요시 백엔드 통신에 사용
+  const [messageList, setMessageList] = useState(messages);
+
+  //  방장 이름
+  //  시작일 - 종료일
+
   // useLayoutEffect를 사용하여 네비게이션 옵션을 설정
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerTitle: () => <Text style={styles.headerText}>{title} 4</Text>, // headerTitle을 함수로 설정하여 <Text> 컴포넌트 사용
+      headerTitle: () => (
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Text style={styles.headerText}>{title}</Text>
+          <Text
+            style={[
+              styles.headerText,
+              { paddingLeft: 10, display: "Block", marginTop: 4 },
+            ]}
+          >
+            {currentUserCount}
+          </Text>
+        </View>
+      ), // headerTitle을 함수로 설정하여 <Text> 컴포넌트 사용
 
       headerLeft: () => (
         <TouchableOpacity
@@ -122,7 +88,16 @@ const ChatDetailScreen = () => {
       ),
 
       headerRight: () => (
-        <TouchableOpacity onPress={() => navigation.openDrawer()}>
+        <TouchableOpacity
+          onPress={() => {
+            // users 값을 route.params로 설정 후 드로어 열기
+            console.log("{ChatDetailScreen}, headerRight / users :", users);
+            navigation.navigate("ChatDetailNavigator", {
+              users: users, // users 데이터를 route.params로 넘김
+            });
+            navigation.openDrawer(); // 드로어 열기
+          }}
+        >
           <Image
             source={require("../../../assets/chatMenu.png")}
             style={styles.headerIcon}
@@ -132,40 +107,41 @@ const ChatDetailScreen = () => {
     });
   }, [navigation, title]); // 네비게이션이나 제목이 바뀔 때 마다 헤더 타이틀이 바뀜. 저 타이틀로 , 그러니까 목록에서 선택한 제목이 헤더로 딸려옴
 
-  // 여기서부터
   useEffect(() => {
-    const parentNavigation = navigation.getParent();
-    // console.log(parentNavigation);
+    const newSocket = new WebSocket(
+      IPConfig.IP + `/users/${userId}/chatting/${chattingId}/ws`
+    );
 
-    if (parentNavigation) {
-      parentNavigation.setOptions({
-        tabBarStyle: { display: "none" },
-      });
-    }
+    newSocket.onmessage = function (event) {
+      // JSON 문자열을 객체로 변환
+      const parsedData = JSON.parse(event.data);
 
-    return () => {
-      if (parentNavigation) {
-        parentNavigation.setOptions({
-          tabBarStyle: { display: "flex" },
-        });
-      }
+      const newMessage = {
+        // 새로운 메시지
+        content: parsedData.content,
+        sendDate: parsedData.sendDate,
+        unreadCount: parsedData.unreadCount,
+        userId: parsedData.userId,
+      };
+
+      setMessageList((prevMessageList) => [...prevMessageList, newMessage]); // 원래 메시지 리스트에 추가한다
     };
-  }, [navigation]);
-  // 여기까지  바텀탭안보이게하려함.
+    setSocket(newSocket); // useState 웹소켓 넣고
+  }, []);
+
+  const sendMessage = async (message) => {
+    try {
+      if (socket) {
+        socket.send(message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   // 새로운 메시지 추가 함수
   const addMessage = (newMessage) => {
-    const newMessageObject = {
-      id: (messages.length + 1).toString(),
-      nickname: "나",
-      message: newMessage,
-      time: new Date().toLocaleTimeString(),
-      isMyMessage: true,
-      profileImage: "https://via.placeholder.com/150",
-    };
-    // setMessages([...messages, newMessageObject]); // 메시지 리스트에 새 메시지 추가
-
-    // 그냥 백엔드에 지금 로그인한 아이디와 이름, time 갖고와서 뿌려주기
+    sendMessage(newMessage);
   };
 
   return (
@@ -177,7 +153,11 @@ const ChatDetailScreen = () => {
       {/* 게시판 상세보기 */}
 
       {/* 상세 게시글로 가기 */}
-      <TouchableOpacity onPress={() => {}}>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate("RouteDetailScreen");
+        }}
+      >
         <View
           style={{
             marginTop: 10,
@@ -193,17 +173,27 @@ const ChatDetailScreen = () => {
             borderWidth: 1,
           }}
         >
-          <Image
-            source={dummyImage}
+          <View
             style={{
-              width: 70,
-              height: 50,
-              resizeMode: "cover", // 이미지를 가득 채움
-              borderRadius: 5, // 이미지를 둥글게
-              marginRight: 10, // 이미지와 텍스트 사이 간격
-              paddingVertical: 10,
+              width: "20%",
+              height: "90%",
+              marginRight: 10,
+              backgroundColor: "lightgray",
+              alignItems: "center", // 가로
+              justifyContent: "center",
             }}
-          />
+          >
+            {picture ? (
+              <Image
+                source={{ uri: picture }} // imageUrl이 없으면 로컬 이미지 사용
+                style={{ width: "100%", height: "100%" }}
+              />
+            ) : (
+              <Text style={{ fontSize: 6, color: "gray" }}>
+                이미지가 없습니다.
+              </Text>
+            )}
+          </View>
 
           <View style={{ flex: 1 }}>
             <Text style={{ fontWeight: "bold" }}>게시판 상세보기</Text>
@@ -212,15 +202,18 @@ const ChatDetailScreen = () => {
             <View
               style={{ flexDirection: "row", justifyContent: "space-between" }}
             >
-              <Text style={{ opacity: 0.7 }}>작성자 젬마</Text>
-              <Text style={{ opacity: 0.7 }}>09.24 - 09.26</Text>
+              <Text style={{ opacity: 0.7 }}>작성자{writerName}</Text>
+              {/* roo */}
+              <Text style={{ opacity: 0.7 }}>
+                {startDate} - {endDate}
+              </Text>
             </View>
           </View>
         </View>
       </TouchableOpacity>
 
       <View style={styles.messageListContainer}>
-        <MessageList messages={messages} />
+        <MessageList messages={messageList} users={users} />
       </View>
       <View style={styles.chatInputContainer}>
         <ChatTextInput onSendMessage={addMessage} />
