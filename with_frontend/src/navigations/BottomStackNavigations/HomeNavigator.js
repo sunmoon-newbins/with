@@ -5,7 +5,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import HomeScreen from "../../screens/home/HomeScreen";
 import BoardSearchScreen from "../../screens/home/BoardSearchScreen";
 import RouteDetailScreen from "../../screens/home/RouteDetailScreen";
-import recommendScreen from "../../screens/home/recommendScreen";
+import AngelScreen from "../../screens/home/AngelScreen";
 
 const Stack = createStackNavigator();
 
@@ -29,9 +29,9 @@ const HomeNavigator = () => {
       />
 
       <Stack.Screen
-        name="recommendScreen"
-        component={recommendScreen}
-        options={{ title: "추천 어플" }} // 루트 게시판 상세화면
+        name="AngelScreen"
+        component={AngelScreen}
+        options={{ title: "안젤라 상담소" }} // 루트 게시판 상세화면
       />
     </Stack.Navigator>
   );
