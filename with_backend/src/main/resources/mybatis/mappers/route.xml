@@ -45,31 +45,41 @@
             PICTURE,
             CREATE_DATE,
             START_DATE,
-            END_DATE
+            END_DATE,
+            content
         FROM ROUTE
         WHERE ROUTE_NUM = #{routeNum}
     </select>
 
     <!-- 조건부 조회 및 정렬 처리 -->
-    <select id="getRoutesBy" resultType="routeEntity">
+    <select id="getRoutes" parameterType="map" resultType="routeEntity">
         SELECT
-        ROUTE_NUM, USER_NUM, TITLE, PARTICIPANT_COUNT, STATE, PICTURE, CREATE_DATE, START_DATE, END_DATE
-        FROM ROUTE
-        WHERE STATE = #{state}
-        <!-- 정렬 조건 처리 -->
+            R.ROUTE_NUM,
+            U.NAME,
+            U.PROFILE,
+            R.TITLE,
+            R.STATE,
+            R.PARTICIPANT_COUNT,
+            (
+                SELECT COUNT(CU.USER_NUM)
+                FROM CHATTING_USER CU
+                WHERE CHATTING_NUM = (
+                    SELECT CHATTING_NUM
+                    FROM CHATTING C
+                    WHERE C.ROUTE_NUM = R.ROUTE_NUM
+                )
+            ) AS CURRENT_USER_COUNT,
+            R.PICTURE,
+            R.CREATE_DATE,
+            R.START_DATE,
+            R.END_DATE,
+            R.CONTENT
+        FROM ROUTE R
+        LEFT JOIN USERS U ON (R.USER_NUM = U.USER_NUM)
         <choose>
-            <when test="sortType == 'date'">
-                ORDER BY CREATE_DATE DESC
+            <when test="state != 0"> -- 소개
+                WHERE STATE = #{state}
             </when>
-            <when test="sortType == 'participantsDesc'">
-                ORDER BY PARTICIPANT_COUNT DESC
-            </when>
-            <when test="sortType == 'participantsAsc'">
-                ORDER BY PARTICIPANT_COUNT ASC
-            </when>
-            <otherwise>
-                ORDER BY CREATE_DATE DESC
-            </otherwise>
         </choose>
     </select>
 

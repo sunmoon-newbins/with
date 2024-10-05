@@ -21,6 +21,7 @@ public class User implements Convertible<UsersEntity, User> {
     private String nickname;
     private String language;
     private Date createDate;
+    private double avgDalant;
 
     @Override
     public User toDTO(UsersEntity entity) {
@@ -34,6 +35,7 @@ public class User implements Convertible<UsersEntity, User> {
                 .nickname(entity.getNickname())
                 .language(entity.getLanguages())
                 .createDate(entity.getCreate_date())
+                .avgDalant(entity.getAvg_dalant())
                 .build();
     }
 }

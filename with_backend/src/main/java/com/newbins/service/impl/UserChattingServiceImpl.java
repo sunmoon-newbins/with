@@ -17,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.socket.TextMessage;
 
 import java.math.BigInteger;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -61,6 +63,8 @@ public class UserChattingServiceImpl implements UserChattingService {
     public Chatting getChattingRoomInfo(String chattingId, String userId) {
         List<Message> messageList = new ArrayList<>();
         List<User> userList = new ArrayList<>();
+        Map<String, Object> writerInfo = new HashMap<>();
+        Chatting chatting = new Chatting();
         try{
             List<MessageEntity> messageEntities = chattingMapper.getMessages(chattingId, userId);
             log.info("[getChattingRoomInfo] successful getMessages, messageEntities = {}", messageEntities);
@@ -76,10 +80,17 @@ public class UserChattingServiceImpl implements UserChattingService {
                 userList.add(new User().toDTO(usersEntity));
             }
 
+            writerInfo = chattingMapper.getChattingWriterInfo(chattingId);
+            log.info("[getChattingRoomInfo] successful getChattingWriterInfo, writerInfo = {}", writerInfo);
         } catch(Exception e){
             log.error("[getChattingRoomInfo] failed", e);
         }
-        return new Chatting().builder()
+        return chatting.builder()
+                .routeId((String) writerInfo.get("ROUTE_NUM"))
+                .writerName((String) writerInfo.get("NAME"))
+                .picture((String) writerInfo.get("PICTURE"))
+                .startDate(((Timestamp) writerInfo.get("START_DATE")).toLocalDateTime())  // 변환
+                .endDate(((Timestamp) writerInfo.get("END_DATE")).toLocalDateTime())
                 .messages(messageList)
                 .users(userList)
                 .build();
