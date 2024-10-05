@@ -11,13 +11,6 @@ import {
   Alert,
 } from "react-native";
 
-import {
-  getStorage,
-  ref,
-  uploadBytesResumable,
-  getDownloadURL,
-} from "firebase/storage";
-import { initializeApp } from "firebase/app";
 // import { firebaseConfig } from "../../configs/FirebaseConfig";
 
 // 파이어 베이스 쓰려면 필요한 패키지들
@@ -41,7 +34,6 @@ import { Swipeable } from "react-native-gesture-handler"; //
 import IPConfig from "../../configs/IPConfig.json";
 
 const MainBoardWriteScreen = () => {
-
   //  상태 관리
   // 제목, 글 종류, 인원수 등의 상태를 관리
   const [title, setTitle] = useState(""); // 제목

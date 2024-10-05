@@ -23,21 +23,32 @@ function HeartBoardScreen() {
       // 여기서는 더미 데이터를 사용합니다.
       const dummyLikedPosts = [
         {
-          id: "1",
-          title: "바다 여행 루트 추천 해요",
-          author: "이사벨라",
+          id: "10",
+          title: "3박 4일동안 나만 아는 부산 핫플레이스",
+          author: "김정동",
           time: "8m ago",
-          imageUrl: "", // 로컬 이미지로 대체 가능
-          description: "안녕하세요 먼 곳에서 오느라 고생많으셨어요. 제가 소...",
+          imageUrl:
+            "https://search.pstatic.net/sunny/?src=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1723942699823-956bb643857d%3Ffm%3Djpg%26q%3D60%26w%3D3000%26ixlib%3Drb-4.0.3%26ixid%3DM3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDE4fHx8ZW58MHx8fHx8&type=sc960_832", // 로컬 이미지로 대체 가능
+          description: "부산 하면 바다, 바다하면 해운대와 서면 같이 서핑...",
         },
         {
-          id: "2",
-          title: "게임 추천 루트 소개합니다",
-          author: "이사벨라",
+          id: "11",
+          title: "4일 동안 부산에서 배를 타고 떠나는 여행",
+          author: "로라",
           time: "15m ago",
-          imageUrl: "", // 로컬 이미지로 대체 가능
+          imageUrl:
+            "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyNDAzMTlfMjgw%2FMDAxNzEwNzkxMTIxNjQ1.KCXGHo1y0il0ejAm8MAyyiCtddwrr2LMlzzYleZuQAUg.TKp9cdARlt91ySzxxLhxaxQxaUGWZ4LHoPN3ME03HlEg.JPEG%2FIMG_4430.JPG&type=l340_165", // 로컬 이미지로 대체 가능
           description:
-            "안녕하세요 게임을 좋아하시는 분들을 위해 제가 추천하는...",
+            "나는 멋진 부산에서 15년 동안 살았습니다. 배를 타고 부산을 즐겨보자...",
+        },
+        {
+          id: "12",
+          title: "뉴진스코드 in 부산 여행 코스",
+          author: "킴민지",
+          time: "15m ago",
+          imageUrl:
+            "https://search.pstatic.net/common/?src=http%3A%2F%2Fpost.phinf.naver.net%2FMjAyMzExMDNfMjg5%2FMDAxNjk4OTkyNjE1ODcx.vJGNyyErGwt9FWwmrMXP1lSNfiM-X92_M8-GkC8d7wIg.Zs0ilSHgV3AK5BHIN6dkifFfrKhN-LaGgk4YMqMPr28g.PNG%2FIGC8czNmthjFAOvtGO1dmSZB4CfM.jpg&type=a340", // 로컬 이미지로 대체 가능
+          description: "뉴진스가 갔던곳 가보고 싶으신분 컴컴...",
         },
       ];
       setLikedPosts(dummyLikedPosts); // 더미 데이터를 상태에 저장
