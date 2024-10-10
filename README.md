@@ -83,53 +83,60 @@ WYD 세계 청년대회 참가자들을 위한 여행 소통 및 도우미 앱
 ## with UI 
 
 ### 시작페이지 
-<img src="https://github.com/user-attachments/assets/efb86721-3563-4ce2-935b-e3ba36cd5639" width="30%" height="30%">
-<img src="https://github.com/user-attachments/assets/a8798bb7-4de2-4b01-80b2-aab430165d1e" width="30%" height="30%">
-<img src="https://github.com/user-attachments/assets/c8530eb1-4848-4893-a7a7-80218d53b0bb" width="30%" height="30%">
+<img src="https://github.com/user-attachments/assets/efb86721-3563-4ce2-935b-e3ba36cd5639"  width=300px height=650px>
+<img src="https://github.com/user-attachments/assets/1c087c5c-5463-412b-aeaf-0a9e5956db69"  width=300px height=650px>
+<img src="https://github.com/user-attachments/assets/7639d540-8978-4de7-8019-e9610d174925"  width=300px height=650px>
+
+
 
 
 
 ### 메인 홈페이지
-<img src="https://github.com/user-attachments/assets/6f71e175-fd7f-4594-a90b-e8f55fd1c307" width="30%" height="30%">
-<img src="https://github.com/user-attachments/assets/452bfc14-c989-4396-aa34-b4b469b9c1bc" width="30%" height="30%">  
-<img src="https://github.com/user-attachments/assets/09685072-405f-44dd-8656-b96ebeda6e09" width="30%" height="30%">  
+<img src="https://github.com/user-attachments/assets/dc77c1b8-5337-49e0-9132-fa67b419c853" width=300px height=650px>
+<img src="https://github.com/user-attachments/assets/452bfc14-c989-4396-aa34-b4b469b9c1bc" width=300px height=650px>  
+<img src="https://github.com/user-attachments/assets/09685072-405f-44dd-8656-b96ebeda6e09" width=300px height=650px>  
 
 
 
-<img src="https://github.com/user-attachments/assets/426aed4d-30df-4db8-9bfa-3e30da7465a0" width="30%" height="30%">  
-<img src="https://github.com/user-attachments/assets/689d4741-09a7-4e7c-aba7-2d510620ff82" width="30%" height="30%">  
+<img src="https://github.com/user-attachments/assets/a5210d50-ca37-4aeb-a68d-d418923ced33" width=300px height=650px>  
+<img src="https://github.com/user-attachments/assets/689d4741-09a7-4e7c-aba7-2d510620ff82" width=300px height=650px>  
 
 
 
 
 ### 챗봇
-<img src="https://github.com/user-attachments/assets/21af69f2-20fc-4f41-847d-47f37cc703f6" width="30%" height="30%">
-<img src="https://github.com/user-attachments/assets/0b5590b6-028e-4043-9915-248ffa9409ef" width="30%" height="30%">  
+<img src="https://github.com/user-attachments/assets/21af69f2-20fc-4f41-847d-47f37cc703f6" width=300px height=650px>
+<img src="https://github.com/user-attachments/assets/0b5590b6-028e-4043-9915-248ffa9409ef"  width=300px height=650px>  
 
 
 
 
 
 ### 좋아요 페이지
-<img src="https://github.com/user-attachments/assets/e306d541-2c02-4a31-8567-8efe4bcdc645" width="30%" height="30%">  
+<img src="https://github.com/user-attachments/assets/21fa4429-c6d1-44fe-8357-9e15cf67e061" width=300px height=650px>  
+
 
 
 
 
 ### 여행 일정 게시글 작성 페이지
-<img src="https://github.com/user-attachments/assets/910e3bb9-4ae6-4ad7-8304-c476514ed1f1" width="30%" height="30%">    
-<img src="https://github.com/user-attachments/assets/8a48945b-d744-46d5-9e69-f82fbc883ede" width="30%" height="30%">   
-<img src="https://github.com/user-attachments/assets/a1be2ea7-e6fb-4306-b23f-308caa2bc7ef" width="30%" height="30%">  
+<img src="https://github.com/user-attachments/assets/910e3bb9-4ae6-4ad7-8304-c476514ed1f1" width=300px height=650px>    
+<img src="https://github.com/user-attachments/assets/8a48945b-d744-46d5-9e69-f82fbc883ede" width=300px height=650px>   
+<img src="https://github.com/user-attachments/assets/96e24658-e61b-4fbf-9bb7-677c4497c3ac" width=300px height=650px>  
 
 
 
-<img src="https://github.com/user-attachments/assets/0d991e55-3d9f-4e07-879e-12bb2e1df30d" width="30%" height="30%">  
-<img src="https://github.com/user-attachments/assets/42810845-0493-4bc7-b82a-3002cb84dbf3" width="30%" height="30%">  
+
+<img src="https://github.com/user-attachments/assets/0d991e55-3d9f-4e07-879e-12bb2e1df30d" width=300px height=650px>  
+<img src="https://github.com/user-attachments/assets/5d783448-d5f8-423f-ae01-fbb86d136ba6" width=300px height=650px>
 
 
 
-<img src="https://github.com/user-attachments/assets/00f97760-15b4-45fb-8d3f-16851ea5e18f" width="30%" height="30%">   
-<img src="https://github.com/user-attachments/assets/bc94002e-109c-4c70-8a29-58340cd04ddc" width="30%" height="30%">   
+
+
+
+<img src="https://github.com/user-attachments/assets/00f97760-15b4-45fb-8d3f-16851ea5e18f" width=300px height=650px>   
+<img src="https://github.com/user-attachments/assets/bc94002e-109c-4c70-8a29-58340cd04ddc" width=300px height=650px>   
 
 
 
@@ -138,19 +145,19 @@ WYD 세계 청년대회 참가자들을 위한 여행 소통 및 도우미 앱
 
 ### 채팅 페이지
 
-<img src="https://github.com/user-attachments/assets/2ac99289-ef0d-4abb-b42c-7e8b979c5323" width="30%" height="30%"> 
-<img src="https://github.com/user-attachments/assets/cf5ac8f5-c56b-46ac-ad14-e868af949fa5" width="30%" height="30%">  
-<img src="https://github.com/user-attachments/assets/0c529e36-49fb-4e20-8e22-e1b1f3538c58" width="30%" height="30%">
+<img src="https://github.com/user-attachments/assets/2ac99289-ef0d-4abb-b42c-7e8b979c5323"  width=300px height=650px> 
+<img src="https://github.com/user-attachments/assets/cf5ac8f5-c56b-46ac-ad14-e868af949fa5"  width=300px height=650px>  
+<img src="https://github.com/user-attachments/assets/0c529e36-49fb-4e20-8e22-e1b1f3538c58"  width=300px height=650px>
 
 
 ### 내정보 페이지
-<img src="https://github.com/user-attachments/assets/89c52bdf-3230-4876-b4c4-37fc72566e44" width="30%" height="30%">
-<img src="https://github.com/user-attachments/assets/45444162-e91e-4c15-b1d7-46ce66bf2aca" width="30%" height="30%">
-<img src="https://github.com/user-attachments/assets/36e1d667-ddb8-4c89-81f6-3bdce6def8bd" width="30%" height="30%">
+<img src="https://github.com/user-attachments/assets/89c52bdf-3230-4876-b4c4-37fc72566e44" width=300px height=650px>
+<img src="https://github.com/user-attachments/assets/45444162-e91e-4c15-b1d7-46ce66bf2aca" width=300px height=650px>
+<img src="https://github.com/user-attachments/assets/36e1d667-ddb8-4c89-81f6-3bdce6def8bd" width=300px height=650px>
 
 
 
-<img src="https://github.com/user-attachments/assets/5c8c2f13-8066-43fd-80d2-4c6e01398364" width="30%" height="30%">
-<img src="https://github.com/user-attachments/assets/536553ef-2b7b-469c-a7e1-a632d1eef0b8" width="30%" height="30%">
+<img src="https://github.com/user-attachments/assets/5c8c2f13-8066-43fd-80d2-4c6e01398364" width=300px height=650px>
+<img src="https://github.com/user-attachments/assets/536553ef-2b7b-469c-a7e1-a632d1eef0b8" width=300px height=650px>
 
 
