@@ -6,14 +6,13 @@ import PostMiddle from "../../components/BoardDetails/PostMiddle";
 import PostBottom from "../../components/BoardDetails/PostBottom";
 import route_detail_dummy from "../../../dummy_data/routeDetail.json";
 import axios from "axios";
-import IPConfig from '../../configs/IPConfig.json';
+import IPConfig from "../../configs/IPConfig.json";
 // day , 장소 , 메모
 
 const RouteDetailScreen = (props) => {
   const [routeInfo, setRouteInfo] = useState();
   // const post = posts[0];
   const { routeId } = props.route.params; // postId를 받아옴
-
 
   const fetchData = async () => {
     try {
@@ -25,7 +24,10 @@ const RouteDetailScreen = (props) => {
 
       if (response.data) {
         setRouteInfo(response.data);
-        console.log("{RouteDetailScreen} useEffect / routeInfo = ", response.data);
+        console.log(
+          "{RouteDetailScreen} useEffect / routeInfo = ",
+          response.data
+        );
       }
     } catch (error) {
       console.log("데이터 가져오기 실패3", error);
@@ -33,7 +35,8 @@ const RouteDetailScreen = (props) => {
   };
 
   useEffect(() => {
-    fetchData();
+    // fetchData();
+    setRouteInfo(route_detail_dummy[routeId]);
   }, [props]);
 
   return (

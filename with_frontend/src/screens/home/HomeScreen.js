@@ -30,6 +30,10 @@ function HomeScreen() {
 
   const [routeList, setRouteList] = useState([]);
 
+  useEffect(() => {
+    // setRouteList(routes_dummy);
+  }, []);
+
   console.log(message, "메시지");
   useEffect(() => {
     if (searchQuery) {
@@ -50,10 +54,7 @@ function HomeScreen() {
         });
 
         if (response.data) {
-          console.log(
-            "{HomeScreen} / useEffect / fetchData ",
-            response.data
-          );
+          console.log("{HomeScreen} / useEffect / fetchData ", response.data);
           setRouteList(response.data);
         }
       } catch (error) {
@@ -115,7 +116,7 @@ function HomeScreen() {
         onPress={() => navigation.navigate("RecommendScreen")}
       />
 
-      <PostList searchQuery={searchQuery} data={routeList} />
+      <PostList searchQuery={searchQuery} data={routes_dummy} />
 
       <TouchableOpacity
         style={{

@@ -14,13 +14,13 @@ const reviews = [
     routeTitle: "부산 여행같이가요 ",
     rating: 3,
     date: "2024.09.20",
-    review: "여행 진짜 이상하게도 짜쳤네",
+    review: "여행 정말 재미있었어요 다음에 또 뵈요!",
   },
   {
     id: "2",
     name: "옹오엔",
     image: "https://randomuser.me/api/portraits/women/3.jpg",
-    routeTitle: "서울 관광명소 뺑뺑이 여행",
+    routeTitle: "서울 관광명소 나들이 여행",
     rating: 5,
     date: "2024.09.20",
     review:
@@ -34,7 +34,7 @@ const reviews = [
     rating: 4,
     date: "2024.09.20",
     review:
-      "He'll want to use your yacht, and I don't want this thing smelling like fish.",
+      "수원화성의 역사와 풍경이 너무 아름다웠어요. 꼭 다시 가보고 싶네요!",
   },
   {
     id: "4",
@@ -43,7 +43,8 @@ const reviews = [
     routeTitle: "wyd 참가자들 여행 저만믿고 따라와요",
     rating: 4,
     date: "2024.09.20",
-    review: "I just followed him around and it was fun",
+    review:
+      "여행 일정이 정말 잘 짜여 있었고, 가이드가 훌륭했어요. 강력 추천합니다!",
   },
 ];
 

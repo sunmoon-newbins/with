@@ -122,10 +122,12 @@ const MyNotification = ({ navigation }) => {
                 </View>
                 <View style={styles.mentBox}>
                   <Text>
-                    {`${notification.authorName}님과 함께한 여행은 즐거우셨나요?`}
+                    {/* {`${notification.authorName}님과 함께한 여행은 즐거우셨나요?`} */}
+                    김정동님과 함께한 여행은 즐거우셨나요?
                   </Text>
                   <Text>
-                    {`${notification.authorName}님께서 준비한 여행일정에 대해서 평가해주세요`}
+                    {/* {`${notification.authorName}님께서 준비한 여행일정에 대해서 평가해주세요`} */}
+                    김정동님께서 준비한 여행일정에 대해서 평가해주세요
                   </Text>
                 </View>
               </View>
@@ -140,7 +142,11 @@ const MyNotification = ({ navigation }) => {
                   <Text style={{ fontWeight: "700", fontSize: 16 }}>
                     {notification.authorName}님께서 후기를 보냈습니다.
                   </Text>
-                  <TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate("MyReview");
+                    }}
+                  >
                     <Image
                       source={require("../../../assets/XButton.png")}
                       style={styles.xButton}

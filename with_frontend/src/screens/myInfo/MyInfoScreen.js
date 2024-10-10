@@ -34,6 +34,7 @@ const MyInfoScreen = ({ route }) => {
   // route.params에서 screenUser 데이터를 받아옴
   const screenUser = route.params.user; // 안전하게 받을 수 있도록 설정
   const userId = useStore((state) => state.userId);
+  const logout = useStore((state) => state.logout);
   const myScreen = screenUser.userId == userId;
   // 별점만 백엔드에서 userId 주고 갖고옴, , ,
 

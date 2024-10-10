@@ -20,6 +20,7 @@ const PostBottom = ({
   currentMember,
   maxMember,
 }) => {
+  console.log("하트카운트: ", heartCount);
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(heartCount); // 초기값을 heartCount로 설정
   const isFull = currentMember >= maxMember; // 조건: 멤버가 꽉 찼을 때
@@ -96,7 +97,7 @@ const PostBottom = ({
               { opacity: isLiked ? 0.9 : 0.4 }, // 좋아요 상태에 따라 opacity 변화
             ]}
           >
-            {`좋아요 ${likeCount}`} {/* likeCount로 변경 */}
+            {`좋아요 ${heartCount}`} {/* likeCount로 변경 */}
           </Text>
         </TouchableOpacity>
       </View>
