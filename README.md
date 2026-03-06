@@ -161,3 +161,116 @@ WYD 세계 청년대회 참가자들을 위한 여행 소통 및 도우미 앱
 <img src="https://github.com/user-attachments/assets/536553ef-2b7b-469c-a7e1-a632d1eef0b8" width=300px height=650px>
 
 
+## 커밋 기능별 정리
+
+### 1. 프로젝트 초기 설정
+| 커밋 | 작성자 | 설명 |
+|------|--------|------|
+| `b29bdde` | seohansoo | Initial commit |
+| `dc5efbf` | seohansoo | :tada: Init: create expo project |
+| `61a598b` | seohansoo | :tada: Init: create springboot project |
+| `1331baa` | seohansoo | Back feature directory frame (#1) |
+
+### 2. 인증 (로그인/회원가입)
+| 커밋 | 작성자 | 설명 |
+|------|--------|------|
+| `f839c56` | 박준엽 | :tada: :sparkles: Feat: loginScreen, StartScreen, Stacknavigation (#2) |
+| `7975acb` | seohansoo | Revert: loginScreen, StartScreen, Stacknavigation (#2) |
+| `96731fc` | 박준엽 | :sparkles: Feat: loginScreen, StartScreen, Stacknavigation (#3) |
+| `2bbcc81` | seohansoo | :sparkles: Feat: login (#4) |
+| `9e713bc` | seohansoo | ✨ Feat: signup (#6) |
+| `c40e1c6` | 박준엽 | ✨ Feat: login, signup, home chatList backend connect (#32) |
+
+### 3. 네비게이션/UI 구조
+| 커밋 | 작성자 | 설명 |
+|------|--------|------|
+| `70b1b20` | 박준엽 | ✨ Feat: BottomTab, page, navigator Structure (#5) |
+| `e9ef4d9` | 박준엽 | Front feature home screen (#8) |
+| `6472a0a` | 박준엽 | Front feature item picker (#36) |
+| `87e0242` | 박준엽 | :sparkles: Feat: front screen |
+
+### 4. 사용자 프로필
+| 커밋 | 작성자 | 설명 |
+|------|--------|------|
+| `c29342e` | seohansoo | ✨ Feat: view profile, get user Info (#9) |
+| `1261203` | seohansoo | ✨ Feat: changeProfile (#10) |
+
+### 5. 여행 루트 (Route)
+| 커밋 | 작성자 | 설명 |
+|------|--------|------|
+| `cda3e80` | ramgthunder12 | :sparkles: Feat: createRoute feature (#11) |
+| `d213a22` | ramgthunder12 | :sparkles: Feat: get route (#17) |
+| `8792998` | ramgthunder12 | :sparkles: Feat: Added route list display with output based on state and sortType (#18) |
+| `5987268` | ramgthunder12 | :sparkles: feat: add searchRoutes function to search by title and content (#19) |
+| `62a6d8f` | ramgthunder12 | :sparkles: Feat: create getRoutes By userNum (#20) |
+| `de5cbf2` | ramgthunder12 | :sparkles: Feat: getRoute_Place (#29) |
+| `bdbbf23` | ramgthunder12 | :sparkles: Feat: create myRouteBoardScreen (#39) |
+| `07a8ba0` | ramgthunder12 | 🎨 Feat: getRoutes by userId (#40) |
+
+### 6. 장소 (Places)
+| 커밋 | 작성자 | 설명 |
+|------|--------|------|
+| `b4a0d63` | seohansoo | :sparkles: Feat: add my place (#12) |
+| `fa41507` | seohansoo | :sparkles: Feat: delete my place (#13) |
+| `47d120d` | ramgthunder12 | ✨ Feat: create search Places by placeName (#21) |
+| `a05a24d` | ramgthunder12 | :sparkles: Feat: getMyPlaces by user_id (#23) |
+
+### 7. 채팅 (Chatting)
+| 커밋 | 작성자 | 설명 |
+|------|--------|------|
+| `4fc84e7` | 박준엽 | Front feature chat screen (#14) |
+| `451c865` | 박준엽 | Front feature chat screen (#15) |
+| `0f0dcac` | seohansoo | :sparkles: Feat: get my chatting list (#16) |
+| `65d6d18` | 박준엽 | Front feature detail chat screen (#22) |
+| `4082e61` | seohansoo | ✨ Feat: chatting service (#24) |
+| `4d61deb` | seohansoo | :sparkles: Feat: setRouteChatting (#25) |
+
+### 8. 리뷰 (Reviews)
+| 커밋 | 작성자 | 설명 |
+|------|--------|------|
+| `5cc134f` | seohansoo | ✨ Feat: get my reviews (#26) |
+| `efd0ccd` | seohansoo | ✨ Feat: write review (#33) |
+
+### 9. 게시판 (Board / Post)
+| 커밋 | 작성자 | 설명 |
+|------|--------|------|
+| `7d69d4a` | 박준엽 | Front feature create board screen (#27) |
+| `0d3d4e9` | 박준엽 | ✨ Feat: Front feature post bottom screen (#28) |
+
+### 10. 알림 (Notices)
+| 커밋 | 작성자 | 설명 |
+|------|--------|------|
+| `9b41397` | seohansoo | ✨ Feat: get my notices (#30) |
+
+### 11. 공공 와이파이 (Public WiFi)
+| 커밋 | 작성자 | 설명 |
+|------|--------|------|
+| `358b154` | ramgthunder12 | :sparkles: Feat: create public wifi place map screen (#37) |
+| `f4f389a` | 박준엽 | ✨ Feat: Front-feature public wifi screen (#38) |
+
+### 12. 공공 데이터 API (Open API)
+| 커밋 | 작성자 | 설명 |
+|------|--------|------|
+| `2a9dc9d` | ramgthunder12 | :sparkles: Feat: setOpenapi data (#34) |
+
+### 13. DTO/데이터 구조
+| 커밋 | 작성자 | 설명 |
+|------|--------|------|
+| `e424a49` | seohansoo | :fire: Refactor: modify DTO files (#7) |
+| `5784066` | seohansoo | ✨ Feat: add dto files (#35) |
+
+### 14. 버그 수정 (Bug Fixes)
+| 커밋 | 작성자 | 설명 |
+|------|--------|------|
+| `e8fc790` | seohansoo | :ambulance: Fix: FirebaseConfig annotation |
+| `53246f3` | seohansoo | :art: Fix: debug |
+
+### 15. 문서 (Documentation)
+| 커밋 | 작성자 | 설명 |
+|------|--------|------|
+| `8b9c56e` | 박준엽 | Update README.md (#41) |
+| `636fc82` | 박준엽 | Update README.md (#42) |
+| `e3a0e0f` | 박준엽 | Update README.md (#43) |
+| `59accd4` | 박준엽 | Update README.md (#44) |
+| `5aa2499` | 박준엽 | Update README.md (#45) |
+
