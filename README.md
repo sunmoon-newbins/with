@@ -70,8 +70,7 @@ WYD 세계 청년대회 참가자들을 위한 여행 소통 및 도우미 앱
 
 ## 요구사항 정의서
 
-![스크린샷 2024-10-09 142515](https://github.com/user-attachments/assets/713d7a39-9630-4435-8cbf-f97e4e4a3237)
-
+![요구사항정의서.pdf](https://github.com/user-attachments/files/25821750/_._._.-.pdf)
 
 
 
