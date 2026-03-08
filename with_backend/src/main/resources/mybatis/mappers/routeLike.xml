@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newbins.mapper.RouteLikeMapper">
+
+    <insert id="likeRoute" parameterType="map">
+        INSERT IGNORE INTO ROUTE_LIKE(ROUTE_NUM, USER_NUM, LIKE_DT)
+        VALUES(#{routeId}, #{userId}, NOW())
+    </insert>
+
+    <delete id="unlikeRoute" parameterType="map">
+        DELETE FROM ROUTE_LIKE
+        WHERE ROUTE_NUM = #{routeId} AND USER_NUM = #{userId}
+    </delete>
+
+    <select id="getLikedRoutesByUserId" parameterType="String" resultType="routeEntity">
+        SELECT
+            R.ROUTE_NUM,
+            U.NAME,
+            U.PROFILE,
+            R.TITLE,
+            R.STATE,
+            R.PARTICIPANT_COUNT,
+            (
+                SELECT COUNT(CU.USER_NUM)
+                FROM CHATTING_USER CU
+                WHERE CHATTING_NUM = (
+                    SELECT CHATTING_NUM
+                    FROM CHATTING C
+                    WHERE C.ROUTE_NUM = R.ROUTE_NUM
+                )
+            ) AS CURRENT_USER_COUNT,
+            R.PICTURE,
+            R.CREATE_DATE,
+            R.START_DATE,
+            R.END_DATE,
+            R.CONTENT
+        FROM ROUTE R
+        INNER JOIN ROUTE_LIKE RL ON R.ROUTE_NUM = RL.ROUTE_NUM
+        LEFT JOIN USERS U ON R.USER_NUM = U.USER_NUM
+        WHERE RL.USER_NUM = #{userId}
+        ORDER BY RL.LIKE_DT DESC
+    </select>
+
+</mapper>
